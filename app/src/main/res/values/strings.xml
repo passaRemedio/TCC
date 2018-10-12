@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Passa o Remédio</string>
+    <string name="lgn_button">Entrar</string>
+    <string name="cadastro_button">Criar Cadastro</string>
+    <string name="tipo_motorista">Motorista</string>
+    <string name="tipo_cliente">Cliente</string>
+    <string name="tipo_farmacia">Farmácia</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="titulo_login">Acessando Conta</string>
+    <string name="tipo_cadastro">Escolhendo tipo de Cadastro</string>
+    <string name="titulo_cadastro">Criando Cadastro</string>
+    <string name="acessar_senha">Senha</string>
+    <string name="acessar_email">Email</string>
+</resources>
