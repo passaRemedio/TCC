@@ -17,6 +17,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import app.calcounterapplication.com.tcc.activity.MainActivity;
 import app.calcounterapplication.com.tcc.activity.MapsActivity;
+import app.calcounterapplication.com.tcc.activity.MenuClienteActivity;
+import app.calcounterapplication.com.tcc.activity.MenuEntregadorActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.model.Usuario;
 
@@ -81,11 +83,11 @@ public class UsuarioFirebase {
                     String tipoUsuario = usuario.getTipo();
                     if( tipoUsuario.equals("M") ){
 
-                        activity.startActivity(new Intent(activity, MapsActivity.class));
+                        activity.startActivity(new Intent(activity, MenuEntregadorActivity.class));
 
                     } else {
 
-                        activity.startActivity(new Intent(activity, MainActivity.class));
+                        activity.startActivity(new Intent(activity, MenuClienteActivity.class));
 
                     }
 
