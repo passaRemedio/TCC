@@ -2,7 +2,7 @@
     <string name="app_name">Passa o Remédio</string>
     <string name="lgn_button">Entrar</string>
     <string name="cadastro_button">Criar Cadastro</string>
-    <string name="tipo_motorista">Motorista</string>
+    <string name="tipo_entregador">Entregador</string>
     <string name="tipo_cliente">Cliente</string>
     <string name="tipo_farmacia">Farmácia</string>
     <string name="title_activity_maps">Map</string>

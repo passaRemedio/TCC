@@ -21,7 +21,7 @@ public class TipoDeCadastro extends AppCompatActivity {
     }
 
     public void cadastroMotorista(View view ){
-        startActivity(new Intent(this, CadastroMotoristaActivity.class));
+        startActivity(new Intent(this, CadastroEntregadorActivity.class));
     }
 
     public void cadastroFarmacia(View view){

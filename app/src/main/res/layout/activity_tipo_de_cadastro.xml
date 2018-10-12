@@ -68,14 +68,14 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/motoristaBtn"
+            android:id="@+id/entregadorBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="4dp"
             android:layout_weight="1"
             android:background="@color/colorAccent"
             android:onClick="cadastroMotorista"
-            android:text="@string/tipo_motorista"
+            android:text="@string/tipo_entregador"
             android:textStyle="bold" />
 
     </LinearLayout>

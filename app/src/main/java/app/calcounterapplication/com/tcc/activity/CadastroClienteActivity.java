@@ -79,7 +79,7 @@ public class CadastroClienteActivity extends AppCompatActivity {
                         //Atualizar nome do Usuario no UserProfile
                         UsuarioFirebase.atualizarNomeUsuario(usuario.getNome());
 
-                        startActivity(new Intent(CadastroClienteActivity.this, MainActivity.class));
+                        startActivity(new Intent(CadastroClienteActivity.this, MenuClienteActivity.class));
                         finish();
 
                         Toast.makeText(CadastroClienteActivity.this,

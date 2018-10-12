@@ -21,7 +21,7 @@ import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 import app.calcounterapplication.com.tcc.model.Usuario;
 
-public class CadastroMotoristaActivity extends AppCompatActivity {
+public class CadastroEntregadorActivity extends AppCompatActivity {
 
     private TextInputEditText campoNome, campoEmail, campoSenha;
 
@@ -52,7 +52,7 @@ public class CadastroMotoristaActivity extends AppCompatActivity {
             cadastrarUsuario(usuario);
 
         } else {
-            Toast.makeText(CadastroMotoristaActivity.this,
+            Toast.makeText(CadastroEntregadorActivity.this,
                     "Preencha todos os campos!",
                     Toast.LENGTH_SHORT).show();
         }
@@ -79,10 +79,10 @@ public class CadastroMotoristaActivity extends AppCompatActivity {
                         //Atualizar nome do Usuario no UserProfile
                         UsuarioFirebase.atualizarNomeUsuario(usuario.getNome());
 
-                        startActivity(new Intent(CadastroMotoristaActivity.this, MainActivity.class));
+                        startActivity(new Intent(CadastroEntregadorActivity.this, MenuEntregadorActivity.class));
                         finish();
 
-                        Toast.makeText(CadastroMotoristaActivity.this,
+                        Toast.makeText(CadastroEntregadorActivity.this,
                                 "Sucesso ao cadastrar motorista!",
                                 Toast.LENGTH_SHORT).show();
 
@@ -109,7 +109,7 @@ public class CadastroMotoristaActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    Toast.makeText(CadastroMotoristaActivity.this,
+                    Toast.makeText(CadastroEntregadorActivity.this,
                             excecao,
                             Toast.LENGTH_SHORT).show();
                 }
