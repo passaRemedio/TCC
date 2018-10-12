@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private TextInputEditText campoEmail, campoSenha;
 
+    //permitir acesso
     private FirebaseAuth mAuth;
 
     @Override
