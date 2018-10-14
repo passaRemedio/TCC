@@ -24,17 +24,17 @@
             android:label="@string/titulo_login"
             android:parentActivityName=".activity.MainActivity" />
         <activity
-            android:name=".activity.TipoDeCadastro"
+            android:name=".activity.TipoDeCadastroActivity"
             android:label="@string/titulo_cadastro"
             android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.CadastroClienteActivity"
             android:label="@string/tipo_cadastro"
-            android:parentActivityName=".activity.TipoDeCadastro" />
+            android:parentActivityName=".activity.TipoDeCadastroActivity" />
         <activity
             android:name=".activity.CadastroEntregadorActivity"
             android:label="@string/tipo_cadastro"
-            android:parentActivityName=".activity.TipoDeCadastro" />
+            android:parentActivityName=".activity.TipoDeCadastroActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -51,7 +51,11 @@
             android:name=".activity.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".activity.MenuClienteActivity" />
-        <activity android:name=".activity.MenuEntregadorActivity"></activity>
+        <activity android:name=".activity.MenuEntregadorActivity" />
+        <activity
+            android:name=".activity.ClienteNavigationDrawer"
+            android:label="@string/title_activity_cliente_navigation_drawer"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

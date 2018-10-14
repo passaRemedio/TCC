@@ -74,22 +74,35 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Minha Reputação"
-        app:layout_constraintBottom_toTopOf="@+id/imageView7"
+        app:layout_constraintBottom_toTopOf="@+id/logoutImageButtonID"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView6" />
 
-    <ImageView
-        android:id="@+id/imageView7"
+    <!--<ImageView-->
+        <!--android:id="@+id/imageView7"-->
+        <!--android:layout_width="90dp"-->
+        <!--android:layout_height="68dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/textView8"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/textView6"-->
+        <!--app:srcCompat="@drawable/logout" />-->
+
+    <ImageButton
+        android:id="@+id/logoutImageButtonID"
         android:layout_width="90dp"
         android:layout_height="68dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:background="@drawable/logout"
         app:layout_constraintBottom_toTopOf="@+id/textView8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:srcCompat="@drawable/logout" />
+        />
 
     <TextView
         android:id="@+id/textView8"
@@ -101,5 +114,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+        app:layout_constraintTop_toBottomOf="@+id/logoutImageButtonID" />
 </android.support.constraint.ConstraintLayout>

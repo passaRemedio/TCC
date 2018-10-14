@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import app.calcounterapplication.com.tcc.activity.ClienteNavigationDrawer;
 import app.calcounterapplication.com.tcc.activity.MainActivity;
 import app.calcounterapplication.com.tcc.activity.MapsActivity;
 import app.calcounterapplication.com.tcc.activity.MenuClienteActivity;
@@ -87,7 +88,7 @@ public class UsuarioFirebase {
 
                     } else {
 
-                        activity.startActivity(new Intent(activity, MenuClienteActivity.class));
+                        activity.startActivity(new Intent(activity, ClienteNavigationDrawer.class));
 
                     }
 

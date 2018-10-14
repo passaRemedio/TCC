@@ -7,7 +7,7 @@ import android.view.View;
 
 import app.calcounterapplication.com.tcc.R;
 
-public class TipoDeCadastro extends AppCompatActivity {
+public class TipoDeCadastroActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
