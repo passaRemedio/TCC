@@ -43,6 +43,8 @@ public class ClienteNavigationDrawer extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        getSupportActionBar().setTitle("Passa o Remédio");
     }
 
     @Override

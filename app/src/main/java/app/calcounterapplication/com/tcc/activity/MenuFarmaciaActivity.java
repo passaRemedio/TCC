@@ -4,23 +4,22 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 
-public class MenuEntregadorActivity extends AppCompatActivity {
+public class MenuFarmaciaActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-
-    private ImageView logoutButton;
+    private ImageButton logoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_entregador);
+        setContentView(R.layout.activity_menu_farmacia);
 
         mAuth = ConfigFirebase.getFirebaseAuth();
 
@@ -28,13 +27,13 @@ public class MenuEntregadorActivity extends AppCompatActivity {
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logoutFarmacia();
+                logoutEntregador();
             }
         });
-        getSupportActionBar().setTitle("Entregador");
+        getSupportActionBar().setTitle("Farmácia");
     }
 
-    public void logoutFarmacia(){
+    public void logoutEntregador(){
         mAuth.signOut();
         startActivity(new Intent( this, MainActivity.class));
         finish();

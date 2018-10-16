@@ -6,6 +6,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,7 +24,7 @@ import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class CadastroClienteActivity extends AppCompatActivity {
 
-    private TextInputEditText campoNome, campoEmail, campoSenha;
+    private EditText campoNome, campoEmail, campoSenha;
 
     private FirebaseAuth mAuth;
 
@@ -36,18 +37,18 @@ public class CadastroClienteActivity extends AppCompatActivity {
 
     }
 
-    public void validarCadastroUsuario(View view){
+    public void validarCadastroUsuario(View view) {
         //Recuperar textos dos nomes
         String textoNome = campoNome.getText().toString();
         String textoEmail = campoEmail.getText().toString();
         String textoSenha = campoSenha.getText().toString();
 
-        if(!textoNome.isEmpty() && !textoEmail.isEmpty() && !textoSenha.isEmpty()){
+        if (!textoNome.isEmpty() && !textoEmail.isEmpty() && !textoSenha.isEmpty()) {
             Usuario usuario = new Usuario();
             usuario.setNome(textoNome);
             usuario.setEmail(textoEmail);
             usuario.setSenha(textoSenha);
-            usuario.setTipo("P");
+            usuario.setTipo("C");
 
             cadastrarUsuario(usuario);
 
@@ -59,7 +60,7 @@ public class CadastroClienteActivity extends AppCompatActivity {
 
     }
 
-    public void cadastrarUsuario(final Usuario usuario){
+    public void cadastrarUsuario(final Usuario usuario) {
 
         mAuth = ConfigFirebase.getFirebaseAuth();
         mAuth.createUserWithEmailAndPassword(
@@ -70,7 +71,7 @@ public class CadastroClienteActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
 
-                    try{
+                    try {
 
                         String idUsuario = task.getResult().getUser().getUid();
                         usuario.setId(idUsuario);
@@ -83,11 +84,11 @@ public class CadastroClienteActivity extends AppCompatActivity {
                         finish();
 
                         Toast.makeText(CadastroClienteActivity.this,
-                                "Sucesso ao cadastrar passageiro!",
+                                "Sucesso ao cadastrar cliente!",
                                 Toast.LENGTH_SHORT).show();
 
 
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -118,10 +119,10 @@ public class CadastroClienteActivity extends AppCompatActivity {
 
     }
 
-    public void inicializarComponentes(){
-        campoNome = findViewById(R.id.editCadastroNome);
-        campoEmail = findViewById(R.id.editCadastroEmail);
-        campoSenha = findViewById(R.id.editCadastroSenha);
+    public void inicializarComponentes() {
+        campoNome = findViewById(R.id.editClienteNome);
+        campoEmail = findViewById(R.id.editClienteEmail);
+        campoSenha = findViewById(R.id.editClienteSenha);
     }
 
 }

@@ -20,12 +20,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void criarCadastro(View view){
+    public void criarCadastro(View view) {
         startActivity(new Intent(this, TipoDeCadastroActivity.class));
     }
 
-    public void abrirLogin(View view ){
-        startActivity(new Intent( this, LoginActivity.class));
+    public void abrirLogin(View view) {
+
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Override
@@ -39,15 +40,15 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        for(int permissaoResultado : grantResults){
-            if(permissaoResultado == PackageManager.PERMISSION_DENIED){
+        for (int permissaoResultado : grantResults) {
+            if (permissaoResultado == PackageManager.PERMISSION_DENIED) {
                 alertaValidacaoPermissao();
             }
         }
 
     }
 
-    private void alertaValidacaoPermissao(){
+    private void alertaValidacaoPermissao() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Permissões Negadas");
