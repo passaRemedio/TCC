@@ -95,7 +95,7 @@ public class CadastroEntregadorActivity extends AppCompatActivity {
                         finish();
 
                         Toast.makeText(CadastroEntregadorActivity.this,
-                                "Sucesso ao cadastrar motorista!",
+                                "Sucesso ao cadastrar entregador!",
                                 Toast.LENGTH_SHORT).show();
 
 
