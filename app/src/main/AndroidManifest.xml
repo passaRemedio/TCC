@@ -60,8 +60,18 @@
             android:name=".activity.ClienteNavigationDrawer"
             android:label="@string/title_activity_cliente_navigation_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.CadastroFarmaciaActivity" />
-        <activity android:name=".activity.MenuFarmaciaActivity"></activity>
+        <activity android:name=".activity.Farmacia.CadastroFarmaciaActivity" />
+        <activity android:name=".activity.Farmacia.MenuFarmaciaActivity" />
+        <activity android:name=".activity.Farmacia.CadastrarProdutosActivity" />
+        <activity
+            android:name=".activity.Farmacia.MeusProdutosActivity"
+            android:label="@string/title_activity_meus_produtos"
+            android:parentActivityName=".activity.Farmacia.MenuFarmaciaActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="app.calcounterapplication.com.tcc.activity.Farmacia.MenuFarmaciaActivity" />
+        </activity>
     </application>
 
 </manifest>

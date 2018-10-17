@@ -1,4 +1,4 @@
-package app.calcounterapplication.com.tcc.activity;
+package app.calcounterapplication.com.tcc.activity.Farmacia;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;

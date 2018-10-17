@@ -3,11 +3,14 @@ package app.calcounterapplication.com.tcc.config;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class ConfigFirebase {
 
     private static DatabaseReference databaseReference;
     private static FirebaseAuth mAuth;
+    private static StorageReference referenciaStorage;
 
     //Criando a referência para o banco de dados
     //com  essa referencia conseguiremos adicionar e remover itens do firebase
@@ -26,6 +29,22 @@ public class ConfigFirebase {
             mAuth = FirebaseAuth.getInstance();
         }
         return mAuth;
+    }
+
+    //retorna a referencia do firebase
+    public static DatabaseReference getFirebase() {
+        if (databaseReference == null) {
+            databaseReference = FirebaseDatabase.getInstance().getReference();
+        }
+        return databaseReference;
+    }
+
+    //retorna referencia do Storage
+    public static StorageReference getFirebaseStorage() {
+        if (referenciaStorage == null) {
+            referenciaStorage = FirebaseStorage.getInstance().getReference();
+        }
+        return referenciaStorage;
     }
 
 }

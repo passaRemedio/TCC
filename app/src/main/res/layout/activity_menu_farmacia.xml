@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context=".activity.MenuFarmaciaActivity"
+    tools:context=".activity.Farmacia.MenuFarmaciaActivity"
     tools:layout_editor_absoluteY="81dp">
 
     <ImageView
@@ -24,12 +24,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:text="Meus Dados"
-        app:layout_constraintBottom_toTopOf="@+id/imageView5"
-        app:layout_constraintEnd_toEndOf="@+id/imageView5"
+        app:layout_constraintBottom_toTopOf="@+id/meusProdutosFarmacia"
+        app:layout_constraintEnd_toEndOf="@+id/meusProdutosFarmacia"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/meusProdutosFarmacia"
         android:layout_width="98dp"
         android:layout_height="73dp"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
@@ -44,12 +44,12 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="1dp"
         android:text="Meus Produtos"
-        app:layout_constraintBottom_toTopOf="@+id/imageView6"
-        app:layout_constraintEnd_toEndOf="@+id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5" />
+        app:layout_constraintBottom_toTopOf="@+id/cadastrarProdutosFarmacia"
+        app:layout_constraintEnd_toEndOf="@+id/meusProdutosFarmacia"
+        app:layout_constraintTop_toBottomOf="@+id/meusProdutosFarmacia" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/cadastrarProdutosFarmacia"
         android:layout_width="98dp"
         android:layout_height="73dp"
         app:layout_constraintBottom_toTopOf="@+id/textView6"
@@ -66,7 +66,7 @@
         app:layout_constraintBottom_toTopOf="@+id/logoutFarmacia"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        app:layout_constraintTop_toBottomOf="@+id/cadastrarProdutosFarmacia" />
 
 
     <ImageButton
