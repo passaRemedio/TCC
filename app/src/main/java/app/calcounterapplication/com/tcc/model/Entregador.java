@@ -25,4 +25,3 @@ public class Entregador extends PessoaFisica{
     }
 
 }
-

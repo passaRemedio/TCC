@@ -18,14 +18,18 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.activity.CadastroEntregadorActivity;
+import app.calcounterapplication.com.tcc.activity.MenuEntregadorActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
+import app.calcounterapplication.com.tcc.model.Entregador;
+import app.calcounterapplication.com.tcc.model.Farmacia;
 import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class CadastroFarmaciaActivity extends AppCompatActivity {
 
     private EditText campoNome, campoEmail, campoSenha;
-    private Button BTFarmaciaCadastro;
+    //private Button BTFarmaciaCadastro;
 
     private FirebaseAuth mAuth;
 
@@ -36,109 +40,193 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
 
         inicializarComponentes();
 
-        BTFarmaciaCadastro.setOnClickListener(new View.OnClickListener() {
+    }
+
+//        BTFarmaciaCadastro.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                String nome = campoNome.getText().toString();
+//                String email = campoEmail.getText().toString();
+//                String senha = campoSenha.getText().toString();
+//
+//                if (!nome.isEmpty()) {
+//
+//                    if (!email.isEmpty()) {
+//
+//                        if (!senha.isEmpty()) {
+//
+//                            final Usuario usuario = new Usuario();
+//                            usuario.setNome(nome);
+//                            usuario.setEmail(email);
+//                            usuario.setSenha(senha);
+//                            usuario.setTipo("F");
+//
+//                            mAuth = ConfigFirebase.getFirebaseAuth();
+//                            mAuth.createUserWithEmailAndPassword(
+//                                    usuario.getEmail(), usuario.getSenha()
+//                            ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<AuthResult> task) {
+//                                    if (task.isSuccessful()) {
+//
+//                                        try {
+//
+//                                            String idUsuario = task.getResult().getUser().getUid();
+//                                            usuario.setId(idUsuario);
+//                                            usuario.salvar();
+//
+//                                            //Atualizar nome do Usuario no UserProfile
+//                                            UsuarioFirebase.atualizarNomeUsuario(usuario.getNome());
+//
+//                                            startActivity(new Intent(CadastroFarmaciaActivity.this,
+//                                                    MenuFarmaciaActivity.class));
+//                                            finish();
+//
+//                                            Toast.makeText(CadastroFarmaciaActivity.this,
+//                                                    "Sucesso ao cadastrar Farmácia!",
+//                                                    Toast.LENGTH_SHORT).show();
+//
+//
+//                                        } catch (Exception e) {
+//                                            e.printStackTrace();
+//                                        }
+//
+//                                    } else {
+//
+//                                        String excecao = "";
+//
+//                                        try {
+//                                            throw task.getException();
+//                                        } catch (FirebaseAuthWeakPasswordException e) {
+//                                            excecao = "Digite uma senha mais forte!";
+//                                        } catch (FirebaseAuthInvalidCredentialsException e) {
+//                                            excecao = "Por favor, digite um e-mail válido";
+//                                        } catch (FirebaseAuthUserCollisionException e) {
+//                                            excecao = "Esta conta já foi cadastrada!";
+//                                        } catch (Exception e) {
+//                                            excecao = "Erro ao cadastrar usuário: " + e.getMessage();
+//                                            e.printStackTrace();
+//                                        }
+//
+//                                        Toast.makeText(CadastroFarmaciaActivity.this,
+//                                                excecao,
+//                                                Toast.LENGTH_SHORT).show();
+//
+//                                    }
+//                                }
+//                            });
+//
+//                        } else {
+//
+//                            Toast.makeText(getApplicationContext(),
+//                                    "Preencha a Senha",
+//                                    Toast.LENGTH_LONG).show();
+//                        }
+//
+//                    } else {
+//
+//                        Toast.makeText(getApplicationContext(),
+//                                "Preencha o Email",
+//                                Toast.LENGTH_LONG).show();
+//                    }
+//
+//                } else {
+//
+//                    Toast.makeText(getApplicationContext(),
+//                            "Preencha o Nome",
+//                            Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+//    }
+
+    public void validarCadastroUsuario(View view) {
+        //Recuperar textos dos nomes
+        String textoNome = campoNome.getText().toString();
+        String textoEmail = campoEmail.getText().toString();
+        String textoSenha = campoSenha.getText().toString();
+
+        if (!textoNome.isEmpty() && !textoEmail.isEmpty() && !textoSenha.isEmpty()) {
+            Usuario farmacia = new Farmacia();
+            farmacia.setNome(textoNome);
+            farmacia.setEmail(textoEmail);
+            farmacia.setSenha(textoSenha);
+            farmacia.setTipo("E");
+
+            cadastrarUsuario(farmacia);
+
+        } else {
+            Toast.makeText(CadastroFarmaciaActivity.this,
+                    "Preencha todos os campos!",
+                    Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public void cadastrarUsuario(final Usuario usuario) {
+
+        mAuth = ConfigFirebase.getFirebaseAuth();
+        mAuth.createUserWithEmailAndPassword(
+                usuario.getEmail(),
+                usuario.getSenha()
+        ).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
-            public void onClick(View v) {
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
 
-                String nome = campoNome.getText().toString();
-                String email = campoEmail.getText().toString();
-                String senha = campoSenha.getText().toString();
+                    try {
 
-                if (!nome.isEmpty()) {
+                        String idUsuario = task.getResult().getUser().getUid();
+                        usuario.setId(idUsuario);
+                        usuario.salvar();
 
-                    if (!email.isEmpty()) {
+                        //Atualizar nome do Usuario no UserProfile
+                        UsuarioFirebase.atualizarNomeUsuario(usuario.getNome());
 
-                        if (!senha.isEmpty()) {
+                        startActivity(new Intent(CadastroFarmaciaActivity.this, MenuFarmaciaActivity.class));
+                        finish();
 
-                            final Usuario usuario = new Usuario();
-                            usuario.setNome(nome);
-                            usuario.setEmail(email);
-                            usuario.setSenha(senha);
-                            usuario.setTipo("F");
-
-                            mAuth = ConfigFirebase.getFirebaseAuth();
-                            mAuth.createUserWithEmailAndPassword(
-                                    usuario.getEmail(), usuario.getSenha()
-                            ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-
-                                        try {
-
-                                            String idUsuario = task.getResult().getUser().getUid();
-                                            usuario.setId(idUsuario);
-                                            usuario.salvar();
-
-                                            //Atualizar nome do Usuario no UserProfile
-                                            UsuarioFirebase.atualizarNomeUsuario(usuario.getNome());
-
-                                            startActivity(new Intent(CadastroFarmaciaActivity.this,
-                                                    MenuFarmaciaActivity.class));
-                                            finish();
-
-                                            Toast.makeText(CadastroFarmaciaActivity.this,
-                                                    "Sucesso ao cadastrar Farmácia!",
-                                                    Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CadastroFarmaciaActivity.this,
+                                "Sucesso ao cadastrar motorista!",
+                                Toast.LENGTH_SHORT).show();
 
 
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    } else {
-
-                                        String excecao = "";
-
-                                        try {
-                                            throw task.getException();
-                                        } catch (FirebaseAuthWeakPasswordException e) {
-                                            excecao = "Digite uma senha mais forte!";
-                                        } catch (FirebaseAuthInvalidCredentialsException e) {
-                                            excecao = "Por favor, digite um e-mail válido";
-                                        } catch (FirebaseAuthUserCollisionException e) {
-                                            excecao = "Esta conta já foi cadastrada!";
-                                        } catch (Exception e) {
-                                            excecao = "Erro ao cadastrar usuário: " + e.getMessage();
-                                            e.printStackTrace();
-                                        }
-
-                                        Toast.makeText(CadastroFarmaciaActivity.this,
-                                                excecao,
-                                                Toast.LENGTH_SHORT).show();
-
-                                    }
-                                }
-                            });
-
-                        } else {
-
-                            Toast.makeText(getApplicationContext(),
-                                    "Preencha a Senha",
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                    } else {
-
-                        Toast.makeText(getApplicationContext(),
-                                "Preencha o Email",
-                                Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
                 } else {
 
-                    Toast.makeText(getApplicationContext(),
-                            "Preencha o Nome",
-                            Toast.LENGTH_LONG).show();
+                    String excecao = "";
+
+                    try {
+                        throw task.getException();
+                    } catch (FirebaseAuthWeakPasswordException e) {
+                        excecao = "Digite uma senha mais forte!";
+                    } catch (FirebaseAuthInvalidCredentialsException e) {
+                        excecao = "Por favor, digite um e-mail válido";
+                    } catch (FirebaseAuthUserCollisionException e) {
+                        excecao = "Esta conta já foi cadastrada!";
+                    } catch (Exception e) {
+                        excecao = "Erro ao cadastrar usuário: " + e.getMessage();
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(CadastroFarmaciaActivity.this,
+                            excecao,
+                            Toast.LENGTH_SHORT).show();
                 }
             }
+
         });
+
     }
 
     public void inicializarComponentes() {
         campoNome = findViewById(R.id.editFarmaciaNome);
         campoEmail = findViewById(R.id.editEntregadorEmail);
         campoSenha = findViewById(R.id.editFarmaciaSenha);
-        BTFarmaciaCadastro = findViewById(R.id.BTFarmaciaCadastro);
+        //BTFarmaciaCadastro = findViewById(R.id.BTFarmaciaCadastro);
     }
 }

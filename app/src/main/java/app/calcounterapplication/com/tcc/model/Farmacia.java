@@ -6,81 +6,32 @@ import java.io.Serializable;
 
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 
-public class Farmacia implements Serializable {
+public class Farmacia extends Usuario implements Serializable {
 
-    private String id;
-    private String nome;
-    private String email;
-    private String senha;
-    private String tipo;
+    private String cnpj;
+    private String cep;
 
-    private String latitude;
-    private String longitude;
+    public String getCnpj() {
+        return cnpj;
+    }
 
-    public Farmacia() {
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
     public void salvar() {
+        //super.salvar();
         DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
-        DatabaseReference farmacia = firebaseRef.child("usuarios")
-                .child("farmacia").child(getId());
-
-        farmacia.setValue(this);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
+        DatabaseReference usuarios = firebaseRef.child("usuarios").child("farmaciais")
+                .child(getId());
+        usuarios.setValue(this);
     }
 }

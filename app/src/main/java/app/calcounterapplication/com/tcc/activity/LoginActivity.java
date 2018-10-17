@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
                     //Verificar o tipo de usuário que está logando
-                    //Motorista // Passageiro // Farmacia
+                    //Entregador // Passageiro // Farmacia
                     UsuarioFirebase.redirecionaUsuarioLogado(LoginActivity.this);
 
                 } else {

@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
+import app.calcounterapplication.com.tcc.model.Cliente;
 import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class CadastroClienteActivity extends AppCompatActivity {
@@ -44,13 +45,13 @@ public class CadastroClienteActivity extends AppCompatActivity {
         String textoSenha = campoSenha.getText().toString();
 
         if (!textoNome.isEmpty() && !textoEmail.isEmpty() && !textoSenha.isEmpty()) {
-            Usuario usuario = new Usuario();
-            usuario.setNome(textoNome);
-            usuario.setEmail(textoEmail);
-            usuario.setSenha(textoSenha);
-            usuario.setTipo("C");
+            Usuario cliente = new Cliente();
+            cliente.setNome(textoNome);
+            cliente.setEmail(textoEmail);
+            cliente.setSenha(textoSenha);
+            cliente.setTipo("C");
 
-            cadastrarUsuario(usuario);
+            cadastrarUsuario(cliente);
 
         } else {
             Toast.makeText(CadastroClienteActivity.this,

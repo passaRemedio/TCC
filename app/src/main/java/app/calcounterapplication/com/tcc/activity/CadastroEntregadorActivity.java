@@ -6,6 +6,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,20 +21,30 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
+import app.calcounterapplication.com.tcc.model.Entregador;
 import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class CadastroEntregadorActivity extends AppCompatActivity {
 
     private EditText campoNome, campoEmail, campoSenha;
+    private Button buttonCadastro;
 
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cadastro_cliente);
+        setContentView(R.layout.activity_cadastro_entregador);
 
         inicializarComponentes();
+
+//        buttonCadastro = findViewById(R.id.buttonCadastroEntregador);
+//        buttonCadastro.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                validarCadastroUsuario();
+//            }
+//        });
 
     }
 
@@ -44,13 +55,13 @@ public class CadastroEntregadorActivity extends AppCompatActivity {
         String textoSenha = campoSenha.getText().toString();
 
         if (!textoNome.isEmpty() && !textoEmail.isEmpty() && !textoSenha.isEmpty()) {
-            Usuario usuario = new Usuario();
-            usuario.setNome(textoNome);
-            usuario.setEmail(textoEmail);
-            usuario.setSenha(textoSenha);
-            usuario.setTipo("M");
+            Usuario entregador = new Entregador();
+            entregador.setNome(textoNome);
+            entregador.setEmail(textoEmail);
+            entregador.setSenha(textoSenha);
+            entregador.setTipo("E");
 
-            cadastrarUsuario(usuario);
+            cadastrarUsuario(entregador);
 
         } else {
             Toast.makeText(CadastroEntregadorActivity.this,
@@ -105,8 +116,7 @@ public class CadastroEntregadorActivity extends AppCompatActivity {
                     } catch (FirebaseAuthUserCollisionException e) {
                         excecao = "Esta conta já foi cadastrada!";
                     } catch (Exception e) {
-                        excecao = "Erro ao cadastrar motorista" +
-                                ": " + e.getMessage();
+                        excecao = "Erro ao cadastrar usuário: " + e.getMessage();
                         e.printStackTrace();
                     }
 
