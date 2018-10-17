@@ -30,7 +30,7 @@ public class Farmacia extends Usuario implements Serializable {
     public void salvar() {
         //super.salvar();
         DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
-        DatabaseReference usuarios = firebaseRef.child("usuarios").child("farmaciais")
+        DatabaseReference usuarios = firebaseRef.child("usuarios").child("farmacias")
                 .child(getId());
         usuarios.setValue(this);
     }
