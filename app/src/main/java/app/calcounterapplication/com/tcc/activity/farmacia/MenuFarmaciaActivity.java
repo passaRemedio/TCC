@@ -1,10 +1,9 @@
-package app.calcounterapplication.com.tcc.activity.Farmacia;
+package app.calcounterapplication.com.tcc.activity.farmacia;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;

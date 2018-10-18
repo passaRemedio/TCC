@@ -1,4 +1,4 @@
-package app.calcounterapplication.com.tcc.activity.Farmacia;
+package app.calcounterapplication.com.tcc.activity.farmacia;
 
 import android.Manifest;
 import android.app.Activity;

@@ -17,7 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import app.calcounterapplication.com.tcc.activity.ClienteNavigationDrawer;
 import app.calcounterapplication.com.tcc.activity.MenuEntregadorActivity;
-import app.calcounterapplication.com.tcc.activity.Farmacia.MenuFarmaciaActivity;
+import app.calcounterapplication.com.tcc.activity.farmacia.MenuFarmaciaActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.model.Usuario;
 
@@ -68,14 +68,13 @@ public class UsuarioFirebase {
     }
 
 
-    public static void redirecionaUsuarioLogado(final Activity activity) {
+    public static void redirecionaUsuarioLogado(final Activity activity){
 
         FirebaseUser user = getUsuarioAtual();
-        if (user != null) {
-
+        if(user != null){
             DatabaseReference usuariosRef = ConfigFirebase.getFirebaseDatabase()
                     .child("usuarios")
-                    .child(getIdentificadorUsuario());
+                    .child( getIdentificadorUsuario() );
             usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -83,16 +82,18 @@ public class UsuarioFirebase {
                     Usuario usuario = dataSnapshot.getValue(Usuario.class);
 
                     String tipoUsuario = usuario.getTipo();
-                    if (tipoUsuario.equals("M")) {
-
-                        activity.startActivity(new Intent(activity, MenuEntregadorActivity.class));
-
-                    } else if (tipoUsuario.equals("C")) {
+                    if( tipoUsuario.equals("C") ){
 
                         activity.startActivity(new Intent(activity, ClienteNavigationDrawer.class));
 
-                    } else {
+                    } else if (tipoUsuario.equals("E")){
+
+                        activity.startActivity(new Intent(activity, MenuEntregadorActivity.class));
+
+                    } else if (tipoUsuario.equals("F")){
+
                         activity.startActivity(new Intent(activity, MenuFarmaciaActivity.class));
+
                     }
 
                 }
@@ -102,7 +103,6 @@ public class UsuarioFirebase {
 
                 }
             });
-
         }
     }
 

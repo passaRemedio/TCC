@@ -39,6 +39,10 @@
             android:name=".activity.CadastroEntregadorActivity"
             android:label="@string/tipo_cadastro"
             android:parentActivityName=".activity.TipoDeCadastroActivity" />
+        <activity
+            android:name=".activity.farmacia.CadastroFarmaciaActivity"
+            android:label="@string/tipo_cadastro"
+            android:parentActivityName=".activity.TipoDeCadastroActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -60,17 +64,17 @@
             android:name=".activity.ClienteNavigationDrawer"
             android:label="@string/title_activity_cliente_navigation_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.Farmacia.CadastroFarmaciaActivity" />
-        <activity android:name=".activity.Farmacia.MenuFarmaciaActivity" />
-        <activity android:name=".activity.Farmacia.CadastrarProdutosActivity" />
+        <!--<activity android:name=".activity.farmacia.CadastroFarmaciaActivity" />-->
+        <activity android:name=".activity.farmacia.MenuFarmaciaActivity" />
+        <activity android:name=".activity.farmacia.CadastrarProdutosActivity" />
         <activity
-            android:name=".activity.Farmacia.MeusProdutosActivity"
+            android:name=".activity.farmacia.MeusProdutosActivity"
             android:label="@string/title_activity_meus_produtos"
-            android:parentActivityName=".activity.Farmacia.MenuFarmaciaActivity"
+            android:parentActivityName=".activity.farmacia.MenuFarmaciaActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="app.calcounterapplication.com.tcc.activity.Farmacia.MenuFarmaciaActivity" />
+                android:value="app.calcounterapplication.com.tcc.activity.farmacia.MenuFarmaciaActivity" />
         </activity>
     </application>
 

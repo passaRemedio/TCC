@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import app.calcounterapplication.com.tcc.R;
-import app.calcounterapplication.com.tcc.activity.Farmacia.CadastroFarmaciaActivity;
+import app.calcounterapplication.com.tcc.activity.farmacia.CadastroFarmaciaActivity;
 
 public class TipoDeCadastroActivity extends AppCompatActivity {
 

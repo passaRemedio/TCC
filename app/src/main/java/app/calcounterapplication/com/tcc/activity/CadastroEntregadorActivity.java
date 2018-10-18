@@ -38,14 +38,6 @@ public class CadastroEntregadorActivity extends AppCompatActivity {
 
         inicializarComponentes();
 
-//        buttonCadastro = findViewById(R.id.buttonCadastroEntregador);
-//        buttonCadastro.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                validarCadastroUsuario();
-//            }
-//        });
-
     }
 
     public void validarCadastroUsuario(View view) {

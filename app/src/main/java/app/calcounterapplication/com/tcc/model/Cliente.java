@@ -15,13 +15,13 @@ public class Cliente extends PessoaFisica {
         cartaoDeCredido = cartaoDeCredido;
     }
 
-    public void salvar() {
-        //super.salvar();
-        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
-        DatabaseReference usuarios = firebaseRef.child("usuarios").child("clientes")
-                .child(getId());
-        usuarios.setValue(this);
-    }
+//    public void salvar() {
+//        //super.salvar();
+//        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
+//        DatabaseReference usuarios = firebaseRef.child("usuarios").child("clientes")
+//                .child(getId());
+//        usuarios.setValue(this);
+//    }
 
 }
 

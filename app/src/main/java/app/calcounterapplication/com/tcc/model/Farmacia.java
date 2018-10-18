@@ -27,11 +27,11 @@ public class Farmacia extends Usuario implements Serializable {
         this.cep = cep;
     }
 
-    public void salvar() {
-        //super.salvar();
-        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
-        DatabaseReference usuarios = firebaseRef.child("usuarios").child("farmacias")
-                .child(getId());
-        usuarios.setValue(this);
-    }
+//    public void salvar() {
+//        //super.salvar();
+//        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
+//        DatabaseReference usuarios = firebaseRef.child("usuarios").child("farmacias")
+//                .child(getId());
+//        usuarios.setValue(this);
+//    }
 }

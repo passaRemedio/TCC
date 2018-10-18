@@ -16,12 +16,12 @@ public class Entregador extends PessoaFisica{
         this.contaBancaria = contaBancaria;
     }
 
-    public void salvar() {
-        //super.salvar();
-        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
-        DatabaseReference usuarios = firebaseRef.child("usuarios").child("entregadores")
-                .child(getId());
-        usuarios.setValue(this);
-    }
+//    public void salvar() {
+//        //super.salvar();
+//        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
+//        DatabaseReference usuarios = firebaseRef.child("usuarios").child("entregadores")
+//                .child(getId());
+//        usuarios.setValue(this);
+//    }
 
 }
