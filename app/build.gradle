@@ -42,6 +42,9 @@ dependencies {
     // dependencia spots dialog
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
 
+    //dependencia picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
 
 }
 apply plugin: 'com.google.gms.google-services'
