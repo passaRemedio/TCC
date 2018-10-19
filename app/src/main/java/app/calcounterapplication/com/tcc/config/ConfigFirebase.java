@@ -12,6 +12,13 @@ public class ConfigFirebase {
     private static FirebaseAuth mAuth;
     private static StorageReference referenciaStorage;
 
+    public static String getIdUsuario(){
+
+        FirebaseAuth autenticacao = getFirebaseAuth();
+        return autenticacao.getCurrentUser().getUid();
+
+    }
+
     //Criando a referência para o banco de dados
     //com  essa referencia conseguiremos adicionar e remover itens do firebase
     public static DatabaseReference getFirebaseDatabase(){
