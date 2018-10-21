@@ -148,7 +148,7 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
             farmacia.setNome(textoNome);
             farmacia.setEmail(textoEmail);
             farmacia.setSenha(textoSenha);
-            farmacia.setTipo("E");
+            farmacia.setTipo("F");
 
             cadastrarUsuario(farmacia);
 

@@ -2,6 +2,7 @@ package app.calcounterapplication.com.tcc.activity.farmacia;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,7 +10,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +21,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -32,6 +35,7 @@ import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.Permissoes;
 import app.calcounterapplication.com.tcc.model.Produto;
+import dmax.dialog.SpotsDialog;
 
 public class CadastrarProdutosActivity extends AppCompatActivity
         implements View.OnClickListener {
@@ -43,6 +47,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
     private ImageView imagem1;
     private Spinner campoCategorias;
     private Produto produto;
+    private AlertDialog dialog;
 
     private StorageReference storage;
 
@@ -51,6 +56,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
     };
 
     private List<String> listafotosRecuperadas = new ArrayList<>();
+    private List<String> listaURLfotos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,19 +112,26 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         }
     }
 
-    public void salvarAnuncio() {
+    public void salvarProduto() {
+
+        dialog = new SpotsDialog.Builder()
+                .setContext(this)
+                .setMessage("Salvando Produto")
+                .setCancelable(false)
+                .build();
+        dialog.show();
+
 
         //salvar imagens no storege
-//        for (int i = 0; i < listafotosRecuperadas.size(); i++) {
-//            String urlImagem = listafotosRecuperadas.get(i);
-//            int tamanhoLista = listafotosRecuperadas.size();
-//            salvarFotosStorage(urlImagem, tamanhoLista, i);
-//        }
-        Log.i("salvar", "salvo com sucesso");
+        for (int i = 0; i < listafotosRecuperadas.size(); i++) {
 
+            String urlImagem = listafotosRecuperadas.get(i);
+            int tamanhoLista = listafotosRecuperadas.size();
+            salvarFotosStorage(urlImagem, tamanhoLista, i);
+        }
     }
 
-    private void salvarFotosStorage(String urlString, int totalFotos, int contador) {
+    private void salvarFotosStorage(String urlString, final int totalFotos, int contador) {
 
         //criando nós no storage
         StorageReference imagemProduto = storage.child("imagens")
@@ -128,6 +141,31 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
         //fazer upload do arquivo
         UploadTask uploadTask = imagemProduto.putFile(Uri.parse(urlString));
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                Task<Uri> firebaseUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                String urlConvertida = firebaseUrl.toString();
+                listaURLfotos.add(urlConvertida);
+
+                if (totalFotos == listaURLfotos.size()) {
+                    produto.setFotos(listaURLfotos);
+                    produto.salvar();
+
+                    //fechando a dialog e encerrando o cadastro
+                    dialog.dismiss();
+                    finish();
+                }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                mensagemErro("Erro ao fazer upload");
+                Log.i("upload", "Erro ao fazer upload " + e.getMessage());
+            }
+        });
 
     }
 
@@ -136,7 +174,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         String categoria = campoCategorias.getSelectedItem().toString();
         String marca = campoMarca.getText().toString();
         String prod = campoProduto.getText().toString();
-        String valor = String.valueOf(campoValor.getRawValue());
+        String valor = String.valueOf(campoValor.getText().toString());
         String descricao = campoDescricao.getText().toString();
 
         Produto produto = new Produto();
@@ -149,18 +187,19 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         return produto;
     }
 
-    public void validarAnuncio(View view) {
+    public void validarProduto(View view) {
 
         produto = configurarProduto();
+        String valor = String.valueOf(campoValor.getRawValue());
 
         if (listafotosRecuperadas.size() != 0) {
-            if (produto.getCategoria().equals("Categira")) {
+            if (!produto.getCategoria().isEmpty()) {
                 if (!produto.getMarca().isEmpty()) {
                     if (!produto.getProduto().isEmpty()) {
-                        if (!produto.getValor().isEmpty() && !produto.getValor().equals("0")) {
+                        if (!valor.isEmpty() && !valor.equals("0")) {
                             if (!produto.getDescricao().isEmpty()) {
 
-                                salvarAnuncio();
+                                salvarProduto();
 
                             } else {
                                 mensagemErro("Preencha o campo descrição");
@@ -257,3 +296,4 @@ public class CadastrarProdutosActivity extends AppCompatActivity
     }
 
 }
+

@@ -19,10 +19,35 @@ public class Produto {
 
     public Produto() {
         DatabaseReference produtoRef = ConfigFirebase.getFirebase()
-                .child("produtos");
+                .child("meus_produtos");
         setIdProduto(produtoRef.push().getKey());
 
     }
+
+    public void salvar() {
+
+        String idUsuario = ConfigFirebase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFirebase.getFirebase()
+                .child("meus_produtos");
+
+        anuncioRef.child(idUsuario)
+                .child(getIdProduto())
+                .setValue(this);
+
+        salvarProdutoPublico();
+
+    }
+
+    public void salvarProdutoPublico() {
+
+        DatabaseReference anuncioRef = ConfigFirebase.getFirebase()
+                .child("produtos");
+
+        anuncioRef.child(getCategoria())
+                .child(getIdProduto())
+                .setValue(this);
+    }
+
 
     public String getIdProduto() {
         return idProduto;

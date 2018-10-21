@@ -99,7 +99,7 @@
         android:layout_marginEnd="27dp"
         android:layout_marginBottom="55dp"
         android:background="@drawable/background_button"
-        android:onClick="validarAnuncio"
+        android:onClick="validarProduto"
         android:text="Cadastrar Produto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

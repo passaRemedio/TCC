@@ -35,14 +35,12 @@
 
     <string-array name="categorias">
         <item>Categoria</item>
-        <item>Automóveis</item>
-        <item>Imóveis</item>
-        <item>Eletronicos</item>
-        <item>Moda</item>
-        <item>Esportes</item>
-        <item>Música</item>
-        <item>Infantil</item>
-        <item>Agro</item>
+        <item>Referência</item>
+        <item>Genérico</item>
+        <item>Similar</item>
+        <item>Fitoterápicos</item>
+        <item>Higiene Pessoal</item>
+        <item>Cosméticos</item>
 
     </string-array>
 
