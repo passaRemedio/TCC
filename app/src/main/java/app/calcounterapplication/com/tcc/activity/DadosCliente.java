@@ -22,6 +22,8 @@ import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 
 public class DadosCliente extends Fragment {
 
+    //ta foda essa classe
+
     private FirebaseAuth mAuth;
     private EditText editClienteNome;
 
