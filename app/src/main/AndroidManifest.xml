@@ -33,15 +33,15 @@
             android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.CadastroClienteActivity"
-            android:label="@string/tipo_cadastro"
+            android:label="@string/cadastro_cliente"
             android:parentActivityName=".activity.TipoDeCadastroActivity" />
         <activity
             android:name=".activity.CadastroEntregadorActivity"
-            android:label="@string/tipo_cadastro"
+            android:label="@string/cadastro_entregador"
             android:parentActivityName=".activity.TipoDeCadastroActivity" />
         <activity
             android:name=".activity.farmacia.CadastroFarmaciaActivity"
-            android:label="@string/tipo_cadastro"
+            android:label="@string/cadastro_farmacia"
             android:parentActivityName=".activity.TipoDeCadastroActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

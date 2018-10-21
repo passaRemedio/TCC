@@ -8,6 +8,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="titulo_login">Acessando Conta</string>
     <string name="tipo_cadastro">Escolhendo tipo de Cadastro</string>
+    <string name="cadastro_cliente">Cadastro de Cliente</string>
     <string name="titulo_cadastro">Criando Cadastro</string>
     <string name="acessar_senha">Senha</string>
     <string name="acessar_email">Email</string>
@@ -19,6 +20,17 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_meus_produtos">MeusProdutosActivity</string>
+    <string name="acessar_cidade">Cidade</string>
+    <string name="acessar_CEP">CEP</string>
+    <string name="acessar_bairro">Bairro</string>
+    <string name="acessar_rua">Rua</string>
+    <string name="acessar_numero">Número</string>
+    <string name="acessar_confirmar_senha">Confirmar Senha</string>
+    <string name="data_nascimento">Data de Nascimento</string>
+    <string name="criar_cadastro">Criar Cadastro</string>
+    <string name="cadastro_entregador">Cadastro de Entregador</string>
+    <string name="cadastro_farmacia">Cadastro de Farmácia</string>
+    <string name="editar_cadastro">Editar Cadastro</string>
 
 
     <string-array name="categorias">

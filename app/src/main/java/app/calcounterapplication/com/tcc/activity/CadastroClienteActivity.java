@@ -1,12 +1,17 @@
 package app.calcounterapplication.com.tcc.activity;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,15 +22,26 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
+import app.calcounterapplication.com.tcc.helper.DatePickerFragment;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 import app.calcounterapplication.com.tcc.model.Cliente;
+import app.calcounterapplication.com.tcc.model.PessoaFisica;
 import app.calcounterapplication.com.tcc.model.Usuario;
 
-public class CadastroClienteActivity extends AppCompatActivity {
+public class CadastroClienteActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    private EditText campoNome, campoEmail, campoSenha;
+    private EditText campoNome, campoEmail, campoSenha, campoRg, campoDtNascimento, campoCPF, campoCidade, campoCEP, campoRua, campoUF;
+    private EditText campoConfirmaSenha;
+    private TextView textData;
+
+    private static String dataNascimento = "";
 
     private FirebaseAuth mAuth;
 
@@ -38,17 +54,62 @@ public class CadastroClienteActivity extends AppCompatActivity {
 
     }
 
+    public String validarSenha(){
+        String textoSenha;
+        String senha1 = campoSenha.getText().toString();
+        String senha2 = campoConfirmaSenha.getText().toString();
+        if(senha1.equals(senha2)){
+            textoSenha = campoSenha.getText().toString();
+
+            return textoSenha;
+        } else {
+            Toast.makeText(CadastroClienteActivity.this,
+                    "Senha não batem!",
+                    Toast.LENGTH_SHORT).show();
+        }
+        return textoSenha = "";
+    }
+
     public void validarCadastroUsuario(View view) {
         //Recuperar textos dos nomes
         String textoNome = campoNome.getText().toString();
         String textoEmail = campoEmail.getText().toString();
-        String textoSenha = campoSenha.getText().toString();
+        String textoSenha = validarSenha();
+        String textoRg = campoRg.getText().toString();
 
-        if (!textoNome.isEmpty() && !textoEmail.isEmpty() && !textoSenha.isEmpty()) {
-            Usuario cliente = new Cliente();
+        //converter Date para String
+        //DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String textoDtNascimento = this.dataNascimento;
+//        System.out.println("Texto1: " + textoDtNascimento);
+//        System.out.println("Data: " + dataNascimento);
+        if(textoDtNascimento == null){
+            textoDtNascimento = "";
+        }
+//        System.out.println("Texto2: " + textoDtNascimento);
+
+        String textoCPF  = campoCPF.getText().toString();
+        String textoCidade = campoCidade.getText().toString();
+        String textoCEP = campoCEP.getText().toString();
+        String textoRUA = campoRua.getText().toString();
+        String textoUF = campoUF.getText().toString();
+
+        if (!textoNome.isEmpty() && !textoEmail.isEmpty() && !textoSenha.isEmpty()
+                && !textoRg.isEmpty() && !textoDtNascimento.isEmpty() && !textoCPF.isEmpty()
+                && !textoCidade.isEmpty() && !textoCEP.isEmpty() && !textoRUA.isEmpty() && !textoUF.isEmpty()) {
+            Cliente cliente = new Cliente();
             cliente.setNome(textoNome);
             cliente.setEmail(textoEmail);
             cliente.setSenha(textoSenha);
+            cliente.setRg(textoRg);
+
+            cliente.setDtNascimento(textoDtNascimento);
+
+            cliente.setCpf(textoCPF);
+            cliente.setCidade(textoCidade);
+            cliente.setCep(textoCEP);
+            cliente.setRua(textoRUA);
+            cliente.setRua(textoRUA);
+            cliente.setUf(textoUF);
             cliente.setTipo("C");
 
             cadastrarUsuario(cliente);
@@ -81,7 +142,7 @@ public class CadastroClienteActivity extends AppCompatActivity {
                         //Atualizar nome do Usuario no UserProfile
                         UsuarioFirebase.atualizarNomeUsuario(usuario.getNome());
 
-                        startActivity(new Intent(CadastroClienteActivity.this, MenuClienteActivity.class));
+                        startActivity(new Intent(CadastroClienteActivity.this, ClienteNavigationDrawer.class));
                         finish();
 
                         Toast.makeText(CadastroClienteActivity.this,
@@ -120,10 +181,44 @@ public class CadastroClienteActivity extends AppCompatActivity {
 
     }
 
+    public void showDatePickerDialog(View v) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+//    public void setarData(String data){
+//        if(!data.isEmpty()) {
+//            this.dataNascimento = data;
+//            System.out.println("Ta funcionando: " + dataNascimento);
+//        }
+//    }
+
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        // Do something with the date chosen by the user
+        final Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, day);
+        String currentDate = DateFormat.getDateInstance().format(c.getTime());
+
+        this.dataNascimento = currentDate;
+        System.out.println("Ta funcionando: " + dataNascimento);
+        textData.setText(currentDate);
+    }
+
     public void inicializarComponentes() {
         campoNome = findViewById(R.id.editClienteNome);
         campoEmail = findViewById(R.id.editClienteEmail);
         campoSenha = findViewById(R.id.editClienteSenha);
-    }
+        campoRg = findViewById(R.id.editClienteRG);
+        //campoDtNascimento = findViewById(R.id.editClienteDataNascimento);
+        campoCPF = findViewById(R.id.editClienteCPF);
+        campoCidade = findViewById(R.id.editClienteCidade);
+        campoCEP = findViewById(R.id.editClienteCEP);
+        campoRua = findViewById(R.id.editClienteRua);
+        campoUF = findViewById(R.id.editClienteUF);
+        campoConfirmaSenha = findViewById(R.id.editClienteConfirmarSenha);
+        textData = findViewById(R.id.textDataID);
 
+    }
 }

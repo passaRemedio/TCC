@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -22,6 +23,20 @@ import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 public class DadosCliente extends Fragment {
 
     private FirebaseAuth mAuth;
+    private EditText editClienteNome;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        inicializarComponentes();
+
+
+
+        String nome = "Ta funcionando";
+
+        editClienteNome.setHint(nome);
+
+    }
 
     View myView;
 
@@ -30,7 +45,10 @@ public class DadosCliente extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.dados_cliente, container, false);
         setHasOptionsMenu(true);
+
         return myView;
+
+
     }
 
 //    @Override
@@ -59,6 +77,11 @@ public class DadosCliente extends Fragment {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void inicializarComponentes(){
+        editClienteNome = (EditText) getView().findViewById(R.id.editClienteNome);
     }
 
 }
