@@ -157,7 +157,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
                     dialog.dismiss();
                     startActivity(new Intent(CadastrarProdutosActivity.this,
                             MeusProdutosActivity.class));
-                    finish()
+                    finish();
                 }
 
             }

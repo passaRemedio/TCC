@@ -93,7 +93,7 @@ public class ClienteNavigationDrawer extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame
                             , new ClienteMenu())
-                    .commit()
+                    .commit();
         } else if (id == R.id.nav_pedidos) {
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame

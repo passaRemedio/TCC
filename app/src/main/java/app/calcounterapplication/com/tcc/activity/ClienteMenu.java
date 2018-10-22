@@ -61,7 +61,7 @@ public class ClienteMenu extends Fragment {
 
         recuperarProdutoPublico();
 
-        return myView
+        return myView;
     }
 
     private void recuperarProdutoPublico() {

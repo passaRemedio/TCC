@@ -185,7 +185,7 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
 
                         Toast.makeText(CadastroFarmaciaActivity.this,
                                 "Sucesso ao cadastrar farmácia!",
-                                Toast.LENGTH_SHORT).show()
+                                Toast.LENGTH_SHORT).show();
 
 
                     } catch (Exception e) {
