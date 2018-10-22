@@ -55,7 +55,7 @@ public class MenuFarmaciaActivity extends AppCompatActivity {
         });
 
         //titulo
-        getSupportActionBar().setTitle("Farmácia");
+        getSupportActionBar().setTitle("Farmácia")
     }
 
 

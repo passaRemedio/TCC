@@ -39,7 +39,7 @@ public class Produto {
                 .child(getIdProduto())
                 .setValue(this);
 
-        salvarProdutoPublico();
+        salvarProdutoPublico()
 
     }
 

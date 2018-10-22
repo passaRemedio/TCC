@@ -84,7 +84,7 @@ public class MeusProdutosActivity extends AppCompatActivity {
                                 Produto produtoSelecionado = produtos.get(position);
                                 produtoSelecionado.remover();
 
-                                adapterProduto.notifyDataSetChanged();
+                                adapterProduto.notifyDataSetChanged()
 
                             }
 

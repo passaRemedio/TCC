@@ -189,7 +189,7 @@
                 android:layout_weight="1"
                 android:text="@string/criar_cadastro"
                 android:background="@drawable/background_button"
-                android:onClick="validarCadastroUsuario" />
+                android:onClick="validarCadastroUsuario" /
         </TableRow>
     </TableLayout>
 
