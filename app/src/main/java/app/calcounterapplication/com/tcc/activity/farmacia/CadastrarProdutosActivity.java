@@ -45,7 +45,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
     private CurrencyEditText campoValor;
     private EditText campoDescricao;
     private ImageView imagem1;
-    private Spinner campoCategorias;
+    private Spinner campoCategorias, campoRegiao;
     private Produto produto;
     private AlertDialog dialog;
 
@@ -155,6 +155,8 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
                     //fechando a dialog e encerrando o cadastro
                     dialog.dismiss();
+                    startActivity(new Intent(CadastrarProdutosActivity.this,
+                            MeusProdutosActivity.class));
                     finish();
                 }
 
@@ -171,6 +173,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
     private Produto configurarProduto() {
 
+        String regiao = campoRegiao.getSelectedItem().toString();
         String categoria = campoCategorias.getSelectedItem().toString();
         String marca = campoMarca.getText().toString();
         String prod = campoProduto.getText().toString();
@@ -178,6 +181,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         String descricao = campoDescricao.getText().toString();
 
         Produto produto = new Produto();
+        produto.setRegiao(regiao);
         produto.setCategoria(categoria);
         produto.setMarca(marca);
         produto.setProduto(prod);
@@ -266,6 +270,19 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
     private void carregarDadosSpinner() {
 
+        //spinner Regiao
+        String[] regiao = getResources().getStringArray(R.array.regiao);
+        //adicionar valores do spinner
+        ArrayAdapter<String> adapterRegiao = new ArrayAdapter<String>(
+                getApplicationContext(), android.R.layout.simple_spinner_item,
+                regiao
+        );
+        adapterRegiao.setDropDownViewResource(android.R.layout
+                .simple_spinner_dropdown_item);
+
+        campoRegiao.setAdapter(adapterRegiao);
+
+
         //spinner Categorias
         String[] categorias = getResources().getStringArray(R.array.categorias);
         //adicionar valores do spinner
@@ -285,6 +302,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         campoValor = findViewById(R.id.editValor);
         campoDescricao = findViewById(R.id.editDescricao);
         campoCategorias = findViewById(R.id.spinnerCategorias);
+        campoRegiao = findViewById(R.id.spinnerRegiao);
         imagem1 = findViewById(R.id.imageProduto);
 
         //gerenciando clique

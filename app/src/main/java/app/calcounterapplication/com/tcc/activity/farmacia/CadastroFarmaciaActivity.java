@@ -184,7 +184,7 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
                         finish();
 
                         Toast.makeText(CadastroFarmaciaActivity.this,
-                                "Sucesso ao cadastrar motorista!",
+                                "Sucesso ao cadastrar farmácia!",
                                 Toast.LENGTH_SHORT).show();
 
 

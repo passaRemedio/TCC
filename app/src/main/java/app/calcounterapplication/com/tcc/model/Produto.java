@@ -1,5 +1,9 @@
 package app.calcounterapplication.com.tcc.model;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.List;
@@ -10,6 +14,7 @@ import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 public class Produto {
 
     private String idProduto;
+    private String regiao;
     private String categoria;
     private String marca;
     private String produto;
@@ -40,12 +45,37 @@ public class Produto {
 
     public void salvarProdutoPublico() {
 
-        DatabaseReference anuncioRef = ConfigFirebase.getFirebase()
+        DatabaseReference produtoRef = ConfigFirebase.getFirebase()
                 .child("produtos");
 
-        anuncioRef.child(getCategoria())
+        produtoRef.child(getRegiao())
+                .child(getCategoria())
                 .child(getIdProduto())
                 .setValue(this);
+    }
+
+    public void remover() {
+
+        String idUsuario = ConfigFirebase.getIdUsuario();
+        final DatabaseReference anuncioRef = ConfigFirebase.getFirebase()
+                .child("meus_produtos")
+                .child(idUsuario)
+                .child(getIdProduto());
+
+        anuncioRef.removeValue();
+        removerProdutoPublico();
+
+    }
+
+    public void removerProdutoPublico() {
+
+        DatabaseReference produtoRef = ConfigFirebase.getFirebase()
+                .child("produtos")
+                .child(getRegiao())
+                .child(getCategoria())
+                .child(getIdProduto());
+
+        produtoRef.removeValue();
     }
 
 
@@ -103,5 +133,13 @@ public class Produto {
 
     public void setFotos(List<String> fotos) {
         Fotos = fotos;
+    }
+
+    public String getRegiao() {
+        return regiao;
+    }
+
+    public void setRegiao(String regiao) {
+        this.regiao = regiao;
     }
 }

@@ -44,4 +44,23 @@
 
     </string-array>
 
+    <string-array name="regiao">
+        <item>Região</item>
+        <item>Plano Piloto</item>
+        <item>Asa Sul</item>
+        <item>Asa Norte</item>
+        <item>Sudoeste</item>
+        <item>Noroeste</item>
+        <item>Cruzeiro</item>
+        <item>Guará</item>
+        <item>Núcleo Bandeirante</item>
+        <item>Candangolândia</item>
+        <item>lago Sul</item>
+        <item>lago Norte</item>
+        <item>Sobradinho</item>
+        <item>Águas Claras</item>
+        <item>Jardim Botânico</item>
+
+    </string-array>
+
 </resources>
