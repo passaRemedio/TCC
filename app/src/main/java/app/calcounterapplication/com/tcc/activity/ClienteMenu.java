@@ -3,6 +3,7 @@ package app.calcounterapplication.com.tcc.activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -31,6 +33,7 @@ import java.util.List;
 import app.calcounterapplication.com.tcc.Adapter.AdapterProduto;
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
+import app.calcounterapplication.com.tcc.helper.RecyclerItemClickListener;
 import app.calcounterapplication.com.tcc.model.Produto;
 import dmax.dialog.SpotsDialog;
 
@@ -91,6 +94,29 @@ public class ClienteMenu extends Fragment {
                 recuperarProdutoPublico();
             }
         });
+
+        recyclerProdutoPublico.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getActivity(), recyclerProdutoPublico,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Produto produtoSelecionado = listaProduto.get(position);
+                                Intent i = new Intent(getActivity(), DetalheActivity.class);
+                                i.putExtra("produtoSelecionado", produtoSelecionado);
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            }
+                        }));
 
         return myView;
     }

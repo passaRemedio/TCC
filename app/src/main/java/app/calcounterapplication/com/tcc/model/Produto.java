@@ -6,12 +6,13 @@ import android.content.DialogInterface;
 
 import com.google.firebase.database.DatabaseReference;
 
+import java.io.Serializable;
 import java.util.List;
 
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 
 
-public class Produto {
+public class Produto implements Serializable {
 
     private String idProduto;
     private String regiao;

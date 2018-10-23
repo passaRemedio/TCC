@@ -64,7 +64,7 @@
             android:name=".activity.ClienteNavigationDrawer"
             android:label="@string/title_activity_cliente_navigation_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <!--<activity android:name=".activity.farmacia.CadastroFarmaciaActivity" />-->
+        <!-- <activity android:name=".activity.farmacia.CadastroFarmaciaActivity" /> -->
         <activity android:name=".activity.farmacia.MenuFarmaciaActivity" />
         <activity android:name=".activity.farmacia.CadastrarProdutosActivity" />
         <activity
@@ -75,6 +75,12 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="app.calcounterapplication.com.tcc.activity.farmacia.MenuFarmaciaActivity" />
+        </activity>
+        <activity
+            android:name=".activity.DetalheActivity"
+            android:label="DetalheProduto"
+            android:parentActivityName=".activity.ClienteNavigationDrawer">
+
         </activity>
     </application>
 

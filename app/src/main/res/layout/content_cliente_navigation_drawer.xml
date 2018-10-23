@@ -9,22 +9,6 @@
     tools:showIn="@layout/app_bar_cliente_navigation_drawer">
 
 
-    <TextView
-        android:id="@+id/textBoasVindas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="15dp"
-        android:text="Bem Vindo de Volta!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
     <FrameLayout
         android:id="@+id/content_frame"
         android:layout_width="match_parent"

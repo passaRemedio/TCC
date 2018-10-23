@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,7 +24,7 @@ import app.calcounterapplication.com.tcc.R;
 public class ClienteNavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private TextView textView;
+//    private TextView textView;
     private FirebaseAuth mAuth;
 
     @Override
@@ -33,7 +34,7 @@ public class ClienteNavigationDrawer extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        textView = findViewById(R.id.textBoasVindas);
+//        textView = findViewById(R.id.textBoasVindas);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -43,6 +44,13 @@ public class ClienteNavigationDrawer extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        ClienteMenu clienteMenu = new ClienteMenu();
+        FragmentTransaction clienteMenuTransaction =
+                getSupportFragmentManager().beginTransaction();
+        clienteMenuTransaction.replace(R.id.content_frame, clienteMenu);
+        clienteMenuTransaction.commit();
+
 
         getSupportActionBar().setTitle("Passa o Remédio");
     }
@@ -83,27 +91,42 @@ public class ClienteNavigationDrawer extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-
-        textView.setVisibility(View.INVISIBLE);
         int id = item.getItemId();
-        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame
-                            , new ClienteMenu())
-                    .commit();
+
+            ClienteMenu clienteMenu = new ClienteMenu();
+            FragmentTransaction clienteMenuTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            clienteMenuTransaction.replace(R.id.content_frame, clienteMenu);
+            clienteMenuTransaction.commit();
+
         } else if (id == R.id.nav_pedidos) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame
-                            , new PedidosCliente())
-                    .commit();
+
+            PedidosCliente pedidosCliente = new PedidosCliente();
+            FragmentTransaction pedidoTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            pedidoTransaction.replace(R.id.content_frame, pedidosCliente);
+            pedidoTransaction.commit();
+
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.content_frame
+//                            , new PedidosCliente())
+//                    .commit();
+
         } else if (id == R.id.nav_perfil) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame
-                            , new DadosCliente())
-                    .commit();
+
+            DadosCliente dadosCliente = new DadosCliente();
+            FragmentTransaction dadosTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            dadosTransaction.replace(R.id.content_frame, dadosCliente);
+            dadosTransaction.commit();
+
+//            fragmentManager.beginTransaction()
+//                    .replace(R.id.content_frame
+//                            , new DadosCliente())
+//                    .commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
