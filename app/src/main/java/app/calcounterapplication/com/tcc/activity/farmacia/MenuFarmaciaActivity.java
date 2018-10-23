@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.activity.MainActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
+import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class MenuFarmaciaActivity extends AppCompatActivity {
 
@@ -18,6 +19,7 @@ public class MenuFarmaciaActivity extends AppCompatActivity {
     private ImageView logoutButton;
     private ImageView meusProdutos;
     private ImageView cadastrarProdutos;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

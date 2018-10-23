@@ -131,10 +131,10 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         }
     }
 
-    private void salvarFotosStorage(String urlString, final int totalFotos, int contador) {
+    private void salvarFotosStorage(final String urlString, final int totalFotos, int contador) {
 
         //criando nós no storage
-        StorageReference imagemProduto = storage.child("imagens")
+        final StorageReference imagemProduto = storage.child("imagens")
                 .child("produtos")
                 .child(produto.getIdProduto())
                 .child("imagem" + contador);
@@ -145,8 +145,9 @@ public class CadastrarProdutosActivity extends AppCompatActivity
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                Task<Uri> firebaseUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl();
+                Uri firebaseUrl = taskSnapshot.getDownloadUrl();
                 String urlConvertida = firebaseUrl.toString();
+                Log.i("salvar", urlConvertida);
                 listaURLfotos.add(urlConvertida);
 
                 if (totalFotos == listaURLfotos.size()) {

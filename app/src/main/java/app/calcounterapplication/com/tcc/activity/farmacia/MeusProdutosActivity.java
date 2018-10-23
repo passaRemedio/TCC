@@ -95,7 +95,7 @@ public class MeusProdutosActivity extends AppCompatActivity {
                         })
         );
 
-
+        getSupportActionBar().setTitle("Meus Produtos");
     }
 
     private void recuperarProduto() {
