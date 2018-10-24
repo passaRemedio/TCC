@@ -1,4 +1,4 @@
-package app.calcounterapplication.com.tcc.activity;
+package app.calcounterapplication.com.tcc.activity.Fragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -32,6 +32,7 @@ import java.util.List;
 
 import app.calcounterapplication.com.tcc.Adapter.AdapterProduto;
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.activity.DetalheActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.RecyclerItemClickListener;
 import app.calcounterapplication.com.tcc.model.Produto;
@@ -43,7 +44,6 @@ public class ClienteMenu extends Fragment {
     private FirebaseAuth mAuth;
     private RecyclerView recyclerProdutoPublico;
     private Button BTRegiao, BTCategoria;
-    private ImageView BTreset;
     private AdapterProduto adapterProduto;
     private List<Produto> listaProduto = new ArrayList<>();
     private DatabaseReference produtoPublicoRef;
@@ -85,13 +85,6 @@ public class ClienteMenu extends Fragment {
             @Override
             public void onClick(View v) {
                 filtrarCategoria();
-            }
-        });
-
-        BTreset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                recuperarProdutoPublico();
             }
         });
 
@@ -345,7 +338,6 @@ public class ClienteMenu extends Fragment {
         recyclerProdutoPublico = myView.findViewById(R.id.recyclerProdutosCliente);
         BTRegiao = myView.findViewById(R.id.BTRegiao);
         BTCategoria = myView.findViewById(R.id.BTCategoria);
-        BTreset = myView.findViewById(R.id.imageReset);
     }
 
 }

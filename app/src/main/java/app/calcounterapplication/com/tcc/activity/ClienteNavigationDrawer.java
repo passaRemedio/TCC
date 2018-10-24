@@ -1,12 +1,7 @@
 package app.calcounterapplication.com.tcc.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,16 +10,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.activity.Fragments.CarrinhoDeCompra;
+import app.calcounterapplication.com.tcc.activity.Fragments.ClienteMenu;
+import app.calcounterapplication.com.tcc.activity.Fragments.DadosCliente;
+import app.calcounterapplication.com.tcc.activity.Fragments.PedidosCliente;
 
 public class ClienteNavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-//    private TextView textView;
+    //    private TextView textView;
     private FirebaseAuth mAuth;
 
     @Override
@@ -92,7 +90,6 @@ public class ClienteNavigationDrawer extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-//        FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.nav_home) {
 
@@ -110,11 +107,6 @@ public class ClienteNavigationDrawer extends AppCompatActivity
             pedidoTransaction.replace(R.id.content_frame, pedidosCliente);
             pedidoTransaction.commit();
 
-//            fragmentManager.beginTransaction()
-//                    .replace(R.id.content_frame
-//                            , new PedidosCliente())
-//                    .commit();
-
         } else if (id == R.id.nav_perfil) {
 
             DadosCliente dadosCliente = new DadosCliente();
@@ -123,10 +115,14 @@ public class ClienteNavigationDrawer extends AppCompatActivity
             dadosTransaction.replace(R.id.content_frame, dadosCliente);
             dadosTransaction.commit();
 
-//            fragmentManager.beginTransaction()
-//                    .replace(R.id.content_frame
-//                            , new DadosCliente())
-//                    .commit();
+        }else if(id == R.id.nav_carrinho){
+
+            CarrinhoDeCompra addToCart = new CarrinhoDeCompra();
+            FragmentTransaction dadosTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            dadosTransaction.replace(R.id.content_frame, addToCart);
+            dadosTransaction.commit();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

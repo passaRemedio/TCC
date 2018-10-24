@@ -1,4 +1,4 @@
-package app.calcounterapplication.com.tcc.activity;
+package app.calcounterapplication.com.tcc.activity.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.io.Serializable;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.activity.MainActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 
 public class DadosCliente extends Fragment {

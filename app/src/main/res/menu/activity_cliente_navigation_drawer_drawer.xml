@@ -12,6 +12,10 @@
             android:id="@+id/nav_pedidos"
             android:icon="@drawable/caixa"
             android:title="Meus pedidos" />
+        <item
+            android:id="@+id/nav_carrinho"
+            android:icon="@drawable/add_to_cart"
+            android:title="Carrinho de Compras" />
     </group>
 
     <item android:title="Dados/Sign out">

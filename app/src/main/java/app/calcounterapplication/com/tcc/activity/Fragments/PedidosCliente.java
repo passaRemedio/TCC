@@ -1,4 +1,4 @@
-package app.calcounterapplication.com.tcc.activity;
+package app.calcounterapplication.com.tcc.activity.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
