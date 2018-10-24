@@ -101,10 +101,12 @@ public class ClienteMenu extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
+
                                 Produto produtoSelecionado = listaProduto.get(position);
                                 Intent i = new Intent(getActivity(), DetalheActivity.class);
                                 i.putExtra("produtoSelecionado", produtoSelecionado);
                                 startActivity(i);
+
                             }
 
                             @Override
