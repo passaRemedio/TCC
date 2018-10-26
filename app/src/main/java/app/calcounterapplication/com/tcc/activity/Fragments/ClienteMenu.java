@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -36,6 +39,7 @@ import app.calcounterapplication.com.tcc.activity.DetalheActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.RecyclerItemClickListener;
 import app.calcounterapplication.com.tcc.model.Produto;
+import app.calcounterapplication.com.tcc.model.Usuario;
 import dmax.dialog.SpotsDialog;
 
 public class ClienteMenu extends Fragment {
@@ -47,11 +51,14 @@ public class ClienteMenu extends Fragment {
     private AdapterProduto adapterProduto;
     private List<Produto> listaProduto = new ArrayList<>();
     private DatabaseReference produtoPublicoRef;
+    private DatabaseReference produtoPesquisaRef;
     private AlertDialog dialog;
     private Context context;
     private String filtroRegiao = "";
     private String filtroCategoria = "";
     private boolean filtrandoPorRegiao = false;
+
+    private SearchView searchView;
 
 
     @Nullable
@@ -73,20 +80,37 @@ public class ClienteMenu extends Fragment {
 
         recuperarProdutoPublico();
 
-        //configurando filtros
-        BTRegiao.setOnClickListener(new View.OnClickListener() {
+        //configura SearchView
+        searchView.setQueryHint("Buscar produtos");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View v) {
-                filtrarRegiao();
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+
+                String txtDigitado = searchView.getQuery().toString().toUpperCase();
+                pesquisarProdutos(txtDigitado);
+                return true;
             }
         });
 
-        BTCategoria.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filtrarCategoria();
-            }
-        });
+//        //configurando filtros
+//        BTRegiao.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                filtrarRegiao();
+//            }
+//        });
+//
+//        BTCategoria.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                filtrarCategoria();
+//            }
+//        });
 
         recyclerProdutoPublico.addOnItemTouchListener(
                 new RecyclerItemClickListener(
@@ -113,7 +137,44 @@ public class ClienteMenu extends Fragment {
                             }
                         }));
 
+
         return myView;
+    }
+
+    private void pesquisarProdutos(String texto) {
+
+        listaProduto.clear();
+
+        if (texto.length() > 1) {
+
+            Query query = produtoPublicoRef.orderByChild("produto")
+                    .startAt(texto)
+                    .endAt(texto + "\uf8ff");
+
+            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    listaProduto.clear();
+
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Produto produto = ds.getValue(Produto.class);
+                        listaProduto.add(produto);
+
+                    }
+
+                    adapterProduto.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+
     }
 
     public void filtrarRegiao() {
@@ -307,17 +368,23 @@ public class ClienteMenu extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                for (DataSnapshot regiao : dataSnapshot.getChildren()) {
-                    for (DataSnapshot categorias : regiao.getChildren()) {
-                        for (DataSnapshot produtos : categorias.getChildren()) {
+                    listaProduto.add(ds.getValue(Produto.class));
 
-                            Produto produto = produtos.getValue(Produto.class);
-                            listaProduto.add(produto);
-
-                        }
-                    }
                 }
+
+//                for (DataSnapshot regiao : dataSnapshot.getChildren()) {
+//                    for (DataSnapshot categorias : regiao.getChildren()) {
+//                        for (DataSnapshot produtos : categorias.getChildren()) {
+//
+//                            Produto produto = produtos.getValue(Produto.class);
+//                            listaProduto.add(produto);
+//
+//                        }
+//                    }
+//                }
+
 
                 Collections.reverse(listaProduto);
                 adapterProduto.notifyDataSetChanged();
@@ -336,8 +403,9 @@ public class ClienteMenu extends Fragment {
     public void inicializarComponentes() {
 
         recyclerProdutoPublico = myView.findViewById(R.id.recyclerProdutosCliente);
-        BTRegiao = myView.findViewById(R.id.BTRegiao);
-        BTCategoria = myView.findViewById(R.id.BTCategoria);
+//        BTRegiao = myView.findViewById(R.id.BTRegiao);
+//        BTCategoria = myView.findViewById(R.id.BTCategoria);
+        searchView = myView.findViewById(R.id.searchViewPesquisa);
     }
 
 }

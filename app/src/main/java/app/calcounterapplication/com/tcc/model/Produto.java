@@ -49,10 +49,13 @@ public class Produto implements Serializable {
         DatabaseReference produtoRef = ConfigFirebase.getFirebase()
                 .child("produtos");
 
-        produtoRef.child(getRegiao())
-                .child(getCategoria())
-                .child(getIdProduto())
+        produtoRef.child(getIdProduto())
                 .setValue(this);
+
+//        produtoRef.child(getRegiao())
+//                .child(getCategoria())
+//                .child(getIdProduto())
+//                .setValue(this);
     }
 
     public void remover() {
@@ -71,10 +74,10 @@ public class Produto implements Serializable {
     public void removerProdutoPublico() {
 
         DatabaseReference produtoRef = ConfigFirebase.getFirebase()
-                .child("produtos")
-                .child(getRegiao())
-                .child(getCategoria())
-                .child(getIdProduto());
+                .child("produtos").child(getIdProduto());
+//                .child(getRegiao())
+//                .child(getCategoria())
+
 
         produtoRef.removeValue();
     }
@@ -109,7 +112,7 @@ public class Produto implements Serializable {
     }
 
     public void setProduto(String produto) {
-        this.produto = produto;
+        this.produto = produto.toUpperCase();
     }
 
     public String getValor() {

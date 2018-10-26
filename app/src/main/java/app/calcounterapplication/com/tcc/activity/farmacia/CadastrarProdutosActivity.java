@@ -131,7 +131,8 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         }
     }
 
-    private void salvarFotosStorage(final String urlString, final int totalFotos, int contador) {
+    private void salvarFotosStorage(final String urlString, final int totalFotos,
+                                    int contador) {
 
         //criando nós no storage
         final StorageReference imagemProduto = storage.child("imagens")
@@ -177,7 +178,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         String regiao = campoRegiao.getSelectedItem().toString();
         String categoria = campoCategorias.getSelectedItem().toString();
         String marca = campoMarca.getText().toString();
-        String prod = campoProduto.getText().toString();
+        String prod = campoProduto.getText().toString().toUpperCase();
         String valor = String.valueOf(campoValor.getText().toString());
         String descricao = campoDescricao.getText().toString();
 
