@@ -1,79 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.farmacia.CadastroFarmaciaActivity">
+    android:padding="4dp"
+    android:stretchColumns="1">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/textInputLayout3"
-        android:layout_width="330dp"
+    <!--<TableLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:stretchColumns="*"-->
+        <!--android:shrinkColumns="*"-->
+        <!--android:layout_gravity="center_horizontal">-->
+
+        <!--<TableRow>-->
+            <!--<TextView-->
+                <!--android:text="Informações pessoais:"-->
+                <!--android:textStyle="bold"-->
+                <!--android:textSize="16dp"-->
+                <!--android:layout_marginLeft="4dp"-->
+                <!--android:padding="3dp" />-->
+        <!--</TableRow>-->
+
+        <!--<TableRow>-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/editFarmaciaNome"-->
+                <!--android:layout_width="148dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="4dp"-->
+                <!--android:hint="Nome" />-->
+        <!--</TableRow>-->
+
+        <!--<TableRow>-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/editFarmaciaCNPJ"-->
+                <!--android:layout_width="141dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="4dp"-->
+                <!--android:hint="CPF" />-->
+
+
+            <!--<TableLayout>-->
+                <!--<TableRow>-->
+                    <!--<TextView-->
+                        <!--android:id="@+id/textDataID"-->
+                        <!--android:textStyle="bold" />-->
+                <!--</TableRow>-->
+            <!--</TableLayout>-->
+
+            <!--&lt;!&ndash;<EditText&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/editClienteDataNascimento"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="214dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_margin="4dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:hint="@string/data_nascimento"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:inputType="date" />&ndash;&gt;-->
+
+        <!--</TableRow>-->
+
+    <!--</TableLayout>-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="27dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Informações da farmácia:"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:layout_marginLeft="4dp"
+            android:padding="3dp" />
 
         <EditText
             android:id="@+id/editFarmaciaNome"
-            android:layout_width="330dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/background_edit_text"
-            android:ems="10"
-            android:hint="Nome"
-            android:inputType="textPersonName"
-            android:padding="10dp" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_margin="4dp"
+            android:hint="Nome" />
 
-    <EditText
-        android:id="@+id/editEntregadorEmail"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="27dp"
-        android:background="@drawable/background_edit_text"
-        android:ems="10"
-        android:hint="@string/acessar_email"
-        android:inputType="textEmailAddress"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
+        <EditText
+            android:id="@+id/editFarmaciaCNPJ"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:hint="CNPJ" />
 
-    <EditText
-        android:id="@+id/editFarmaciaSenha"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="27dp"
-        android:background="@drawable/background_edit_text"
-        android:ems="10"
-        android:hint="@string/acessar_senha"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEntregadorEmail" />
+        <EditText
+            android:id="@+id/editFarmaciaEmail"
+            android:layout_width="371dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:inputType="textEmailAddress"
+            android:hint="@string/acessar_email" />
 
-    <Button
-        android:id="@+id/BTFarmaciaCadastro"
-        android:layout_width="330dp"
+
+
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="13dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/background_button"
-        android:onClick="validarCadastroUsuario"
-        android:text="@string/cadastro_button"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</android.support.constraint.ConstraintLayout>
+        android:layout_gravity="center_horizontal">
+
+        <TableRow
+            android:shrinkColumns="*"
+            android:stretchColumns="*">
+
+            <TextView
+                android:layout_marginLeft="4dp"
+                android:padding="3dp"
+                android:text="Endereço:"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/editFarmaciaCidade"
+                android:layout_width="221dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/acessar_cidade" />
+
+            <EditText
+                android:id="@+id/editFarmaciaNumero"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/acessar_numero_endereco" />
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/editFarmaciaRua"
+                android:layout_width="235dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/acessar_rua" />
+
+            <EditText
+                android:id="@+id/editFarmaciaUF"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="UF" />
+        </TableRow>
+
+        <TableRow>
+            <EditText
+                android:id="@+id/editFarmaciaCEP"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/acessar_CEP" />
+        </TableRow>
+
+    </TableLayout>
+
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TableRow>
+
+            <TextView
+                android:layout_marginLeft="4dp"
+                android:padding="3dp"
+                android:text="Senha:"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow>
+
+            <EditText
+                android:id="@+id/editFarmaciaSenha"
+                android:layout_width="176dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:inputType="textPassword"
+                android:hint="@string/acessar_senha" />
+
+            <EditText
+                android:id="@+id/editFarmaciaConfirmarSenha"
+                android:layout_width="188dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:inputType="textPassword"
+                android:hint="@string/acessar_confirmar_senha" />
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TableRow>
+            <Button
+                android:id="@+id/cadastroBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:text="@string/criar_cadastro"
+                android:background="@drawable/background_button"
+                android:onClick="validarCadastroUsuario" />
+        </TableRow>
+    </TableLayout>
+
+
+</LinearLayout>

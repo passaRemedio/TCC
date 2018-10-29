@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.activity.CadastroClienteActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 import app.calcounterapplication.com.tcc.model.Farmacia;
@@ -24,7 +25,8 @@ import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class CadastroFarmaciaActivity extends AppCompatActivity {
 
-    private EditText campoNome, campoEmail, campoSenha;
+    private EditText campoNome, campoEmail, campoSenha, campoCNPJ, campoCidade, campoCEP, campoRua, campoUF, campoNumero;
+    private EditText campoConfirmaSenha;
     //private Button BTFarmaciaCadastro;
 
     private FirebaseAuth mAuth;
@@ -141,13 +143,28 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
         //Recuperar textos dos nomes
         String textoNome = campoNome.getText().toString();
         String textoEmail = campoEmail.getText().toString();
-        String textoSenha = campoSenha.getText().toString();
+        String textoSenha = validarSenha();
+        String textoCNPJ = campoCNPJ.getText().toString();
+        String textoCidade = campoCidade.getText().toString();
+        String textoCEP = campoCEP.getText().toString();
+        String textoRUA = campoRua.getText().toString();
+        String textoUF = campoUF.getText().toString();
+        String textoNumero = campoNumero.getText().toString();
 
-        if (!textoNome.isEmpty() && !textoEmail.isEmpty() && !textoSenha.isEmpty()) {
-            Usuario farmacia = new Farmacia();
+        if (!textoNome.isEmpty() && !textoEmail.isEmpty() && !textoSenha.isEmpty()
+                && !textoCNPJ.isEmpty() && !textoCidade.isEmpty() && !textoCEP.isEmpty() && !textoRUA.isEmpty()
+                && !textoUF.isEmpty() && !textoNumero.isEmpty()) {
+
+            Farmacia farmacia = new Farmacia();
             farmacia.setNome(textoNome);
             farmacia.setEmail(textoEmail);
             farmacia.setSenha(textoSenha);
+            farmacia.setCnpj(textoCNPJ);
+            farmacia.setCidade(textoCidade);
+            farmacia.setCep(textoCEP);
+            farmacia.setRua(textoRUA);
+            farmacia.setUf(textoUF);
+            farmacia.setNumero(textoNumero);
             farmacia.setTipo("F");
 
             cadastrarUsuario(farmacia);
@@ -219,10 +236,32 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
 
     }
 
+    public String validarSenha(){
+        String textoSenha;
+        String senha1 = campoSenha.getText().toString();
+        String senha2 = campoConfirmaSenha.getText().toString();
+        if(senha1.equals(senha2)){
+            textoSenha = campoSenha.getText().toString();
+
+            return textoSenha;
+        } else {
+            Toast.makeText(CadastroFarmaciaActivity.this,
+                    "Senha não batem!",
+                    Toast.LENGTH_SHORT).show();
+        }
+        return textoSenha = "";
+    }
+
     public void inicializarComponentes() {
         campoNome = findViewById(R.id.editFarmaciaNome);
-        campoEmail = findViewById(R.id.editEntregadorEmail);
+        campoEmail = findViewById(R.id.editFarmaciaEmail);
         campoSenha = findViewById(R.id.editFarmaciaSenha);
-        //BTFarmaciaCadastro = findViewById(R.id.BTFarmaciaCadastro);
+        campoCNPJ = findViewById(R.id.editFarmaciaCNPJ);
+        campoCidade = findViewById(R.id.editFarmaciaCidade);
+        campoCEP = findViewById(R.id.editFarmaciaCEP);
+        campoRua = findViewById(R.id.editFarmaciaRua);
+        campoUF = findViewById(R.id.editFarmaciaUF);
+        campoNumero = findViewById(R.id.editFarmaciaNumero);
+        campoConfirmaSenha = findViewById(R.id.editFarmaciaConfirmarSenha);
     }
 }

@@ -96,14 +96,15 @@
         android:layout_gravity="center_horizontal">
 
         <TableRow
-            android:stretchColumns="*"
-            android:shrinkColumns="*">
+            android:shrinkColumns="*"
+            android:stretchColumns="*">
+
             <TextView
-                android:text="Endereço:"
-                android:textStyle="bold"
-                android:textSize="16dp"
                 android:layout_marginLeft="4dp"
-                android:padding="3dp" />
+                android:padding="3dp"
+                android:text="Endereço:"
+                android:textSize="16dp"
+                android:textStyle="bold" />
         </TableRow>
 
         <TableRow>
@@ -116,11 +117,11 @@
                 android:hint="@string/acessar_cidade" />
 
             <EditText
-                android:id="@+id/editClienteCEP"
+                android:id="@+id/editClienteNumero"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:hint="@string/acessar_CEP" />
+                android:hint="@string/acessar_numero_endereco" />
         </TableRow>
 
         <TableRow>
@@ -138,6 +139,15 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 android:hint="UF" />
+        </TableRow>
+
+        <TableRow>
+            <EditText
+                android:id="@+id/editClienteCEP"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/acessar_CEP" />
         </TableRow>
 
     </TableLayout>

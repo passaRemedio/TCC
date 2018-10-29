@@ -85,10 +85,21 @@
         android:id="@+id/BTAddCart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:background="@drawable/background_button"
         android:text="Adicionar ao Carrinho"
         android:textColor="@android:color/white"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/BTCompraDireto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/background_button"
+        android:text="Comprar!"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:onClick="comprarDireto"/>
 
 </LinearLayout>

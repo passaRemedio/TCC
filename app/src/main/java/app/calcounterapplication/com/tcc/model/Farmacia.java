@@ -10,6 +10,11 @@ public class Farmacia extends Usuario implements Serializable {
 
     private String cnpj;
     private String cep;
+    private String cidade;
+    private String rua;
+    private String uf;
+    private String numero;
+
 
     public String getCnpj() {
         return cnpj;
@@ -27,7 +32,38 @@ public class Farmacia extends Usuario implements Serializable {
         this.cep = cep;
     }
 
-//    public void salvar() {
+    public String getCidade() {
+        return cidade;
+    }
+    public void setCidade(String cidade) {
+        cidade = this.cidade;
+    }
+
+    public String getRua() {
+        return rua;
+    }
+
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    //    public void salvar() {
 //        //super.salvar();
 //        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
 //        DatabaseReference usuarios = firebaseRef.child("usuarios").child("farmacias")

@@ -37,7 +37,7 @@ import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class CadastroClienteActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    private EditText campoNome, campoEmail, campoSenha, campoRg, campoDtNascimento, campoCPF, campoCidade, campoCEP, campoRua, campoUF;
+    private EditText campoNome, campoEmail, campoSenha, campoRg, campoDtNascimento, campoCPF, campoCidade, campoCEP, campoRua, campoUF, campoNumero;
     private EditText campoConfirmaSenha;
     private TextView textData;
 
@@ -92,10 +92,11 @@ public class CadastroClienteActivity extends AppCompatActivity implements DatePi
         String textoCEP = campoCEP.getText().toString();
         String textoRUA = campoRua.getText().toString();
         String textoUF = campoUF.getText().toString();
+        String textoNumero = campoNumero.getText().toString();
 
         if (!textoNome.isEmpty() && !textoEmail.isEmpty() && !textoSenha.isEmpty()
                 && !textoRg.isEmpty() && !textoDtNascimento.isEmpty() && !textoCPF.isEmpty()
-                && !textoCidade.isEmpty() && !textoCEP.isEmpty() && !textoRUA.isEmpty() && !textoUF.isEmpty()) {
+                && !textoCidade.isEmpty() && !textoCEP.isEmpty() && !textoRUA.isEmpty() && !textoUF.isEmpty() && !textoNumero.isEmpty()) {
             Cliente cliente = new Cliente();
             cliente.setNome(textoNome);
             cliente.setEmail(textoEmail);
@@ -108,8 +109,8 @@ public class CadastroClienteActivity extends AppCompatActivity implements DatePi
             cliente.setCidade(textoCidade);
             cliente.setCep(textoCEP);
             cliente.setRua(textoRUA);
-            cliente.setRua(textoRUA);
             cliente.setUf(textoUF);
+            cliente.setNumero(textoNumero);
             cliente.setTipo("C");
 
             cadastrarUsuario(cliente);
@@ -202,7 +203,7 @@ public class CadastroClienteActivity extends AppCompatActivity implements DatePi
         String currentDate = DateFormat.getDateInstance().format(c.getTime());
 
         this.dataNascimento = currentDate;
-        System.out.println("Ta funcionando: " + dataNascimento);
+//        System.out.println("Ta funcionando: " + dataNascimento);
         textData.setText(currentDate);
     }
 
@@ -217,6 +218,7 @@ public class CadastroClienteActivity extends AppCompatActivity implements DatePi
         campoCEP = findViewById(R.id.editClienteCEP);
         campoRua = findViewById(R.id.editClienteRua);
         campoUF = findViewById(R.id.editClienteUF);
+        campoNumero = findViewById(R.id.editClienteNumero);
         campoConfirmaSenha = findViewById(R.id.editClienteConfirmarSenha);
         textData = findViewById(R.id.textDataID);
 

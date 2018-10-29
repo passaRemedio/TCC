@@ -2,6 +2,7 @@ package app.calcounterapplication.com.tcc.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -73,4 +74,9 @@ public class DetalheActivity extends AppCompatActivity {
         descricao = findViewById(R.id.textDescricaoDetalhe);
 
     }
+
+    public void comprarDireto(View view){
+
+    }
+
 }
