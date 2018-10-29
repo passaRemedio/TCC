@@ -66,7 +66,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <!-- <activity android:name=".activity.farmacia.CadastroFarmaciaActivity" /> -->
         <activity android:name=".activity.farmacia.MenuFarmaciaActivity" />
-        <activity android:name=".activity.farmacia.CadastrarProdutosActivity" />
+        <activity
+            android:name=".activity.farmacia.CadastrarProdutosActivity"
+            android:label="Cadastrar Produtos"
+            android:parentActivityName=".activity.farmacia.MenuFarmaciaActivity"/>
         <activity
             android:name=".activity.farmacia.MeusProdutosActivity"
             android:label="@string/title_activity_meus_produtos"

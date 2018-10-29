@@ -173,6 +173,9 @@ public class ClienteMenu extends Fragment {
                 }
             });
 
+        }else{
+            recuperarProdutoPublico();
+            adapterProduto.notifyDataSetChanged();
         }
 
     }
