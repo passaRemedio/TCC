@@ -1,5 +1,6 @@
 package app.calcounterapplication.com.tcc.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -76,7 +77,7 @@ public class DetalheActivity extends AppCompatActivity {
     }
 
     public void comprarDireto(View view){
-
+        startActivity(new Intent(this, PedidoDetalheActivity.class));
     }
 
 }

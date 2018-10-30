@@ -69,7 +69,7 @@
         <activity
             android:name=".activity.farmacia.CadastrarProdutosActivity"
             android:label="Cadastrar Produtos"
-            android:parentActivityName=".activity.farmacia.MenuFarmaciaActivity"/>
+            android:parentActivityName=".activity.farmacia.MenuFarmaciaActivity" />
         <activity
             android:name=".activity.farmacia.MeusProdutosActivity"
             android:label="@string/title_activity_meus_produtos"
@@ -82,9 +82,8 @@
         <activity
             android:name=".activity.DetalheActivity"
             android:label="DetalheProduto"
-            android:parentActivityName=".activity.ClienteNavigationDrawer">
-
-        </activity>
+            android:parentActivityName=".activity.ClienteNavigationDrawer"></activity>
+        <activity android:name=".activity.PedidoDetalheActivity"></activity>
     </application>
 
 </manifest>
