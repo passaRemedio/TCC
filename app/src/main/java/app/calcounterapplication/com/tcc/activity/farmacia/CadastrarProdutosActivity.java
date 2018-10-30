@@ -34,6 +34,7 @@ import java.util.Locale;
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.Permissoes;
+import app.calcounterapplication.com.tcc.model.Farmacia;
 import app.calcounterapplication.com.tcc.model.Produto;
 import dmax.dialog.SpotsDialog;
 
@@ -48,6 +49,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
     private Spinner campoCategorias, campoRegiao;
     private Produto produto;
     private AlertDialog dialog;
+
 
     private StorageReference storage;
 
