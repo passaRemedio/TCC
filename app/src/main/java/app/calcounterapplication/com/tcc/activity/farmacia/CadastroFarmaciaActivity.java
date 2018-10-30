@@ -5,7 +5,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,8 +27,10 @@ import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class CadastroFarmaciaActivity extends AppCompatActivity {
 
-    private EditText campoNome, campoEmail, campoSenha, campoCNPJ, campoCidade, campoCEP, campoRua, campoUF, campoNumero;
+    private EditText campoNome, campoEmail, campoSenha,
+            campoCNPJ, campoCidade, campoCEP, campoRua, campoNumero;
     private EditText campoConfirmaSenha;
+    private Spinner campoUF, campoRegiao;
     //private Button BTFarmaciaCadastro;
 
     private FirebaseAuth mAuth;
@@ -37,6 +41,7 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_farmacia);
 
         inicializarComponentes();
+        carregarDadosSpinner();
 
     }
 
@@ -148,12 +153,13 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
         String textoCidade = campoCidade.getText().toString();
         String textoCEP = campoCEP.getText().toString();
         String textoRUA = campoRua.getText().toString();
-        String textoUF = campoUF.getText().toString();
+        String textoUF = campoUF.getSelectedItem().toString();
+        String textoRegiao = campoRegiao.getSelectedItem().toString();
         String textoNumero = campoNumero.getText().toString();
 
         if (!textoNome.isEmpty() && !textoEmail.isEmpty() && !textoSenha.isEmpty()
                 && !textoCNPJ.isEmpty() && !textoCidade.isEmpty() && !textoCEP.isEmpty() && !textoRUA.isEmpty()
-                && !textoUF.isEmpty() && !textoNumero.isEmpty()) {
+                && !textoNumero.isEmpty()) {
 
             Farmacia farmacia = new Farmacia();
             farmacia.setNome(textoNome);
@@ -164,6 +170,7 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
             farmacia.setCep(textoCEP);
             farmacia.setRua(textoRUA);
             farmacia.setUf(textoUF);
+            farmacia.setRegiao(textoRegiao);
             farmacia.setNumero(textoNumero);
             farmacia.setTipo("F");
 
@@ -252,6 +259,36 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
         return textoSenha = "";
     }
 
+    private void carregarDadosSpinner() {
+
+        //spinner Regiao
+        String[] regiao = getResources().getStringArray(R.array.regiao);
+        //adicionar valores do spinner
+        ArrayAdapter<String> adapterRegiao = new ArrayAdapter<String>(
+                getApplicationContext(), android.R.layout.simple_spinner_item,
+                regiao
+        );
+        adapterRegiao.setDropDownViewResource(android.R.layout
+                .simple_spinner_dropdown_item);
+
+        campoRegiao.setAdapter(adapterRegiao);
+
+
+        //spinner estados
+        String[] estados = getResources().getStringArray(R.array.estados);
+
+        //adicionar valores do spinner
+        ArrayAdapter<String> adapterEstados = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item,
+                estados
+        );
+
+        adapterEstados.setDropDownViewResource(android.R.layout
+                .simple_spinner_dropdown_item);
+        campoUF.setAdapter(adapterEstados);
+
+    }
+
     public void inicializarComponentes() {
         campoNome = findViewById(R.id.editFarmaciaNome);
         campoEmail = findViewById(R.id.editFarmaciaEmail);
@@ -260,7 +297,8 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
         campoCidade = findViewById(R.id.editFarmaciaCidade);
         campoCEP = findViewById(R.id.editFarmaciaCEP);
         campoRua = findViewById(R.id.editFarmaciaRua);
-        campoUF = findViewById(R.id.editFarmaciaUF);
+        campoUF = findViewById(R.id.spinnerFarmaciaUF);
+        campoRegiao = findViewById(R.id.spinnerFarmaciaRegiao);
         campoNumero = findViewById(R.id.editFarmaciaNumero);
         campoConfirmaSenha = findViewById(R.id.editFarmaciaConfirmarSenha);
     }

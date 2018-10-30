@@ -13,6 +13,7 @@ public class Farmacia extends Usuario implements Serializable {
     private String cidade;
     private String rua;
     private String uf;
+    private String regiao;
     private String numero;
 
 
@@ -35,6 +36,7 @@ public class Farmacia extends Usuario implements Serializable {
     public String getCidade() {
         return cidade;
     }
+
     public void setCidade(String cidade) {
         cidade = this.cidade;
     }
@@ -61,6 +63,14 @@ public class Farmacia extends Usuario implements Serializable {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public String getRegiao() {
+        return regiao;
+    }
+
+    public void setRegiao(String regiao) {
+        this.regiao = regiao;
     }
 
     //    public void salvar() {
