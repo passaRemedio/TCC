@@ -78,14 +78,10 @@ public class CadastroClienteActivity extends AppCompatActivity implements DatePi
         String textoRg = campoRg.getText().toString();
 
         //converter Date para String
-        //DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         String textoDtNascimento = this.dataNascimento;
-//        System.out.println("Texto1: " + textoDtNascimento);
-//        System.out.println("Data: " + dataNascimento);
         if(textoDtNascimento == null){
             textoDtNascimento = "";
         }
-//        System.out.println("Texto2: " + textoDtNascimento);
 
         String textoCPF  = campoCPF.getText().toString();
         String textoCidade = campoCidade.getText().toString();

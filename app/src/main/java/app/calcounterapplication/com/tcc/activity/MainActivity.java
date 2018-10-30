@@ -1,5 +1,6 @@
 package app.calcounterapplication.com.tcc.activity;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,14 +11,22 @@ import android.os.Bundle;
 import android.view.View;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.helper.Permissoes;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 
 public class MainActivity extends AppCompatActivity {
+
+    private String[] permissioes = new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //validar permissoes
+        Permissoes.validarPermissoes(permissioes, this, 1);
+
     }
 
     public void criarCadastro(View view) {
