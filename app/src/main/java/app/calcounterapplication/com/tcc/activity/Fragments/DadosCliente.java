@@ -12,6 +12,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
@@ -29,8 +30,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,6 +45,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.activity.CadastroClienteActivity;
 import app.calcounterapplication.com.tcc.activity.ClienteNavigationDrawer;
 import app.calcounterapplication.com.tcc.activity.MainActivity;
 import app.calcounterapplication.com.tcc.activity.MenuEntregadorActivity;
@@ -63,7 +67,7 @@ public class DadosCliente extends Fragment{
     private Button selecionarData, alterarCadastro;
     private String selectedDate;
 
-    private static String dataNascimento = "";
+    private String dataNascimento = "";
     public static final int REQUEST_CODE = 11; // Used to identify the result
     private OnFragmentInteractionListener mListener;
 
@@ -123,7 +127,8 @@ public class DadosCliente extends Fragment{
             // get date from string
             selectedDate = data.getStringExtra("selectedDate");
             // set the value of the editText
-            clienteDtNascimento.setHint(selectedDate);
+            this.dataNascimento = selectedDate;
+            clienteDtNascimento.setText(dataNascimento);
         }
     }
 
@@ -223,46 +228,128 @@ public class DadosCliente extends Fragment{
 
     public void alterarCadastro(){
 
-        System.out.println("Olha aqui: " + clienteNome.getText());
+//        String texto = clienteNome.getText().toString();
+//        System.out.println("Olha aqui: " + texto.isEmpty());
 
-//        FirebaseUser user = getUsuarioAtual();
-//
-//        FirebaseUser user = getUsuarioAtual();
-//        if(user != null){
-//            DatabaseReference usuariosRef = ConfigFirebase.getFirebaseDatabase()
-//                    .child("usuarios")
-//                    .child( getIdentificadorUsuario() );
-//            usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                    Cliente cliente = dataSnapshot.getValue(Cliente.class);
-//
-//                    if(clienteCep.)
-//                    cliente.setCep(cep);
-//
-//                    cidade = cliente.getCidade();
-//                    cpf = cliente.getCpf();
-//                    dtNascimento = cliente.getDtNascimento();
-//                    email = cliente.getEmail();
-//                    nome = cliente.getNome();
-//                    numero = cliente.getNumero();
-//                    rg = cliente.getRg();
-//                    rua = cliente.getRua();
-//                    uf = cliente.getUf();
-//
-//
-//
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                }
-//            });
-//        }
+        FirebaseUser user = getUsuarioAtual();
+
+        if(user != null){
+            final DatabaseReference usuariosRef = ConfigFirebase.getFirebaseDatabase()
+                    .child("usuarios")
+                    .child( getIdentificadorUsuario() );
+            usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    Cliente cliente = dataSnapshot.getValue(Cliente.class);
+
+                    //Cep
+                    if(clienteCep.getText().toString().isEmpty()){
+                        cliente.setCep(cep);
+                    } else {
+                        cliente.setCep(clienteCep.getText().toString());
+                    }
+
+                    //Cidade
+                    if(clienteCidade.getText().toString().isEmpty()){
+                        cliente.setCidade(cidade);
+                    } else {
+                        cliente.setCidade(clienteCidade.getText().toString());
+                    }
+
+                    //CPF
+                    if(clienteCpf.getText().toString().isEmpty()){
+                        cliente.setCpf(cpf);
+                    } else {
+                        cliente.setCpf(clienteCpf.getText().toString());
+                    }
+
+                    //Data de Nascimento
+                    if(clienteDtNascimento.getText().toString().isEmpty()){
+                        cliente.setDtNascimento(dtNascimento);
+                    } else {
+                        cliente.setDtNascimento(clienteDtNascimento.getText().toString());
+                    }
+
+                    //Email
+                    if(clienteEmail.getText().toString().isEmpty()){
+                        cliente.setEmail(email);
+                    } else {
+                        cliente.setEmail(clienteEmail.getText().toString());
+                    }
+
+                    //Nome
+                    if(clienteNome.getText().toString().isEmpty()){
+                        cliente.setNome(nome);
+                    } else {
+                        cliente.setNome(clienteNome.getText().toString());
+                    }
+
+                    //Numero
+                    if(clienteNumero.getText().toString().isEmpty()){
+                        cliente.setNumero(numero);
+                    } else {
+                        cliente.setNumero(clienteNumero.getText().toString());
+                    }
+
+                    //RG
+                    if(clienteRg.getText().toString().isEmpty()){
+                        cliente.setRg(rg);
+                    } else {
+                        cliente.setRg(clienteRg.getText().toString());
+                    }
+
+                    //Rua
+                    if(clienteRua.getText().toString().isEmpty()){
+                        cliente.setRua(rua);
+                    } else {
+                        cliente.setRua(clienteRua.getText().toString());
+                    }
+
+                    //UF
+                    if(clienteUf.getText().toString().isEmpty()){
+                        cliente.setUf(uf);
+                    } else {
+                        cliente.setUf(clienteUf.getText().toString());
+                    }
+
+                    usuariosRef.setValue(cliente);
+
+                    Toast.makeText(getActivity(),
+                            "Sucesso ao cadastrar cliente!",
+                            Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getActivity(), ClienteNavigationDrawer.class);
+                    startActivity(intent);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
     }
 
+    public void alterarEmailSenhaUsuario(){
+        FirebaseUser user = getUsuarioAtual();
+
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(clienteEmail.getText().toString())
+                .build();
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("TAG: ", "User profile updated.");
+                        }
+                    }
+                });
+    }
 
     public void inicializarComponentes(View view){
         clienteCep = (EditText) view.findViewById(R.id.editarClienteCEP);
