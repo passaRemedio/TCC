@@ -21,6 +21,7 @@ public class Produto implements Serializable {
     private String produto;
     private String valor;
     private String descricao;
+    private String idUsuario;
     private List<String> Fotos;
 
     public Produto() {
@@ -46,6 +47,7 @@ public class Produto implements Serializable {
 
     public void salvarProdutoPublico() {
 
+        String idUsuario = ConfigFirebase.getIdUsuario();
         DatabaseReference produtoRef = ConfigFirebase.getFirebase()
                 .child("produtos");
 
@@ -145,5 +147,13 @@ public class Produto implements Serializable {
 
     public void setRegiao(String regiao) {
         this.regiao = regiao;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

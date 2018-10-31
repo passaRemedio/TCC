@@ -173,7 +173,7 @@ public class ClienteMenu extends Fragment {
                 }
             });
 
-        }else{
+        } else {
             recuperarProdutoPublico();
             adapterProduto.notifyDataSetChanged();
         }
@@ -372,9 +372,7 @@ public class ClienteMenu extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
                     listaProduto.add(ds.getValue(Produto.class));
-
                 }
 
 //                for (DataSnapshot regiao : dataSnapshot.getChildren()) {

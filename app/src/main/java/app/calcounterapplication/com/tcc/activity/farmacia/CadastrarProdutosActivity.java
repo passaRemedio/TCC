@@ -177,6 +177,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
     private Produto configurarProduto() {
 
+        String idUsuario = ConfigFirebase.getIdUsuario();
         String regiao = campoRegiao.getSelectedItem().toString();
         String categoria = campoCategorias.getSelectedItem().toString();
         String marca = campoMarca.getText().toString();
@@ -191,6 +192,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         produto.setProduto(prod);
         produto.setValor(valor);
         produto.setDescricao(descricao);
+        produto.setIdUsuario(idUsuario);
 
         return produto;
     }

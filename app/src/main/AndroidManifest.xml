@@ -82,8 +82,9 @@
         <activity
             android:name=".activity.DetalheActivity"
             android:label="DetalheProduto"
-            android:parentActivityName=".activity.ClienteNavigationDrawer"></activity>
-        <activity android:name=".activity.PedidoDetalheActivity"></activity>
+            android:parentActivityName=".activity.ClienteNavigationDrawer" />
+        <activity android:name=".activity.PedidoDetalheActivity" />
+        <activity android:name=".activity.FarmaciaProdutoActivity"></activity>
     </application>
 
 </manifest>
