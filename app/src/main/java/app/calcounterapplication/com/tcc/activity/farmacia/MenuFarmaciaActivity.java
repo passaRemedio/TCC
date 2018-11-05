@@ -1,16 +1,24 @@
 package app.calcounterapplication.com.tcc.activity.farmacia;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.activity.MainActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
+import app.calcounterapplication.com.tcc.model.Farmacia;
 import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class MenuFarmaciaActivity extends AppCompatActivity {
@@ -61,14 +69,14 @@ public class MenuFarmaciaActivity extends AppCompatActivity {
     }
 
 
-
-    public void logoutEntregador(){
+    public void logoutEntregador() {
         mAuth.signOut();
-        startActivity(new Intent( this, MainActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
-    public void inicializarComponentes(){
+
+    public void inicializarComponentes() {
         logoutButton = findViewById(R.id.logoutFarmacia);
         meusProdutos = findViewById(R.id.meusProdutosFarmacia);
         cadastrarProdutos = findViewById(R.id.cadastrarProdutosFarmacia);

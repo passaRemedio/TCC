@@ -56,7 +56,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
     private Produto produto;
     private AlertDialog dialog;
     private FirebaseUser firebaseUser;
-    private String nomeFarmacia;
+    private TextView nomeFarmacia;
     private String farmacia;
 
 
@@ -80,6 +80,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
         //inicializando componentes
         inicializarComponentes();
+        puxarDados();
 
         //carregar dados spinner
         carregarDadosSpinner();
@@ -220,8 +221,10 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
                     Farmacia farma = dataSnapshot.getValue(Farmacia.class);
 
-                    nomeFarmacia = farma.getNome();
-                    farma.setNome(nomeFarmacia);
+                    farmacia = farma.getNome();
+
+                    nomeFarmacia.setText(farmacia);
+
                 }
 
                 @Override
@@ -231,7 +234,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
             });
         }
 
-        return nomeFarmacia;
+        return farmacia;
     }
 
     public void validarProduto(View view) {
@@ -347,6 +350,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         campoCategorias = findViewById(R.id.spinnerCategorias);
         campoRegiao = findViewById(R.id.spinnerRegiao);
         imagem1 = findViewById(R.id.imageProduto);
+        nomeFarmacia = findViewById(R.id.textViewFarmacia);
 
         //gerenciando clique
         imagem1.setOnClickListener(this);
