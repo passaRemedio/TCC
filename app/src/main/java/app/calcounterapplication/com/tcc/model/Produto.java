@@ -19,6 +19,7 @@ public class Produto implements Serializable {
     private String categoria;
     private String marca;
     private String produto;
+    private String produtoExibicao;
     private String valor;
     private String descricao;
     private String idUsuario;
@@ -164,5 +165,13 @@ public class Produto implements Serializable {
 
     public void setNomeUsuario(String nomeUsuario) {
         this.nomeUsuario = nomeUsuario;
+    }
+
+    public String getProdutoExibicao() {
+        return produtoExibicao;
+    }
+
+    public void setProdutoExibicao(String produtoExibicao) {
+        this.produtoExibicao = produtoExibicao;
     }
 }

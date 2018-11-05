@@ -54,7 +54,7 @@ public class AdapterProdutoPublico extends RecyclerView.Adapter<AdapterProdutoPu
 
 
         Produto produto = produtos.get(i);
-        myViewHolder.titulo.setText(produto.getProduto());
+        myViewHolder.titulo.setText(produto.getProdutoExibicao());
         myViewHolder.valor.setText(produto.getValor());
         myViewHolder.farmacia.setText(produto.getNomeUsuario());
 

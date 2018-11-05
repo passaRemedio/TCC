@@ -41,7 +41,7 @@ public class AdapterProduto extends RecyclerView.Adapter<AdapterProduto.MyViewHo
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
 
         Produto produto = produtos.get(i);
-        myViewHolder.titulo.setText(produto.getProduto());
+        myViewHolder.titulo.setText(produto.getProdutoExibicao());
         myViewHolder.valor.setText(produto.getValor());
 
         //configurar imagem
