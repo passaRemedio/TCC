@@ -48,10 +48,16 @@
                 android:id="@+id/textFarmacia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:text="TextView"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="20sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/regiaoProdutoFarma"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
         </LinearLayout>
     </LinearLayout>
 

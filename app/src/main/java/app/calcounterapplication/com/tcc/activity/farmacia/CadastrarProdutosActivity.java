@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,6 +57,8 @@ public class CadastrarProdutosActivity extends AppCompatActivity
     private FirebaseUser firebaseUser;
     private TextView nomeFarmacia;
     private String farmacia;
+    private TextView regiaoFarmacia;
+    private String regiaoFarma;
 
 
     private StorageReference storage;
@@ -80,7 +81,8 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
         //inicializando componentes
         inicializarComponentes();
-        puxarDados();
+        puxarDadosNome();
+        puxarDadosRegiao();
 
         //carregar dados spinner
         carregarDadosSpinner();
@@ -188,8 +190,9 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
     private Produto configurarProduto() {
 
-        String nome = puxarDados();
-        String regiao = campoRegiao.getSelectedItem().toString();
+        String nome = puxarDadosNome();
+//        String regiao = campoRegiao.getSelectedItem().toString();
+        String regiao = puxarDadosRegiao();
         String categoria = campoCategorias.getSelectedItem().toString();
         String marca = campoMarca.getText().toString();
         String prod = campoProduto.getText().toString().toUpperCase();
@@ -212,7 +215,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         return produto;
     }
 
-    public String puxarDados() {
+    public String puxarDadosNome() {
 
         FirebaseUser user = firebaseUser;
         if (user != null) {
@@ -239,6 +242,35 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         }
 
         return farmacia;
+    }
+
+    public String puxarDadosRegiao() {
+
+        FirebaseUser user = firebaseUser;
+        if (user != null) {
+            DatabaseReference usuariosRef = ConfigFirebase.getFirebaseDatabase()
+                    .child("usuarios")
+                    .child(ConfigFirebase.getIdUsuario());
+            usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    Farmacia farma = dataSnapshot.getValue(Farmacia.class);
+
+                    regiaoFarma = farma.getRegiao();
+
+                    regiaoFarmacia.setText(regiaoFarma);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        return regiaoFarma;
     }
 
     public void validarProduto(View view) {
@@ -320,17 +352,17 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
     private void carregarDadosSpinner() {
 
-        //spinner Regiao
-        String[] regiao = getResources().getStringArray(R.array.regiao);
-        //adicionar valores do spinner
-        ArrayAdapter<String> adapterRegiao = new ArrayAdapter<String>(
-                getApplicationContext(), android.R.layout.simple_spinner_item,
-                regiao
-        );
-        adapterRegiao.setDropDownViewResource(android.R.layout
-                .simple_spinner_dropdown_item);
-
-        campoRegiao.setAdapter(adapterRegiao);
+//        //spinner Regiao
+//        String[] regiao = getResources().getStringArray(R.array.regiao);
+//        //adicionar valores do spinner
+//        ArrayAdapter<String> adapterRegiao = new ArrayAdapter<String>(
+//                getApplicationContext(), android.R.layout.simple_spinner_item,
+//                regiao
+//        );
+//        adapterRegiao.setDropDownViewResource(android.R.layout
+//                .simple_spinner_dropdown_item);
+//
+//        campoRegiao.setAdapter(adapterRegiao);
 
 
         //spinner Categorias
@@ -352,9 +384,10 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         campoValor = findViewById(R.id.editValor);
         campoDescricao = findViewById(R.id.editDescricao);
         campoCategorias = findViewById(R.id.spinnerCategorias);
-        campoRegiao = findViewById(R.id.spinnerRegiao);
+//        campoRegiao = findViewById(R.id.spinnerRegiao);
         imagem1 = findViewById(R.id.imageProduto);
         nomeFarmacia = findViewById(R.id.textViewFarmacia);
+        regiaoFarmacia = findViewById(R.id.textViewRegiaoFarma);
 
         //gerenciando clique
         imagem1.setOnClickListener(this);

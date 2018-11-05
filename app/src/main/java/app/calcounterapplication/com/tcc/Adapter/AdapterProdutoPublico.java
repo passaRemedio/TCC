@@ -57,6 +57,7 @@ public class AdapterProdutoPublico extends RecyclerView.Adapter<AdapterProdutoPu
         myViewHolder.titulo.setText(produto.getProdutoExibicao());
         myViewHolder.valor.setText(produto.getValor());
         myViewHolder.farmacia.setText(produto.getNomeUsuario());
+        myViewHolder.regiao.setText(produto.getRegiao());
 
         //configurar imagem
         List<String> urlFotos = produto.getFotos();
@@ -76,6 +77,7 @@ public class AdapterProdutoPublico extends RecyclerView.Adapter<AdapterProdutoPu
         TextView titulo;
         TextView valor;
         TextView farmacia;
+        TextView regiao;
         ImageView foto;
 
 
@@ -86,6 +88,7 @@ public class AdapterProdutoPublico extends RecyclerView.Adapter<AdapterProdutoPu
             valor = itemView.findViewById(R.id.textPrecoPublico);
             farmacia = itemView.findViewById(R.id.textFarmacia);
             foto = itemView.findViewById(R.id.imageProdutoPublico);
+            regiao = itemView.findViewById(R.id.regiaoProdutoFarma);
 
         }
     }
