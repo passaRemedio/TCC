@@ -20,7 +20,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="116dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginRight="8dp"
@@ -48,10 +48,10 @@
                 android:id="@+id/textFarmacia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:text="TextView"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/regiaoProdutoFarma"
