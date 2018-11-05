@@ -18,12 +18,18 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blackcat.currencyedittext.CurrencyEditText;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -49,6 +55,9 @@ public class CadastrarProdutosActivity extends AppCompatActivity
     private Spinner campoCategorias, campoRegiao;
     private Produto produto;
     private AlertDialog dialog;
+    private FirebaseUser firebaseUser;
+    private String nomeFarmacia;
+    private String farmacia;
 
 
     private StorageReference storage;
@@ -67,6 +76,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
         Permissoes.validarPermissoes(permissoes, this, 1);
         storage = ConfigFirebase.getFirebaseStorage();
+        firebaseUser = ConfigFirebase.getUsuarioAtual();
 
         //inicializando componentes
         inicializarComponentes();
@@ -177,7 +187,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
 
     private Produto configurarProduto() {
 
-        String idUsuario = ConfigFirebase.getIdUsuario();
+        String nome = puxarDados();
         String regiao = campoRegiao.getSelectedItem().toString();
         String categoria = campoCategorias.getSelectedItem().toString();
         String marca = campoMarca.getText().toString();
@@ -192,9 +202,36 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         produto.setProduto(prod);
         produto.setValor(valor);
         produto.setDescricao(descricao);
-        produto.setIdUsuario(idUsuario);
+        produto.setNomeUsuario(nome);
 
         return produto;
+    }
+
+    public String puxarDados() {
+
+        FirebaseUser user = firebaseUser;
+        if (user != null) {
+            DatabaseReference usuariosRef = ConfigFirebase.getFirebaseDatabase()
+                    .child("usuarios")
+                    .child(ConfigFirebase.getIdUsuario());
+            usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    Farmacia farma = dataSnapshot.getValue(Farmacia.class);
+
+                    nomeFarmacia = farma.getNome();
+                    farma.setNome(nomeFarmacia);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        return nomeFarmacia;
     }
 
     public void validarProduto(View view) {

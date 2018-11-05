@@ -22,6 +22,7 @@ public class Produto implements Serializable {
     private String valor;
     private String descricao;
     private String idUsuario;
+    private String nomeUsuario;
     private List<String> Fotos;
 
     public Produto() {
@@ -155,5 +156,13 @@ public class Produto implements Serializable {
 
     public void setIdUsuario(String idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public String getNomeUsuario() {
+        return nomeUsuario;
+    }
+
+    public void setNomeUsuario(String nomeUsuario) {
+        this.nomeUsuario = nomeUsuario;
     }
 }

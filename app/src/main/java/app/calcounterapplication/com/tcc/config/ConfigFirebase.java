@@ -1,6 +1,7 @@
 package app.calcounterapplication.com.tcc.config;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -11,6 +12,12 @@ public class ConfigFirebase {
     private static DatabaseReference databaseReference;
     private static FirebaseAuth mAuth;
     private static StorageReference referenciaStorage;
+
+
+    public static FirebaseUser getUsuarioAtual(){
+        FirebaseAuth usuario = getFirebaseAuth();
+        return usuario.getCurrentUser();
+    }
 
     public static String getIdUsuario(){
 

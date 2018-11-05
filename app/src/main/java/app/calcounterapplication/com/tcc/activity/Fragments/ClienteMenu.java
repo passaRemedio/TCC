@@ -1,7 +1,6 @@
 package app.calcounterapplication.com.tcc.activity.Fragments;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,14 +10,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -34,12 +31,12 @@ import java.util.Collections;
 import java.util.List;
 
 import app.calcounterapplication.com.tcc.Adapter.AdapterProduto;
+import app.calcounterapplication.com.tcc.Adapter.AdapterProdutoPublico;
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.activity.DetalheActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.RecyclerItemClickListener;
 import app.calcounterapplication.com.tcc.model.Produto;
-import app.calcounterapplication.com.tcc.model.Usuario;
 import dmax.dialog.SpotsDialog;
 
 public class ClienteMenu extends Fragment {
@@ -48,12 +45,10 @@ public class ClienteMenu extends Fragment {
     private FirebaseAuth mAuth;
     private RecyclerView recyclerProdutoPublico;
     private Button BTRegiao, BTCategoria;
-    private AdapterProduto adapterProduto;
+    private AdapterProdutoPublico adapterProdutoPublico;
     private List<Produto> listaProduto = new ArrayList<>();
     private DatabaseReference produtoPublicoRef;
-    private DatabaseReference produtoPesquisaRef;
     private AlertDialog dialog;
-    private Context context;
     private String filtroRegiao = "";
     private String filtroCategoria = "";
     private boolean filtrandoPorRegiao = false;
@@ -75,8 +70,8 @@ public class ClienteMenu extends Fragment {
         //configurar recyclerView
         recyclerProdutoPublico.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerProdutoPublico.setHasFixedSize(true);
-        adapterProduto = new AdapterProduto(listaProduto, getActivity());
-        recyclerProdutoPublico.setAdapter(adapterProduto);
+        adapterProdutoPublico = new AdapterProdutoPublico(listaProduto, getActivity());
+        recyclerProdutoPublico.setAdapter(adapterProdutoPublico);
 
         recuperarProdutoPublico();
 
@@ -163,7 +158,7 @@ public class ClienteMenu extends Fragment {
 
                     }
 
-                    adapterProduto.notifyDataSetChanged();
+                    adapterProdutoPublico.notifyDataSetChanged();
 
                 }
 
@@ -175,7 +170,7 @@ public class ClienteMenu extends Fragment {
 
         } else {
             recuperarProdutoPublico();
-            adapterProduto.notifyDataSetChanged();
+            adapterProdutoPublico.notifyDataSetChanged();
         }
 
     }
@@ -303,7 +298,7 @@ public class ClienteMenu extends Fragment {
                 }
 
                 Collections.reverse(listaProduto);
-                adapterProduto.notifyDataSetChanged();
+                adapterProdutoPublico.notifyDataSetChanged();
                 dialog.dismiss();
 
             }
@@ -344,7 +339,7 @@ public class ClienteMenu extends Fragment {
                 }
 
                 Collections.reverse(listaProduto);
-                adapterProduto.notifyDataSetChanged();
+                adapterProdutoPublico.notifyDataSetChanged();
                 dialog.dismiss();
 
             }
@@ -388,7 +383,7 @@ public class ClienteMenu extends Fragment {
 
 
                 Collections.reverse(listaProduto);
-                adapterProduto.notifyDataSetChanged();
+                adapterProdutoPublico.notifyDataSetChanged();
                 dialog.dismiss();
 
             }
