@@ -32,6 +32,8 @@ import java.util.Locale;
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.activity.farmacia.MenuFarmaciaActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
+import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
+import app.calcounterapplication.com.tcc.model.Cliente;
 import app.calcounterapplication.com.tcc.model.Destino;
 import app.calcounterapplication.com.tcc.model.Farmacia;
 import app.calcounterapplication.com.tcc.model.Produto;
@@ -47,7 +49,8 @@ public class DetalheActivity extends AppCompatActivity {
     private TextView descricao;
     private Produto produtoSelecionado;
     private boolean entregadorChamado = false;
-    private String produtoID;
+    private String produtoID, farmacia, farmaciaID;
+    private String cep, cidade, numero, rua, uf, bairro;
 
     //permitir acesso
     private FirebaseAuth mAuth;
@@ -71,6 +74,11 @@ public class DetalheActivity extends AppCompatActivity {
             regiao.setText(produtoSelecionado.getRegiao());
             valor.setText(produtoSelecionado.getValor());
             produtoID = produtoSelecionado.getIdProduto();
+            farmacia = produtoSelecionado.getNomeUsuario();
+            farmaciaID = produtoSelecionado.getIdUsuario();
+//            System.out.println("Se liga nesse CU: " + produtoID);
+//            System.out.println("Se liga nessa merda: " + farmacia);
+//            System.out.println("Se liga nessa bosta: " + farmaciaID);
 
             ImageListener imageListener = new ImageListener() {
                 @Override
@@ -98,56 +106,85 @@ public class DetalheActivity extends AppCompatActivity {
 
     public void comprarDireto(View view){
 
+        //acessar destino
+        DatabaseReference usuariosRef = ConfigFirebase.getFirebaseDatabase()
+                .child("usuarios")
+                .child(farmaciaID);
+        usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Farmacia farmacia = dataSnapshot.getValue(Farmacia.class);
 
-        startActivity(new Intent(this, PedidoDetalheActivity.class));
+                cep = farmacia.getCep();
+                cidade = farmacia.getCidade();
+                numero = farmacia.getNumero();
+                rua = farmacia.getRua();
+                uf = farmacia.getUf();
+                bairro = farmacia.getRegiao();
 
-//        String enderecoDestino = "SHCN CLN 402 ";
-//
-//            if( !enderecoDestino.equals("") || enderecoDestino != null){
-//                Address addressDestino = recuperarEndereco(enderecoDestino);
-//                if(addressDestino != null ){
-//                    final Destino destino = new Destino();
-//                    destino.setCidade(addressDestino.getAdminArea());
-//                    destino.setCep(addressDestino.getPostalCode());
-//                    destino.setBairro(addressDestino.getSubLocality());
-//                    destino.setRua(addressDestino.getThoroughfare());
-//                    destino.setNumero(addressDestino.getFeatureName());
-//                    destino.setLatitude(String.valueOf(addressDestino.getLatitude()));
-//                    destino.setLongitude(String.valueOf(addressDestino.getLongitude()));
-//
-//                    StringBuilder mensagem = new StringBuilder();
-//                    mensagem.append("Deseja confirmar a sua compra?");
-//
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
-//                            .setTitle("Confirme sua compra")
-//                            .setMessage(mensagem)
-//                            .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    //salvar requisicao
+                String enderecoDestinoParte2 = cidade + " " + rua + " " + numero  +  " " + cep;
+                System.out.println("se liga no endereco da farmacia Parte2: " + enderecoDestinoParte2);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        String enderecoDestino = cidade + " " + rua + " " + numero  +  " " + cep;
+        System.out.println("se liga no endereco da farmacia: " + enderecoDestino);
+
+
+            if( !enderecoDestino.equals("") || enderecoDestino != null){
+                Address addressDestino = recuperarEndereco(enderecoDestino);
+                if(addressDestino != null ){
+                    final Destino destino = new Destino();
+                    destino.setCidade(addressDestino.getAdminArea());
+                    destino.setCep(addressDestino.getPostalCode());
+                    destino.setBairro(addressDestino.getSubLocality());
+                    destino.setRua(addressDestino.getThoroughfare());
+                    destino.setNumero(addressDestino.getFeatureName());
+                    destino.setLatitude(String.valueOf(addressDestino.getLatitude()));
+                    destino.setLongitude(String.valueOf(addressDestino.getLongitude()));
+
+                    StringBuilder mensagem = new StringBuilder();
+                    mensagem.append("Deseja confirmar a sua compra?");
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                            .setTitle("Confirme sua compra")
+                            .setMessage(mensagem)
+                            .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //salvar requisicao
 //                                    salvarRequisicao (destino);
-//                                    entregadorChamado = true;
-//
-//                                }
-//                            }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    //cancelar requisicao
-//                                }
-//                            });
-//                    AlertDialog dialog = builder.create();
-//                    dialog.show();
-//                }
-//
-//            } else {
-//                Toast.makeText(this,
-//                        "Por algum motivo a farmacia não possui endereço!",
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//            //Fim
-//        }
-//
-//    private void salvarRequisicao(Usuario usuario){
+                                    entregadorChamado = true;
+
+                                }
+                            }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //cancelar requisicao
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+
+            } else {
+                Toast.makeText(this,
+                        "Por algum motivo a farmacia não possui endereço!",
+                        Toast.LENGTH_SHORT).show();
+            }
+            //Fim
+
+            startActivity(new Intent(DetalheActivity.this, PedidoDetalheActivity.class));
+        }
+
+//    private void salvarRequisicao(Destino destino){
 //        Requisicao requisicao = new Requisicao();
 //        requisicao.setDestino(destino);
 //
@@ -164,29 +201,29 @@ public class DetalheActivity extends AppCompatActivity {
 //        //esse codigo nao estava comentado!!!!
 //
 //    }
-//
-//    public static FirebaseUser getUsuarioAtual() {
-//        FirebaseAuth usuario = ConfigFirebase.getFirebaseAuth();
-//        return usuario.getCurrentUser();
-//    }
 
-//    private Address recuperarEndereco(String endereco){
-//        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-//
-//        try {
-//            List<Address> listaEndereco = geocoder.getFromLocationName(endereco, 1);
-//
-//            if( listaEndereco != null && listaEndereco.size() > 0){
-//                Address address = listaEndereco.get(0);
-//
-//                return address;
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
+    public static FirebaseUser getUsuarioAtual() {
+        FirebaseAuth usuario = ConfigFirebase.getFirebaseAuth();
+        return usuario.getCurrentUser();
+    }
+
+    private Address recuperarEndereco(String endereco) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+        try {
+            List<Address> listaEndereco = geocoder.getFromLocationName(endereco, 1);
+
+            if (listaEndereco != null && listaEndereco.size() > 0) {
+                Address address = listaEndereco.get(0);
+
+                return address;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     private void inicializarComponentes() {

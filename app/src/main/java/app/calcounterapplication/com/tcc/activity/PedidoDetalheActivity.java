@@ -28,6 +28,10 @@ import com.google.firebase.database.ValueEventListener;
 
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
+import app.calcounterapplication.com.tcc.model.Destino;
+import app.calcounterapplication.com.tcc.model.Requisicao;
+import app.calcounterapplication.com.tcc.model.Usuario;
 
 
 public class PedidoDetalheActivity extends AppCompatActivity
@@ -62,6 +66,24 @@ public class PedidoDetalheActivity extends AppCompatActivity
         recuperarLocalizacaoCliente();
         System.out.println("CUUU");
     }
+
+//    private void salvarRequisicao(Destino destino){
+//        Requisicao requisicao = new Requisicao();
+//        requisicao.setDestino(destino);
+//
+//        Usuario usuarioPassageiro = UsuarioFirebase.getDadosUsuarioLogado();
+//        usuarioPassageiro.setLatitude( String.valueOf(localPassageiro.latitude)  );
+//        usuarioPassageiro.setLongitude( String.valueOf(localPassageiro.longitude) );
+//
+//        requisicao.setPassageiro(usuarioPassageiro);
+//        requisicao.setStatus(Requisicao.STATUS_AGUARDANDO);
+//        requisicao.salvar();
+//
+////        linearLayoutDestino.setVisibility(View.GONE);
+////        buttonChamarUber.setText("Cancelar Uber");
+//        //esse codigo nao estava comentado!!!!
+//
+//    }
 
     private void recuperarLocalizacaoCliente() {
 
