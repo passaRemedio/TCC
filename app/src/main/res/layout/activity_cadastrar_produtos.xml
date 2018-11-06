@@ -56,7 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editProduto" />
 
     <ImageView
-        android:id="@+id/imageProduto"
+        android:id="@+id/circleCarrinhoProd"
         android:layout_width="90dp"
         android:layout_height="80dp"
         android:layout_marginStart="27dp"
@@ -91,7 +91,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageProduto">
+        app:layout_constraintTop_toBottomOf="@+id/circleCarrinhoProd">
 
         <TextView
             android:id="@+id/textViewRegiaoFarma"
@@ -140,6 +140,6 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/imageProduto"
+        app:layout_constraintStart_toStartOf="@+id/circleCarrinhoProd"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

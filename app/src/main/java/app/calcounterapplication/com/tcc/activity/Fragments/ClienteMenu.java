@@ -124,6 +124,11 @@ public class ClienteMenu extends Fragment {
                             @Override
                             public void onLongItemClick(View view, int position) {
 
+//                                Produto produtoSelecionado = listaProduto.get(position);
+//                                produtoSelecionado.salvarCarrinho();
+//                                Toast.makeText(getActivity(), "Produto adicionado " +
+//                                        "ao carrinho de compras", Toast.LENGTH_SHORT).show();
+
                             }
 
                             @Override

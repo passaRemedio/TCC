@@ -91,7 +91,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.imageProduto:
+            case R.id.circleCarrinhoProd:
                 escolherImagem(1);
                 break;
         }
@@ -385,7 +385,7 @@ public class CadastrarProdutosActivity extends AppCompatActivity
         campoDescricao = findViewById(R.id.editDescricao);
         campoCategorias = findViewById(R.id.spinnerCategorias);
 //        campoRegiao = findViewById(R.id.spinnerRegiao);
-        imagem1 = findViewById(R.id.imageProduto);
+        imagem1 = findViewById(R.id.circleCarrinhoProd);
         nomeFarmacia = findViewById(R.id.textViewFarmacia);
         regiaoFarmacia = findViewById(R.id.textViewRegiaoFarma);
 

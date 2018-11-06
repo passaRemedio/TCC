@@ -62,6 +62,18 @@ public class Produto implements Serializable {
 //                .setValue(this);
     }
 
+    public void salvarCarrinho() {
+
+        String idUsuario = ConfigFirebase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFirebase.getFirebase()
+                .child("carrinho_compras");
+
+        anuncioRef.child(idUsuario)
+                .child(getIdProduto())
+                .setValue(this);
+
+    }
+
     public void remover() {
 
         String idUsuario = ConfigFirebase.getIdUsuario();

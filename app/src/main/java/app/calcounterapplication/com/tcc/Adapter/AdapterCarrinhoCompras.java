@@ -9,46 +9,43 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.model.Produto;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AdapterProduto extends RecyclerView.Adapter<AdapterProduto.MyViewHolder> {
+public class AdapterCarrinhoCompras extends
+        RecyclerView.Adapter<AdapterCarrinhoCompras.MyViewHolder> {
 
     private List<Produto> produtos;
     private Context context;
+    private FirebaseUser firebaseUser;
 
-    public AdapterProduto(List<Produto> produtos, Context context) {
+    public AdapterCarrinhoCompras(List<Produto> produtos, Context context, FirebaseUser firebaseUser) {
         this.produtos = produtos;
         this.context = context;
+        this.firebaseUser = firebaseUser;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
 
-        View item = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.adapter_produto, viewGroup, false);
+        firebaseUser = ConfigFirebase.getUsuarioAtual();
 
-        return new MyViewHolder(item);
+        View item = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.adapter_carrinho_compras, viewGroup, false);
+
+        return new AdapterCarrinhoCompras.MyViewHolder(item);
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-
-        Produto produto = produtos.get(i);
-        myViewHolder.titulo.setText(produto.getProdutoExibicao());
-        myViewHolder.valor.setText(produto.getValor());
-
-        //configurar imagem
-        List<String> urlFotos = produto.getFotos();
-        String urlCapa = urlFotos.get(0);
-
-        Picasso.get().load(urlCapa).into(myViewHolder.foto);
 
     }
 
@@ -61,13 +58,14 @@ public class AdapterProduto extends RecyclerView.Adapter<AdapterProduto.MyViewHo
 
         TextView titulo;
         TextView valor;
-        ImageView foto;
+        CircleImageView foto;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            titulo = itemView.findViewById(R.id.textTitulo);
-            valor = itemView.findViewById(R.id.textPreco);
+            titulo = itemView.findViewById(R.id.textTituloCarrinho);
+            valor = itemView.findViewById(R.id.textValorCarrinho);
             foto = itemView.findViewById(R.id.circleCarrinhoProd);
 
         }
