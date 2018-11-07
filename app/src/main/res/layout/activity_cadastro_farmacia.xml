@@ -172,7 +172,7 @@
             android:background="@drawable/background_edit_text"
             android:ems="10"
             android:hint="Cidade"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:padding="10dp" />
 
         <EditText

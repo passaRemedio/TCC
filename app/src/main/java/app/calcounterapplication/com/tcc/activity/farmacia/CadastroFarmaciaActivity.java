@@ -45,106 +45,8 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
 
     }
 
-//        BTFarmaciaCadastro.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                String nome = campoNome.getText().toString();
-//                String email = campoEmail.getText().toString();
-//                String senha = campoSenha.getText().toString();
-//
-//                if (!nome.isEmpty()) {
-//
-//                    if (!email.isEmpty()) {
-//
-//                        if (!senha.isEmpty()) {
-//
-//                            final Usuario usuario = new Usuario();
-//                            usuario.setNome(nome);
-//                            usuario.setEmail(email);
-//                            usuario.setSenha(senha);
-//                            usuario.setTipo("F");
-//
-//                            mAuth = ConfigFirebase.getFirebaseAuth();
-//                            mAuth.createUserWithEmailAndPassword(
-//                                    usuario.getEmail(), usuario.getSenha()
-//                            ).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<AuthResult> task) {
-//                                    if (task.isSuccessful()) {
-//
-//                                        try {
-//
-//                                            String idUsuario = task.getResult().getUser().getUid();
-//                                            usuario.setId(idUsuario);
-//                                            usuario.salvar();
-//
-//                                            //Atualizar nome do Usuario no UserProfile
-//                                            UsuarioFirebase.atualizarNomeUsuario(usuario.getNome());
-//
-//                                            startActivity(new Intent(CadastroFarmaciaActivity.this,
-//                                                    MenuFarmaciaActivity.class));
-//                                            finish();
-//
-//                                            Toast.makeText(CadastroFarmaciaActivity.this,
-//                                                    "Sucesso ao cadastrar Farmácia!",
-//                                                    Toast.LENGTH_SHORT).show();
-//
-//
-//                                        } catch (Exception e) {
-//                                            e.printStackTrace();
-//                                        }
-//
-//                                    } else {
-//
-//                                        String excecao = "";
-//
-//                                        try {
-//                                            throw task.getException();
-//                                        } catch (FirebaseAuthWeakPasswordException e) {
-//                                            excecao = "Digite uma senha mais forte!";
-//                                        } catch (FirebaseAuthInvalidCredentialsException e) {
-//                                            excecao = "Por favor, digite um e-mail válido";
-//                                        } catch (FirebaseAuthUserCollisionException e) {
-//                                            excecao = "Esta conta já foi cadastrada!";
-//                                        } catch (Exception e) {
-//                                            excecao = "Erro ao cadastrar usuário: " + e.getMessage();
-//                                            e.printStackTrace();
-//                                        }
-//
-//                                        Toast.makeText(CadastroFarmaciaActivity.this,
-//                                                excecao,
-//                                                Toast.LENGTH_SHORT).show();
-//
-//                                    }
-//                                }
-//                            });
-//
-//                        } else {
-//
-//                            Toast.makeText(getApplicationContext(),
-//                                    "Preencha a Senha",
-//                                    Toast.LENGTH_LONG).show();
-//                        }
-//
-//                    } else {
-//
-//                        Toast.makeText(getApplicationContext(),
-//                                "Preencha o Email",
-//                                Toast.LENGTH_LONG).show();
-//                    }
-//
-//                } else {
-//
-//                    Toast.makeText(getApplicationContext(),
-//                            "Preencha o Nome",
-//                            Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
-//    }
-
     public void validarCadastroUsuario(View view) {
+
         //Recuperar textos dos nomes
         String textoNome = campoNome.getText().toString();
         String textoEmail = campoEmail.getText().toString();
@@ -243,11 +145,11 @@ public class CadastroFarmaciaActivity extends AppCompatActivity {
 
     }
 
-    public String validarSenha(){
+    public String validarSenha() {
         String textoSenha;
         String senha1 = campoSenha.getText().toString();
         String senha2 = campoConfirmaSenha.getText().toString();
-        if(senha1.equals(senha2)){
+        if (senha1.equals(senha2)) {
             textoSenha = campoSenha.getText().toString();
 
             return textoSenha;
