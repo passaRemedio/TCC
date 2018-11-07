@@ -10,11 +10,11 @@ public class Farmacia extends Usuario implements Serializable {
 
     private String cnpj;
     private String cep;
-    private String cidade;
     private String rua;
     private String uf;
     private String regiao;
     private String numero;
+    private String cidade;
 
 
     public String getCnpj() {
@@ -31,14 +31,6 @@ public class Farmacia extends Usuario implements Serializable {
 
     public void setCep(String cep) {
         this.cep = cep;
-    }
-
-    public String getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(String cidade) {
-        cidade = this.cidade;
     }
 
     public String getRua() {
@@ -71,6 +63,14 @@ public class Farmacia extends Usuario implements Serializable {
 
     public void setRegiao(String regiao) {
         this.regiao = regiao;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 
     //    public void salvar() {
