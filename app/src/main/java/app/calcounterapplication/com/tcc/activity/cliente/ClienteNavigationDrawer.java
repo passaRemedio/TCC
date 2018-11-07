@@ -1,4 +1,4 @@
-package app.calcounterapplication.com.tcc.activity;
+package app.calcounterapplication.com.tcc.activity.cliente;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;

@@ -1,10 +1,8 @@
-package app.calcounterapplication.com.tcc.activity;
+package app.calcounterapplication.com.tcc.activity.cliente;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,16 +21,13 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.DatePickerFragment;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 import app.calcounterapplication.com.tcc.model.Cliente;
-import app.calcounterapplication.com.tcc.model.PessoaFisica;
 import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class CadastroClienteActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {

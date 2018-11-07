@@ -33,7 +33,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import app.calcounterapplication.com.tcc.R;
-import app.calcounterapplication.com.tcc.activity.ClienteNavigationDrawer;
+import app.calcounterapplication.com.tcc.activity.cliente.ClienteNavigationDrawer;
 import app.calcounterapplication.com.tcc.activity.MainActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.DatePickerFragmentDois;

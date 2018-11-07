@@ -15,8 +15,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import app.calcounterapplication.com.tcc.activity.ClienteNavigationDrawer;
-import app.calcounterapplication.com.tcc.activity.MenuEntregadorActivity;
+import app.calcounterapplication.com.tcc.activity.cliente.ClienteNavigationDrawer;
+import app.calcounterapplication.com.tcc.activity.entregador.MenuEntregadorActivity;
 import app.calcounterapplication.com.tcc.activity.farmacia.MenuFarmaciaActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.model.Usuario;

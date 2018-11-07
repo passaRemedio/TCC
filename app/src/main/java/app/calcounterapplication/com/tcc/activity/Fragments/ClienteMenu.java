@@ -30,10 +30,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import app.calcounterapplication.com.tcc.Adapter.AdapterProduto;
 import app.calcounterapplication.com.tcc.Adapter.AdapterProdutoPublico;
 import app.calcounterapplication.com.tcc.R;
-import app.calcounterapplication.com.tcc.activity.DetalheActivity;
+import app.calcounterapplication.com.tcc.activity.cliente.DetalheActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.RecyclerItemClickListener;
 import app.calcounterapplication.com.tcc.model.Produto;

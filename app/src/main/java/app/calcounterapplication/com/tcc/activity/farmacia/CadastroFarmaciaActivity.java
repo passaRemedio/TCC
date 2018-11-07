@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import app.calcounterapplication.com.tcc.R;
-import app.calcounterapplication.com.tcc.activity.CadastroClienteActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 import app.calcounterapplication.com.tcc.model.Farmacia;

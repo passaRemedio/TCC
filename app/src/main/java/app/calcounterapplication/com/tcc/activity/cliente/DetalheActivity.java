@@ -1,11 +1,10 @@
-package app.calcounterapplication.com.tcc.activity;
+package app.calcounterapplication.com.tcc.activity.cliente;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.annotation.NonNull;
-import android.support.v4.content.res.FontResourcesParserCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,16 +29,10 @@ import java.util.List;
 import java.util.Locale;
 
 import app.calcounterapplication.com.tcc.R;
-import app.calcounterapplication.com.tcc.activity.farmacia.MenuFarmaciaActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
-import app.calcounterapplication.com.tcc.helper.EnderecoDestino;
-import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
-import app.calcounterapplication.com.tcc.model.Cliente;
 import app.calcounterapplication.com.tcc.model.Destino;
 import app.calcounterapplication.com.tcc.model.Farmacia;
 import app.calcounterapplication.com.tcc.model.Produto;
-import app.calcounterapplication.com.tcc.model.Requisicao;
-import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class DetalheActivity extends AppCompatActivity {
 
@@ -50,7 +43,6 @@ public class DetalheActivity extends AppCompatActivity {
     private TextView descricao;
     private TextView nomeFarmacia, enderecoFarmacia;
     private Produto produtoSelecionado;
-    private boolean entregadorChamado = false;
     private String produtoID, farmacia, farmaciaID;
     private String enderecoDestino;
     private String cep, cidade, numero, rua, uf, bairro;
@@ -135,9 +127,9 @@ public class DetalheActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 //                                    //salvar requisicao
-//                                    salvarRequisicao (enderecoDestino);
-                                    entregadorChamado = true;
-                                    startActivity(new Intent(DetalheActivity.this, PedidoDetalheActivity.class));
+                                    Intent intent = new Intent(DetalheActivity.this, PedidoDetalheActivity.class);
+                                    intent.putExtra("enderecoFarmacia", enderecoFarmacia.getText().toString()); // getText() SHOULD NOT be static!!!
+                                    startActivity(intent);
 
                                 }
                             }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {

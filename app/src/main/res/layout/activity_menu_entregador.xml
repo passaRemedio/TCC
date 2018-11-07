@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context=".activity.MenuEntregadorActivity">
+    tools:context=".activity.entregador.MenuEntregadorActivity">
 
     <ImageView
         android:id="@+id/imageView4"
@@ -26,22 +26,23 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="Meus Dados"
-        app:layout_constraintBottom_toTopOf="@+id/meusProdutosFarmacia"
+        app:layout_constraintBottom_toTopOf="@+id/requisicoesEntregador"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
-    <ImageView
-        android:id="@+id/meusProdutosFarmacia"
+
+    <ImageButton
+        android:id="@+id/requisicoesEntregador"
         android:layout_width="98dp"
         android:layout_height="73dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:background="@drawable/caixa"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:srcCompat="@drawable/caixa" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <TextView
         android:id="@+id/textView5"
@@ -53,7 +54,7 @@
         app:layout_constraintBottom_toTopOf="@+id/cadastrarProdutosFarmacia"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/meusProdutosFarmacia" />
+        app:layout_constraintTop_toBottomOf="@+id/requisicoesEntregador" />
 
     <ImageView
         android:id="@+id/cadastrarProdutosFarmacia"
@@ -79,17 +80,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cadastrarProdutosFarmacia" />
 
-    <!--<ImageView-->
-        <!--android:id="@+id/imageView7"-->
-        <!--android:layout_width="90dp"-->
-        <!--android:layout_height="68dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/textView8"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/textView6"-->
-        <!--app:srcCompat="@drawable/logout" />-->
 
     <ImageButton
         android:id="@+id/logoutFarmacia"

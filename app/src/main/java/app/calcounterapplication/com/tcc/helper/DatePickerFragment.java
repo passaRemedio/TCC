@@ -5,15 +5,8 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.widget.DatePicker;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.text.DateFormat;
 import java.util.Calendar;
-
-import app.calcounterapplication.com.tcc.activity.CadastroClienteActivity;
 
 public class DatePickerFragment extends DialogFragment {
 
