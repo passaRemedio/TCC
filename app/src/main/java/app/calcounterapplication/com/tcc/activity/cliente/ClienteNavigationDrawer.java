@@ -1,6 +1,7 @@
 package app.calcounterapplication.com.tcc.activity.cliente;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,6 +25,7 @@ public class ClienteNavigationDrawer extends AppCompatActivity
 
     //    private TextView textView;
     private FirebaseAuth mAuth;
+    private String enderecoFarmacia = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +45,30 @@ public class ClienteNavigationDrawer extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        ClienteMenu clienteMenu = new ClienteMenu();
-        FragmentTransaction clienteMenuTransaction =
-                getSupportFragmentManager().beginTransaction();
-        clienteMenuTransaction.replace(R.id.content_frame, clienteMenu);
-        clienteMenuTransaction.commit();
+        try {
+            enderecoFarmacia = getIntent().getExtras().getString("enderecoFarmacia");
+        } catch(Exception e) {
+            enderecoFarmacia = "";
+        }
+
+
+        if(enderecoFarmacia.isEmpty()){
+            ClienteMenu clienteMenu = new ClienteMenu();
+            FragmentTransaction clienteMenuTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            clienteMenuTransaction.replace(R.id.content_frame, clienteMenu);
+            clienteMenuTransaction.commit();
+        } else {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            PedidosCliente pedidosCliente = new PedidosCliente();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("enderecoFarmacia", enderecoFarmacia);
+            pedidosCliente.setArguments(bundle);
+            fragmentTransaction.replace(R.id.content_frame, pedidosCliente);
+            fragmentTransaction.commit();
+        }
 
 
         getSupportActionBar().setTitle("Passa o Remédio");

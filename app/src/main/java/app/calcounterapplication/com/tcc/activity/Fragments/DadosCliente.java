@@ -37,6 +37,7 @@ import app.calcounterapplication.com.tcc.activity.cliente.ClienteNavigationDrawe
 import app.calcounterapplication.com.tcc.activity.MainActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.DatePickerFragmentDois;
+import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 import app.calcounterapplication.com.tcc.model.Cliente;
 
 public class DadosCliente extends Fragment {
@@ -269,8 +270,10 @@ public class DadosCliente extends Fragment {
                     //Nome
                     if (clienteNome.getText().toString().isEmpty()) {
                         cliente.setNome(nome);
+                        UsuarioFirebase.atualizarNomeUsuario(nome);
                     } else {
                         cliente.setNome(clienteNome.getText().toString());
+                        UsuarioFirebase.atualizarNomeUsuario(clienteNome.getText().toString());
                     }
 
                     //Numero
@@ -304,7 +307,7 @@ public class DadosCliente extends Fragment {
                     usuariosRef.setValue(cliente);
 
                     Toast.makeText(getActivity(),
-                            "Sucesso ao cadastrar cliente!",
+                            "Sucesso ao alterar cadastro!",
                             Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getActivity(), ClienteNavigationDrawer.class);

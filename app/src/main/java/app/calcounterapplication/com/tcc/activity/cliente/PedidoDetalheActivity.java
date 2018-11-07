@@ -15,7 +15,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -41,6 +43,7 @@ import java.util.List;
 import java.util.Locale;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 import app.calcounterapplication.com.tcc.model.Destino;
 import app.calcounterapplication.com.tcc.model.Requisicao;
@@ -61,6 +64,7 @@ public class PedidoDetalheActivity extends AppCompatActivity
     private boolean entregadorChamado = false;
     private Requisicao requisicao;
     private String enderecoFarmacia;
+    private Button buttonCancelarEntrega;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,9 @@ public class PedidoDetalheActivity extends AppCompatActivity
         enderecoFarmacia = getIntent().getExtras().getString("enderecoFarmacia");
 
         inicializarComponentes();
+
+        //Adiciona listener para status da requisicao
+        verificaStatusRequisicao();
     }
 
     private void verificaStatusRequisicao(){
@@ -93,15 +100,14 @@ public class PedidoDetalheActivity extends AppCompatActivity
                 if(lista != null && lista.size() > 0){
                     requisicao = lista.get(0);
 
-//                    Log.d("resultado", "onDataChange: " + requisicao.getId());
+                    Log.d("resultado", "onDataChange: " + requisicao.getId());
 
-//                    switch (requisicao.getStatus()) {
-//                        case Requisicao.STATUS_AGUARDANDO:
-//                            linearLayoutDestino.setVisibility(View.GONE);
-//                            buttonChamarUber.setText("Cancelar Uber");
-//                            uberChamado = true;
-//                            break;
-//                    }
+                    switch (requisicao.getStatus()) {
+                        case Requisicao.STATUS_AGUARDANDO:
+                            buttonCancelarEntrega.setVisibility(View.VISIBLE);
+                            entregadorChamado = true;
+                            break;
+                    }
                 }
             }
 
@@ -134,7 +140,6 @@ public class PedidoDetalheActivity extends AppCompatActivity
         Usuario usuarioCliente = UsuarioFirebase.getDadosUsuarioLogado();
         usuarioCliente.setLatitude( String.valueOf(localCliente.latitude) );
         usuarioCliente.setLongitude( String.valueOf(localCliente.longitude) );
-        System.out.println("funcionou!");
 
         requisicao.setCliente(usuarioCliente);
         requisicao.setStatus(Requisicao.STATUS_AGUARDANDO);
@@ -193,7 +198,9 @@ public class PedidoDetalheActivity extends AppCompatActivity
                         CameraUpdateFactory.newLatLngZoom(localCliente, 20)
                 );
 
-                recuperaEnderecoFarmacia(enderecoFarmacia);
+                if(entregadorChamado != true){
+                    recuperaEnderecoFarmacia(enderecoFarmacia);
+                }
             }
 
             @Override
@@ -258,6 +265,10 @@ public class PedidoDetalheActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        firebaseRef = ConfigFirebase.getFirebaseDatabase();
+
+        buttonCancelarEntrega = findViewById(R.id.cancelarEntrega);
 
     }
 

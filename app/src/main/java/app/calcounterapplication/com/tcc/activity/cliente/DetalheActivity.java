@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,6 +31,8 @@ import java.util.List;
 import java.util.Locale;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.activity.Fragments.PedidosCliente;
+import app.calcounterapplication.com.tcc.activity.LoginActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.model.Destino;
 import app.calcounterapplication.com.tcc.model.Farmacia;
@@ -127,9 +131,23 @@ public class DetalheActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 //                                    //salvar requisicao
-                                    Intent intent = new Intent(DetalheActivity.this, PedidoDetalheActivity.class);
+                                    Intent intent = new Intent(DetalheActivity.this, ClienteNavigationDrawer.class);
                                     intent.putExtra("enderecoFarmacia", enderecoFarmacia.getText().toString()); // getText() SHOULD NOT be static!!!
                                     startActivity(intent);
+
+                                    //TODO: fragment / activity connection
+//                                    FragmentManager fragmentManager = getSupportFragmentManager();
+//                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                                    PedidosCliente pedidosCliente = new PedidosCliente();
+//
+//                                    Bundle bundle = new Bundle();
+//                                    bundle.putString("enderecoFarmacia", enderecoFarmacia.getText().toString());
+//                                    pedidosCliente.setArguments(bundle);
+//                                    fragmentTransaction.replace(R.id.frameID, pedidosCliente);
+//                                    fragmentTransaction.commit();
+
+
+
 
                                 }
                             }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
@@ -162,7 +180,7 @@ public class DetalheActivity extends AppCompatActivity {
                 Farmacia farmacia = dataSnapshot.getValue(Farmacia.class);
 
                 cep = farmacia.getCep();
-                cidade = "Brasilia";
+                cidade = farmacia.getCidade();
                 numero = farmacia.getNumero();
                 rua = farmacia.getRua();
                 uf = farmacia.getUf();

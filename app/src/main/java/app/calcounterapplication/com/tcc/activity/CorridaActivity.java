@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
+import app.calcounterapplication.com.tcc.model.Cliente;
 import app.calcounterapplication.com.tcc.model.Requisicao;
 import app.calcounterapplication.com.tcc.model.Usuario;
 
@@ -45,6 +47,7 @@ public class CorridaActivity extends AppCompatActivity
     private String idRequisicao;
     private Requisicao requisicao;
     private DatabaseReference firebaseRef;
+    private TextView nomeCliente, enderecoCliente;
 
 
     @Override
@@ -62,6 +65,7 @@ public class CorridaActivity extends AppCompatActivity
             entregador = (Usuario) extras.getSerializable("entregador");
             idRequisicao = extras.getString("idRequisicao");
             verificaStatusRequisicao();
+
 
         }
 
@@ -85,8 +89,34 @@ public class CorridaActivity extends AppCompatActivity
                     case Requisicao.STATUS_A_CAMINHO:
                         requisicaoAcaminho();
                         break;
-
                 }
+
+                nomeCliente.setText("Cliente: " + requisicao.getCliente().getNome());
+
+                String idCliente = requisicao.getCliente().getId();
+                final DatabaseReference usuarios = firebaseRef.child("usuarios")
+                        .child(idCliente);
+                usuarios.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        //Recupera o cliente
+                        Cliente cliente = dataSnapshot.getValue(Cliente.class);
+
+                        String cep = cliente.getCep();
+                        String cidade = cliente.getCidade();
+                        String numero = cliente.getNumero();
+                        String rua = cliente.getRua();
+
+                        String enderecoClienteString = cidade + " " + rua + " " + numero + " " + cep;
+                        enderecoCliente.setText("Endereço: " + enderecoClienteString);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
             }
 
@@ -100,7 +130,7 @@ public class CorridaActivity extends AppCompatActivity
     }
 
     private void requisicaoAguardando(){
-        buttonAceitarCorrida.setText("Aceitar corrida");
+        buttonAceitarCorrida.setText("Realizar Entrega");
     }
 
     private void requisicaoAcaminho(){
@@ -144,7 +174,7 @@ public class CorridaActivity extends AppCompatActivity
                         new MarkerOptions()
                                 .position(localEntregador)
                                 .title("Meu Local")
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.carro))
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.scooter))
                 );
                 mMap.moveCamera(
                         CameraUpdateFactory.newLatLngZoom(localEntregador, 20)
@@ -198,7 +228,7 @@ public class CorridaActivity extends AppCompatActivity
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Iniciar Corrida");
+        getSupportActionBar().setTitle("Iniciar Entrega");
 
         //Configuracoes iniciais
         buttonAceitarCorrida = findViewById(R.id.buttonAceitarCorrida);
@@ -208,6 +238,10 @@ public class CorridaActivity extends AppCompatActivity
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        nomeCliente = findViewById(R.id.nomeCliente);
+        enderecoCliente = findViewById(R.id.enderecoCliente);
+
     }
 
 }
