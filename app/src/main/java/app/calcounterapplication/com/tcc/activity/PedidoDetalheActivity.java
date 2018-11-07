@@ -72,17 +72,17 @@ public class PedidoDetalheActivity extends AppCompatActivity
 //        requisicao.setDestino(destino);
 //
 //        Usuario usuarioPassageiro = UsuarioFirebase.getDadosUsuarioLogado();
-//        usuarioPassageiro.setLatitude( String.valueOf(localPassageiro.latitude)  );
-//        usuarioPassageiro.setLongitude( String.valueOf(localPassageiro.longitude) );
+//        usuarioPassageiro.setLatitude( String.valueOf(localCliente.latitude)  );
+//        usuarioPassageiro.setLongitude( String.valueOf(localCliente.longitude) );
 //
 //        requisicao.setPassageiro(usuarioPassageiro);
 //        requisicao.setStatus(Requisicao.STATUS_AGUARDANDO);
 //        requisicao.salvar();
-//
-////        linearLayoutDestino.setVisibility(View.GONE);
-////        buttonChamarUber.setText("Cancelar Uber");
-//        //esse codigo nao estava comentado!!!!
-//
+
+//        linearLayoutDestino.setVisibility(View.GONE);
+//        buttonChamarUber.setText("Cancelar Uber");
+        //esse codigo nao estava comentado!!!!
+
 //    }
 
     private void recuperarLocalizacaoCliente() {

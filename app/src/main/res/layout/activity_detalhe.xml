@@ -79,6 +79,36 @@
             android:paddingBottom="5dp"
             android:text="Descrição" />
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/nomeFarmacia"
+                android:textStyle="bold"
+                android:text="Nome Farmacia"
+                android:paddingLeft="7dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/enderecoFarmacia"
+                android:layout_width="245dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingEnd="5dp"
+                android:paddingLeft="7dp"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="Endereco Farmacia" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout

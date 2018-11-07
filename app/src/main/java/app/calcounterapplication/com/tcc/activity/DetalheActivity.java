@@ -32,6 +32,7 @@ import java.util.Locale;
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.activity.farmacia.MenuFarmaciaActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
+import app.calcounterapplication.com.tcc.helper.EnderecoDestino;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 import app.calcounterapplication.com.tcc.model.Cliente;
 import app.calcounterapplication.com.tcc.model.Destino;
@@ -47,9 +48,11 @@ public class DetalheActivity extends AppCompatActivity {
     private TextView valor;
     private TextView regiao;
     private TextView descricao;
+    private TextView nomeFarmacia, enderecoFarmacia;
     private Produto produtoSelecionado;
     private boolean entregadorChamado = false;
     private String produtoID, farmacia, farmaciaID;
+    private String enderecoDestino;
     private String cep, cidade, numero, rua, uf, bairro;
 
     //permitir acesso
@@ -76,9 +79,7 @@ public class DetalheActivity extends AppCompatActivity {
             produtoID = produtoSelecionado.getIdProduto();
             farmacia = produtoSelecionado.getNomeUsuario();
             farmaciaID = produtoSelecionado.getIdUsuario();
-//            System.out.println("Se liga nesse CU: " + produtoID);
-//            System.out.println("Se liga nessa merda: " + farmacia);
-//            System.out.println("Se liga nessa bosta: " + farmaciaID);
+            recuperarLocalizacaoDaFarmacia(farmaciaID);
 
             ImageListener imageListener = new ImageListener() {
                 @Override
@@ -106,37 +107,9 @@ public class DetalheActivity extends AppCompatActivity {
 
     public void comprarDireto(View view){
 
-        //acessar destino
-        DatabaseReference usuariosRef = ConfigFirebase.getFirebaseDatabase()
-                .child("usuarios")
-                .child(farmaciaID);
-        usuariosRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Farmacia farmacia = dataSnapshot.getValue(Farmacia.class);
-
-                cep = farmacia.getCep();
-                cidade = farmacia.getCidade();
-                numero = farmacia.getNumero();
-                rua = farmacia.getRua();
-                uf = farmacia.getUf();
-                bairro = farmacia.getRegiao();
-
-                String enderecoDestinoParte2 = cidade + " " + rua + " " + numero  +  " " + cep;
-                System.out.println("se liga no endereco da farmacia Parte2: " + enderecoDestinoParte2);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-        String enderecoDestino = cidade + " " + rua + " " + numero  +  " " + cep;
         System.out.println("se liga no endereco da farmacia: " + enderecoDestino);
 
+        enderecoDestino = enderecoFarmacia.getText().toString();
 
             if( !enderecoDestino.equals("") || enderecoDestino != null){
                 Address addressDestino = recuperarEndereco(enderecoDestino);
@@ -151,7 +124,9 @@ public class DetalheActivity extends AppCompatActivity {
                     destino.setLongitude(String.valueOf(addressDestino.getLongitude()));
 
                     StringBuilder mensagem = new StringBuilder();
-                    mensagem.append("Deseja confirmar a sua compra?");
+                    mensagem.append("Deseja confirmar a sua compra em: ");
+                    mensagem.append("\n"+nomeFarmacia.getText().toString());
+                    mensagem.append("\n"+enderecoFarmacia.getText().toString());
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(this)
                             .setTitle("Confirme sua compra")
@@ -159,9 +134,10 @@ public class DetalheActivity extends AppCompatActivity {
                             .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //salvar requisicao
-//                                    salvarRequisicao (destino);
+//                                    //salvar requisicao
+//                                    salvarRequisicao (enderecoDestino);
                                     entregadorChamado = true;
+                                    startActivity(new Intent(DetalheActivity.this, PedidoDetalheActivity.class));
 
                                 }
                             }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
@@ -180,9 +156,38 @@ public class DetalheActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
             //Fim
+    }
 
-            startActivity(new Intent(DetalheActivity.this, PedidoDetalheActivity.class));
-        }
+    private void recuperarLocalizacaoDaFarmacia(String id){
+
+        //acessar endereco farmacia
+        DatabaseReference usuariosRef = ConfigFirebase.getFirebaseDatabase()
+                .child("usuarios")
+                .child(id);
+        usuariosRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Farmacia farmacia = dataSnapshot.getValue(Farmacia.class);
+
+                cep = farmacia.getCep();
+                cidade = "Brasilia";
+                numero = farmacia.getNumero();
+                rua = farmacia.getRua();
+                uf = farmacia.getUf();
+                bairro = farmacia.getRegiao();
+
+                String enderecoFarmaciaString = cidade + " " + rua + " " + numero + " " + cep;
+
+                nomeFarmacia.setText(farmacia.getNome());
+                enderecoFarmacia.setText(enderecoFarmaciaString);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 //    private void salvarRequisicao(Destino destino){
 //        Requisicao requisicao = new Requisicao();
@@ -233,6 +238,8 @@ public class DetalheActivity extends AppCompatActivity {
         regiao = findViewById(R.id.textVRegiaoDetalhe);
         descricao = findViewById(R.id.textDescricaoDetalhe);
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        nomeFarmacia = findViewById(R.id.nomeFarmacia);
+        enderecoFarmacia = findViewById(R.id.enderecoFarmacia);
     }
 
 }
