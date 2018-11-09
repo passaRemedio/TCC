@@ -34,6 +34,7 @@ import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.activity.Fragments.PedidosCliente;
 import app.calcounterapplication.com.tcc.activity.LoginActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
+import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 import app.calcounterapplication.com.tcc.model.Destino;
 import app.calcounterapplication.com.tcc.model.Farmacia;
 import app.calcounterapplication.com.tcc.model.Produto;
@@ -49,7 +50,7 @@ public class DetalheActivity extends AppCompatActivity {
     private Produto produtoSelecionado;
     private String produtoID, farmacia, farmaciaID;
     private String enderecoDestino;
-    private String cep, cidade, numero, rua, uf, bairro;
+    private String cep, cidade, numero, rua, uf, bairro, nome;
 
     //permitir acesso
     private FirebaseAuth mAuth;
@@ -101,9 +102,9 @@ public class DetalheActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Detalhe Produto");
     }
 
+//    Address addressDestino = recuperarEndereco(enderecoDestino);
+//    final Destino destino = new Destino();
     public void comprarDireto(View view){
-
-        System.out.println("se liga no endereco da farmacia: " + enderecoDestino);
 
         enderecoDestino = enderecoFarmacia.getText().toString();
 
@@ -118,6 +119,10 @@ public class DetalheActivity extends AppCompatActivity {
                     destino.setNumero(addressDestino.getFeatureName());
                     destino.setLatitude(String.valueOf(addressDestino.getLatitude()));
                     destino.setLongitude(String.valueOf(addressDestino.getLongitude()));
+                    destino.setNomeDestino(nomeFarmacia.getText().toString());
+
+                    //Atualizar Geofire
+                    UsuarioFirebase.atualizarDadosLocalizacao(addressDestino.getLatitude(), addressDestino.getLongitude(), farmaciaID);
 
                     StringBuilder mensagem = new StringBuilder();
                     mensagem.append("Deseja confirmar a sua compra em: ");
@@ -132,8 +137,11 @@ public class DetalheActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
 //                                    //salvar requisicao
                                     Intent intent = new Intent(DetalheActivity.this, ClienteNavigationDrawer.class);
+                                    intent.putExtra("nomeFarmacia", nomeFarmacia.getText().toString());
                                     intent.putExtra("enderecoFarmacia", enderecoFarmacia.getText().toString()); // getText() SHOULD NOT be static!!!
                                     startActivity(intent);
+
+
 
                                     //TODO: fragment / activity connection
 //                                    FragmentManager fragmentManager = getSupportFragmentManager();
@@ -186,7 +194,7 @@ public class DetalheActivity extends AppCompatActivity {
                 uf = farmacia.getUf();
                 bairro = farmacia.getRegiao();
 
-                String enderecoFarmaciaString = cidade + " " + rua + " " + numero + " " + cep;
+                String enderecoFarmaciaString = cidade + ", " + bairro + ", " + rua + ", " + numero + ", " + cep;
 
                 nomeFarmacia.setText(farmacia.getNome());
                 enderecoFarmacia.setText(enderecoFarmaciaString);

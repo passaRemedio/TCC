@@ -53,6 +53,9 @@ dependencies {
     //circleview
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
+    //Dependencia GeoFire
+    implementation 'com.firebase:geofire-android:2.3.1'
+
 
 }
 apply plugin: 'com.google.gms.google-services'

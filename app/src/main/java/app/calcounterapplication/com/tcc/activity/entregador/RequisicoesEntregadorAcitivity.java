@@ -64,6 +64,44 @@ public class RequisicoesEntregadorAcitivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        verificaStatusRequisicao();
+    }
+
+    private void verificaStatusRequisicao(){
+        Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
+        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
+
+        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
+
+        Query requisicoesPesquisa = requisicoes.orderByChild("entregador/id")
+                .equalTo(usuarioLogado.getId());
+
+        requisicoesPesquisa.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    Requisicao requisicao = ds.getValue(Requisicao.class);
+
+                    if(requisicao.getStatus().equals(Requisicao.STATUS_A_CAMINHO)
+                            || requisicao.getStatus().equals(Requisicao.STATUS_VIAGEM)){
+
+                        abrirTelaCorrida(requisicao.getId(), entregador, true);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     private void recuperarLocalizacaoUsuario() {
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -75,6 +113,9 @@ public class RequisicoesEntregadorAcitivity extends AppCompatActivity {
                 //recuperar latitude e longitude
                 String latitude = String.valueOf(location.getLatitude());
                 String longitude = String.valueOf(location.getLongitude());
+
+                //Atualizar Geofire
+                UsuarioFirebase.atualizarDadosLocalizacao(location.getLatitude(), location.getLongitude());
 
                 if( !latitude.isEmpty() && !longitude.isEmpty() ){
                     entregador.setLatitude(latitude);
@@ -116,6 +157,14 @@ public class RequisicoesEntregadorAcitivity extends AppCompatActivity {
 
     }
 
+    private void abrirTelaCorrida(String idRequisicao, Usuario entregador, boolean requisicaoAtiva){
+        Intent i  = new Intent(RequisicoesEntregadorAcitivity.this, CorridaActivity.class);
+        i.putExtra("idRequisicao", idRequisicao);
+        i.putExtra("entregador", entregador);
+        i.putExtra("requisicaoAtiva", requisicaoAtiva);
+        startActivity(i);
+    }
+
 
     private void inicializarComponentes(){
 
@@ -146,10 +195,7 @@ public class RequisicoesEntregadorAcitivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(View view, int position) {
                                 Requisicao requisicao = listaRequisicoes.get(position);
-                                Intent i  = new Intent(RequisicoesEntregadorAcitivity.this, CorridaActivity.class);
-                                i.putExtra("idRequisicao", requisicao.getId());
-                                i.putExtra("entregador", entregador);
-                                startActivity(i);
+                                abrirTelaCorrida(requisicao.getId(), entregador, false);
                             }
 
                             @Override

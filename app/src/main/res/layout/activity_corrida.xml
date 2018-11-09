@@ -65,11 +65,14 @@
         android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:padding="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="353dp"
+        android:padding="5dp">
 
-        <include layout="@layout/content_cliente" />
+        <include
+            layout="@layout/content_cliente"
+            android:layout_width="384dp"
+            android:layout_height="366dp" />
 
     </LinearLayout>
 

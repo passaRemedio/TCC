@@ -94,7 +94,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.entregador.RequisicoesEntregadorAcitivity" />
+                android:value="app.calcounterapplication.com.tcc.activity.entregador.RequisicoesEntregadorAcitivity" />
         </activity>
     </application>
 

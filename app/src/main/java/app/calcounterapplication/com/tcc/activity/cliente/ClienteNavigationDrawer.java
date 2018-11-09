@@ -26,6 +26,7 @@ public class ClienteNavigationDrawer extends AppCompatActivity
     //    private TextView textView;
     private FirebaseAuth mAuth;
     private String enderecoFarmacia = "";
+    private String nomeFarmacia = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +48,10 @@ public class ClienteNavigationDrawer extends AppCompatActivity
 
         try {
             enderecoFarmacia = getIntent().getExtras().getString("enderecoFarmacia");
+            nomeFarmacia = getIntent().getExtras().getString("nomeFarmacia");
         } catch(Exception e) {
             enderecoFarmacia = "";
+            nomeFarmacia = "";
         }
 
 
@@ -65,6 +68,7 @@ public class ClienteNavigationDrawer extends AppCompatActivity
 
             Bundle bundle = new Bundle();
             bundle.putString("enderecoFarmacia", enderecoFarmacia);
+            bundle.putString("nomeFarmacia", nomeFarmacia);
             pedidosCliente.setArguments(bundle);
             fragmentTransaction.replace(R.id.content_frame, pedidosCliente);
             fragmentTransaction.commit();

@@ -43,6 +43,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -68,7 +69,7 @@ public class PedidosCliente extends Fragment
     private LatLng localCliente;
     private boolean entregadorChamado = false;
     private Requisicao requisicao;
-    private String enderecoFarmacia;
+    private String enderecoFarmacia, nomeFarmacia;
     private Button buttonCancelarEntrega;
     private TextView acompanharPedido, acompanharEntregador;
     private LinearLayout pedidosFeitos;
@@ -80,18 +81,17 @@ public class PedidosCliente extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.pedidos_cliente, container, false);
 
-//        enderecoFarmacia = getActivity().getIntent().getExtras().getString("enderecoFarmacia");
         Bundle bundle = getArguments();
 
         inicializarComponentes();
 
         try{
+            nomeFarmacia = bundle.getString("nomeFarmacia");
             enderecoFarmacia = bundle.getString("enderecoFarmacia");
         } catch (Exception e){
             verificaStatusRequisicao();
         }
 
-//        inicializarComponentes();
 
         return myView;
     }
@@ -186,6 +186,7 @@ public class PedidosCliente extends Fragment
                     destino.setNumero(addressDestino.getFeatureName());
                     destino.setLatitude(String.valueOf(addressDestino.getLatitude()));
                     destino.setLongitude(String.valueOf(addressDestino.getLongitude()));
+                    destino.setNomeDestino(nomeFarmacia);
 
                     salvarRequisicao(destino);
                     entregadorChamado = true;
@@ -214,6 +215,9 @@ public class PedidosCliente extends Fragment
                 System.out.println("Latitute: " + latitude);
                 System.out.println("Longitude: " + longitude);
                 localCliente = new LatLng(latitude, longitude);
+
+                //Atualizar Geofire
+                UsuarioFirebase.atualizarDadosLocalizacao(latitude, longitude);
 
                 mMap.clear();
                 mMap.addMarker(

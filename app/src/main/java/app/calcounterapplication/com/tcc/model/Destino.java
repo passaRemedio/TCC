@@ -7,11 +7,20 @@ public class Destino {
     private String cidade;
     private String bairro;
     private String cep;
+    private String nomeDestino;
 
     private String latitude;
     private String longitude;
 
     public Destino() {
+    }
+
+    public String getNomeDestino() {
+        return nomeDestino;
+    }
+
+    public void setNomeDestino(String nomeDestino) {
+        this.nomeDestino = nomeDestino;
     }
 
     public String getRua() {
