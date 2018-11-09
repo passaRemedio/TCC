@@ -53,14 +53,6 @@
             android:textSize="18dp"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <include layout="@layout/content_cliente" />
-
-        </LinearLayout>
-
         <Button
             android:id="@+id/cancelarEntrega"
             android:padding="4dp"
@@ -69,6 +61,15 @@
             android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include layout="@layout/content_cliente" />
+
+        </LinearLayout>
+
 
 
     </LinearLayout>

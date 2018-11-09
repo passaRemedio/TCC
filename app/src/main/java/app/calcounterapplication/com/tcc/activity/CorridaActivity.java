@@ -4,10 +4,13 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,11 +20,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFire;
+import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -43,8 +52,16 @@ import app.calcounterapplication.com.tcc.model.Usuario;
 public class CorridaActivity extends AppCompatActivity
         implements OnMapReadyCallback {
 
+    /*
+    *Localizaçao
+    *   entregador: Latitude -> -15.811 / Longitude -> -47.8896714
+    *   farmacia: Latitude -> -15.8149985 / Longitude -> -47.8896714
+    *   cliente: Latitude -> -15.813 / Longitude -> -47.8896714
+     */
+
     //Componente
     private Button buttonAceitarCorrida;
+    private FloatingActionButton fabRota;
 
     private GoogleMap mMap;
     private LocationManager locationManager;
@@ -54,6 +71,7 @@ public class CorridaActivity extends AppCompatActivity
     private LatLng localFarmacia;
     private Usuario entregador;
     private Usuario cliente;
+    private Usuario farmacia;
     private String idRequisicao;
     private Requisicao requisicao;
     private DatabaseReference firebaseRef;
@@ -150,7 +168,8 @@ public class CorridaActivity extends AppCompatActivity
     }
 
     private void requisicaoAcaminho(){
-        buttonAceitarCorrida.setText("Acaminho do cliente");
+        buttonAceitarCorrida.setText("A caminho da farmácia");
+        fabRota.setVisibility(View.VISIBLE);
 
         //Exibe marcador do entregador
         adicionaMarcadorEntregador(localEntregador, entregador.getNome() );
@@ -166,6 +185,79 @@ public class CorridaActivity extends AppCompatActivity
 
         //Centralizar Tres marcadores
         centralizarTresMarcadores(marcadorEntregador, marcadorCliente, marcadorFarmacia);
+
+        //Inicia monitoramento do entregador / farmácia
+        iniciarMonitoramentoEntrega(entregador, cliente, farmacia);
+    }
+
+    private void iniciarMonitoramentoEntrega(Usuario c, Usuario e, Usuario f) {
+
+        //Inicializar Geofire
+        DatabaseReference localUsuario = ConfigFirebase.getFirebaseDatabase()
+                .child("local_usuario");
+        GeoFire geoFire = new GeoFire(localUsuario);
+
+        //Adiciona círculo no cliente
+        final Circle circulo = mMap.addCircle(
+                new CircleOptions()
+                        .center(localCliente)
+                        .radius(25) //em metros
+                        .fillColor(Color.argb(90, 255, 153, 0))
+                        .strokeColor(Color.argb(190, 255, 152, 0))
+        );
+
+        //Adiciona círculo na farmacia
+        final Circle circulo2 = mMap.addCircle(
+                new CircleOptions()
+                        .center(localFarmacia)
+                        .radius(25) //em metros
+                        .fillColor(Color.argb(90, 255, 153, 0))
+                        .strokeColor(Color.argb(190, 255, 152, 0))
+        );
+
+        final GeoQuery geoQuery = geoFire.queryAtLocation(
+                new GeoLocation(localFarmacia.latitude, localFarmacia.longitude),
+                0.05 //em km (0.05 50 metros)
+        );
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                if(key.equals(entregador.getId())){
+                    //Log.d("onKeyEntered", "onKeyEntered: entregador esta dentro da area");
+
+
+                    //Altera status da requisicao
+                    requisicao.setStatus(Requisicao.STATUS_VIAGEM);
+                    requisicao.atualizarStatus();
+
+                    //Remove listener
+                    geoQuery.removeAllListeners();
+                    circulo2.remove();
+
+                }
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+
+            }
+        });
+
     }
 
     private void centralizarTresMarcadores(Marker marcador1, Marker marcador2, Marker marcador3){
@@ -345,6 +437,37 @@ public class CorridaActivity extends AppCompatActivity
 
         nomeCliente = findViewById(R.id.nomeCliente);
         enderecoCliente = findViewById(R.id.enderecoCliente);
+
+        //Adiciona evento de clique no FabRota
+        fabRota = findViewById(R.id.fabRota);
+        fabRota.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String status = statusRequisicao;
+
+                if(status != null && !status.isEmpty()) {
+                    String lat = "";
+                    String lon = "";
+
+                    switch (status) {
+                        case Requisicao.STATUS_A_CAMINHO:
+                            lat = String.valueOf(localFarmacia.latitude);
+                            lon = String.valueOf(localFarmacia.longitude);
+                            break;
+                        case Requisicao.STATUS_VIAGEM:
+
+                            break;
+                    }
+
+                    //Abrir rota
+                    String latLong = lat + "," + lon;
+                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latLong + "&mode=d");
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                }
+            }
+        });
 
     }
 
