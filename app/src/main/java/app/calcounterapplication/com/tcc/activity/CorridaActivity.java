@@ -155,6 +155,9 @@ public class CorridaActivity extends AppCompatActivity
             case Requisicao.STATUS_A_CAMINHO :
                 requisicaoAcaminho();
                 break;
+            case Requisicao.STATUS_VIAGEM:
+                requisicaoViagem();
+                break;
         }
     }
 
@@ -187,52 +190,65 @@ public class CorridaActivity extends AppCompatActivity
         centralizarTresMarcadores(marcadorEntregador, marcadorCliente, marcadorFarmacia);
 
         //Inicia monitoramento do entregador / farmácia
-        iniciarMonitoramentoEntrega(entregador, cliente, farmacia);
+        iniciarMonitoramento(entregador, localFarmacia, Requisicao.STATUS_VIAGEM);
     }
 
-    private void iniciarMonitoramentoEntrega(Usuario c, Usuario e, Usuario f) {
+    private void requisicaoViagem(){
+
+        //Alterar interface
+        fabRota.setVisibility(View.VISIBLE);
+        buttonAceitarCorrida.setText("A caminho do destino");
+
+        //Exibe marcador do motorista
+        adicionaMarcadorEntregador(localEntregador, entregador.getNome());
+
+        //Exibe marcador de cliente
+        LatLng localCliente = new LatLng(
+                Double.parseDouble(cliente.getLatitude()),
+                Double.parseDouble(cliente.getLongitude())
+        );
+        adicionaMarcadorClienteViagem(localCliente, "Cliente");
+
+        //Centraliza marcadores motorista / destino
+        iniciarMonitoramento(entregador, localCliente, Requisicao.STATUS_FINALIZADA);
+
+
+    }
+
+    private void iniciarMonitoramento(final Usuario usuarioOrigem, LatLng localDestino, final String status) {
 
         //Inicializar Geofire
         DatabaseReference localUsuario = ConfigFirebase.getFirebaseDatabase()
                 .child("local_usuario");
         GeoFire geoFire = new GeoFire(localUsuario);
 
-        //Adiciona círculo no cliente
+        //Adiciona círculo no destino
         final Circle circulo = mMap.addCircle(
                 new CircleOptions()
-                        .center(localCliente)
-                        .radius(25) //em metros
-                        .fillColor(Color.argb(90, 255, 153, 0))
-                        .strokeColor(Color.argb(190, 255, 152, 0))
-        );
-
-        //Adiciona círculo na farmacia
-        final Circle circulo2 = mMap.addCircle(
-                new CircleOptions()
-                        .center(localFarmacia)
-                        .radius(25) //em metros
+                        .center( localDestino )
+                        .radius( 50 ) //em metros
                         .fillColor(Color.argb(90, 255, 153, 0))
                         .strokeColor(Color.argb(190, 255, 152, 0))
         );
 
         final GeoQuery geoQuery = geoFire.queryAtLocation(
-                new GeoLocation(localFarmacia.latitude, localFarmacia.longitude),
+                new GeoLocation(localDestino.latitude, localDestino.longitude),
                 0.05 //em km (0.05 50 metros)
         );
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
-                if(key.equals(entregador.getId())){
-                    //Log.d("onKeyEntered", "onKeyEntered: entregador esta dentro da area");
+                if(key.equals(usuarioOrigem.getId())){
+                    //Log.d("onKeyEntered", "onKeyEntered: motorista esta dentro da area");
 
 
                     //Altera status da requisicao
-                    requisicao.setStatus(Requisicao.STATUS_VIAGEM);
+                    requisicao.setStatus(status);
                     requisicao.atualizarStatus();
 
                     //Remove listener
                     geoQuery.removeAllListeners();
-                    circulo2.remove();
+                    circulo.remove();
 
                 }
             }
@@ -327,6 +343,20 @@ public class CorridaActivity extends AppCompatActivity
 
         if( marcadorCliente != null )
             marcadorCliente.remove();
+
+        marcadorCliente = mMap.addMarker(
+                new MarkerOptions()
+                        .position(localizacao)
+                        .title(titulo)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.usuario))
+        );
+
+    }
+
+    private void adicionaMarcadorClienteViagem(LatLng localizacao, String titulo){
+
+        if( marcadorCliente != null )
+            marcadorFarmacia.remove();
 
         marcadorCliente = mMap.addMarker(
                 new MarkerOptions()
@@ -455,7 +485,8 @@ public class CorridaActivity extends AppCompatActivity
                             lon = String.valueOf(localFarmacia.longitude);
                             break;
                         case Requisicao.STATUS_VIAGEM:
-
+                            lat = String.valueOf(localCliente.latitude);
+                            lon = String.valueOf(localCliente.longitude);
                             break;
                     }
 

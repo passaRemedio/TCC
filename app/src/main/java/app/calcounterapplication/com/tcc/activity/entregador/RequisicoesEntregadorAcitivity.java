@@ -88,6 +88,7 @@ public class RequisicoesEntregadorAcitivity extends AppCompatActivity {
                     if(requisicao.getStatus().equals(Requisicao.STATUS_A_CAMINHO)
                             || requisicao.getStatus().equals(Requisicao.STATUS_VIAGEM)){
 
+                        entregador = requisicao.getEntregador();
                         abrirTelaCorrida(requisicao.getId(), entregador, true);
 
                     }
@@ -121,6 +122,9 @@ public class RequisicoesEntregadorAcitivity extends AppCompatActivity {
                     entregador.setLatitude(latitude);
                     entregador.setLongitude(longitude);
 
+                    //todo: EXIBIR TELA DE CARREGAMENTO
+
+                    adicionaEventoCliqueRecyclerView();
                     locationManager.removeUpdates(locationListener);
                     adapter.notifyDataSetChanged();
 
@@ -186,6 +190,12 @@ public class RequisicoesEntregadorAcitivity extends AppCompatActivity {
         recyclerRequisicoes.setHasFixedSize(true);
         recyclerRequisicoes.setAdapter(adapter);
 
+
+        recuperarRequisicoes();
+
+    }
+
+    private void adicionaEventoCliqueRecyclerView(){
         //Adiciona evento de clique no recycler
         recyclerRequisicoes.addOnItemTouchListener(
                 new RecyclerItemClickListener(
@@ -210,10 +220,6 @@ public class RequisicoesEntregadorAcitivity extends AppCompatActivity {
                         }
                 )
         );
-
-
-        recuperarRequisicoes();
-
     }
 
     private void recuperarRequisicoes(){
