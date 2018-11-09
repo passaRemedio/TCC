@@ -74,6 +74,31 @@ public class Produto implements Serializable {
 
     }
 
+    public void pedidoRealizado() {
+
+        String idUsuario = ConfigFirebase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFirebase.getFirebase()
+                .child("pedido_cliente");
+
+        anuncioRef.child(idUsuario)
+                .child(getIdProduto())
+                .setValue(this);
+
+        historicoPedido();
+    }
+
+    public void historicoPedido() {
+
+        String idUsuario = ConfigFirebase.getIdUsuario();
+        DatabaseReference anuncioRef = ConfigFirebase.getFirebase()
+                .child("historic_pedido");
+
+        anuncioRef.child(idUsuario)
+                .child(getIdProduto())
+                .setValue(this);
+
+    }
+
     public void remover() {
 
         String idUsuario = ConfigFirebase.getIdUsuario();

@@ -17,6 +17,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,12 +51,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import app.calcounterapplication.com.tcc.Adapter.AdapterCarrinhoCompras;
+import app.calcounterapplication.com.tcc.Adapter.AdapterProdutoPublico;
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
+import app.calcounterapplication.com.tcc.model.Cliente;
 import app.calcounterapplication.com.tcc.model.Destino;
+import app.calcounterapplication.com.tcc.model.Produto;
 import app.calcounterapplication.com.tcc.model.Requisicao;
 import app.calcounterapplication.com.tcc.model.Usuario;
+import dmax.dialog.SpotsDialog;
 
 public class PedidosCliente extends Fragment
         implements OnMapReadyCallback {
@@ -73,6 +80,11 @@ public class PedidosCliente extends Fragment
     private Button buttonCancelarEntrega;
     private TextView acompanharPedido, acompanharEntregador;
     private LinearLayout pedidosFeitos;
+    private AdapterCarrinhoCompras adapterCarrinhoCompras;
+    private List<Produto> listaProduto = new ArrayList<>();
+    private DatabaseReference pedidoRef;
+    private RecyclerView recyclerPedido;
+    private String produtoID, farmaciaID;
 
     private View myView;
 
@@ -83,23 +95,30 @@ public class PedidosCliente extends Fragment
 
         Bundle bundle = getArguments();
 
+        mAuth = ConfigFirebase.getFirebaseAuth();
         inicializarComponentes();
+        recuperarPedido();
 
-        try{
+        try {
             nomeFarmacia = bundle.getString("nomeFarmacia");
             enderecoFarmacia = bundle.getString("enderecoFarmacia");
-        } catch (Exception e){
+        } catch (Exception e) {
             verificaStatusRequisicao();
         }
 
+        //configurar recyclerView
+        recyclerPedido.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerPedido.setHasFixedSize(true);
+        adapterCarrinhoCompras = new AdapterCarrinhoCompras(listaProduto, getActivity());
+        recyclerPedido.setAdapter(adapterCarrinhoCompras);
 
         return myView;
     }
 
-    private void verificaStatusRequisicao(){
+    private void verificaStatusRequisicao() {
 
         Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
-        DatabaseReference requisicoes  = firebaseRef.child("requisicoes");
+        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
         Query requisicaoPesquisa = requisicoes.orderByChild("cliente/id")
                 .equalTo(usuarioLogado.getId());
 
@@ -108,13 +127,13 @@ public class PedidosCliente extends Fragment
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 List<Requisicao> lista = new ArrayList<>();
-                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     requisicao = ds.getValue(Requisicao.class);
                     lista.add(requisicao);
                 }
 
                 Collections.reverse(lista);
-                if(lista != null && lista.size() > 0){
+                if (lista != null && lista.size() > 0) {
                     requisicao = lista.get(0);
 
                     Log.d("resultado", "onDataChange: " + requisicao.getId());
@@ -147,7 +166,7 @@ public class PedidosCliente extends Fragment
 
         //Recuperar localizacao do usuario
         recuperarLocalizacaoCliente();
-        if(localCliente == null){
+        if (localCliente == null) {
             Toast.makeText(getActivity(),
                     "Aguarde um instante",
                     Toast.LENGTH_SHORT).show();
@@ -156,13 +175,13 @@ public class PedidosCliente extends Fragment
         }
     }
 
-    private void salvarRequisicao(Destino destino){
+    private void salvarRequisicao(Destino destino) {
         Requisicao requisicao = new Requisicao();
         requisicao.setDestino(destino);
 
         Usuario usuarioCliente = UsuarioFirebase.getDadosUsuarioLogado();
-        usuarioCliente.setLatitude( String.valueOf(localCliente.latitude) );
-        usuarioCliente.setLongitude( String.valueOf(localCliente.longitude) );
+        usuarioCliente.setLatitude(String.valueOf(localCliente.latitude));
+        usuarioCliente.setLongitude(String.valueOf(localCliente.longitude));
 
         requisicao.setCliente(usuarioCliente);
         requisicao.setStatus(Requisicao.STATUS_AGUARDANDO);
@@ -174,7 +193,7 @@ public class PedidosCliente extends Fragment
     private void recuperaEnderecoFarmacia(String enderecoFarmacia) {
 
 
-        if(enderecoFarmacia != null){
+        if (enderecoFarmacia != null) {
             if (!enderecoFarmacia.equals("") || enderecoFarmacia != null) {
                 Address addressDestino = recuperarEndereco(enderecoFarmacia);
                 if (addressDestino != null) {
@@ -230,7 +249,7 @@ public class PedidosCliente extends Fragment
                         CameraUpdateFactory.newLatLngZoom(localCliente, 20)
                 );
 
-                if(entregadorChamado != true){
+                if (entregadorChamado != true) {
                     recuperaEnderecoFarmacia(enderecoFarmacia);
                 }
             }
@@ -292,6 +311,52 @@ public class PedidosCliente extends Fragment
         return null;
     }
 
+    private void recuperarPedido() {
+//
+        Produto pedidoProduto = new Produto();
+        Cliente id = new Cliente();
+        produtoID = pedidoProduto.getIdProduto();
+        farmaciaID = id.getIdCliente();
+
+        dialog = new SpotsDialog.Builder()
+                .setContext(getActivity())
+                .setMessage("Carregando pedidos !")
+                .setCancelable(false)
+                .build();
+        dialog.show();
+
+        //configura nó por pedido
+        pedidoRef = ConfigFirebase.getFirebase()
+                .child("pedido_cliente");
+
+        listaProduto.clear();
+        pedidoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot clienteID : dataSnapshot.getChildren()) {
+                    for (DataSnapshot produtoID : clienteID.getChildren()) {
+
+                        Produto produto = produtoID.getValue(Produto.class);
+                        listaProduto.add(produto);
+
+                    }
+                }
+
+                Collections.reverse(listaProduto);
+                adapterCarrinhoCompras.notifyDataSetChanged();
+                dialog.dismiss();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     private void inicializarComponentes() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 //        SupportMapFragment mapFragment = (MapFragment) getFragmentManager()
@@ -307,7 +372,7 @@ public class PedidosCliente extends Fragment
         acompanharEntregador = myView.findViewById(R.id.acompanharEntregadorID);
         acompanharPedido = myView.findViewById(R.id.acompanharPedidoID);
         pedidosFeitos = myView.findViewById(R.id.linearLayoutPedidos);
-
+        recyclerPedido = myView.findViewById(R.id.recyclerPedido);
     }
 
 

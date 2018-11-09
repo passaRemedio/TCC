@@ -2,6 +2,7 @@ package app.calcounterapplication.com.tcc.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -25,10 +27,9 @@ public class AdapterCarrinhoCompras extends
     private Context context;
     private FirebaseUser firebaseUser;
 
-    public AdapterCarrinhoCompras(List<Produto> produtos, Context context, FirebaseUser firebaseUser) {
+    public AdapterCarrinhoCompras(List<Produto> produtos, Context context) {
         this.produtos = produtos;
         this.context = context;
-        this.firebaseUser = firebaseUser;
     }
 
     @NonNull
@@ -46,6 +47,17 @@ public class AdapterCarrinhoCompras extends
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+
+        Produto produto = produtos.get(i);
+        myViewHolder.titulo.setText(produto.getProdutoExibicao());
+        myViewHolder.valor.setText(produto.getValor());
+
+
+        //configurar imagem
+        List<String> urlFotos = produto.getFotos();
+        String urlCapa = urlFotos.get(0);
+
+        Picasso.get().load(urlCapa).into(myViewHolder.foto);
 
     }
 

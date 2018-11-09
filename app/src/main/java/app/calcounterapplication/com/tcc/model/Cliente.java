@@ -13,6 +13,7 @@ public class Cliente extends PessoaFisica {
     private String rua;
     private String numero;
     private String uf;
+    private String idCliente;
 
 //   campoRg, campoDtNascimento, campoCPF, campoCidade, campoCEP, campoRua, campoUF;
 
@@ -83,6 +84,14 @@ public class Cliente extends PessoaFisica {
 
     public void setUf(String uf) {
         this.uf = uf;
+    }
+
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
     }
 }
 

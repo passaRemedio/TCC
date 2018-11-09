@@ -94,7 +94,6 @@ public class DetalheActivity extends AppCompatActivity {
         }
 
 
-
         //Mostrar o botão
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Ativar o botão
@@ -102,48 +101,51 @@ public class DetalheActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Detalhe Produto");
     }
 
-//    Address addressDestino = recuperarEndereco(enderecoDestino);
+    //    Address addressDestino = recuperarEndereco(enderecoDestino);
 //    final Destino destino = new Destino();
-    public void comprarDireto(View view){
+    public void comprarDireto(View view) {
 
         enderecoDestino = enderecoFarmacia.getText().toString();
 
-            if( !enderecoDestino.equals("") || enderecoDestino != null){
-                Address addressDestino = recuperarEndereco(enderecoDestino);
-                if(addressDestino != null ){
-                    final Destino destino = new Destino();
-                    destino.setCidade(addressDestino.getAdminArea());
-                    destino.setCep(addressDestino.getPostalCode());
-                    destino.setBairro(addressDestino.getSubLocality());
-                    destino.setRua(addressDestino.getThoroughfare());
-                    destino.setNumero(addressDestino.getFeatureName());
-                    destino.setLatitude(String.valueOf(addressDestino.getLatitude()));
-                    destino.setLongitude(String.valueOf(addressDestino.getLongitude()));
-                    destino.setNomeDestino(nomeFarmacia.getText().toString());
+        if (!enderecoDestino.equals("") || enderecoDestino != null) {
+            Address addressDestino = recuperarEndereco(enderecoDestino);
+            if (addressDestino != null) {
+                final Destino destino = new Destino();
+                destino.setCidade(addressDestino.getAdminArea());
+                destino.setCep(addressDestino.getPostalCode());
+                destino.setBairro(addressDestino.getSubLocality());
+                destino.setRua(addressDestino.getThoroughfare());
+                destino.setNumero(addressDestino.getFeatureName());
+                destino.setLatitude(String.valueOf(addressDestino.getLatitude()));
+                destino.setLongitude(String.valueOf(addressDestino.getLongitude()));
+                destino.setNomeDestino(nomeFarmacia.getText().toString());
 
-                    //Atualizar Geofire
-                    UsuarioFirebase.atualizarDadosLocalizacao(addressDestino.getLatitude(), addressDestino.getLongitude(), farmaciaID);
+                //Atualizar Geofire
+                UsuarioFirebase.atualizarDadosLocalizacao(addressDestino.getLatitude(), addressDestino.getLongitude(), farmaciaID);
 
-                    StringBuilder mensagem = new StringBuilder();
-                    mensagem.append("Deseja confirmar a sua compra em: ");
-                    mensagem.append("\n"+nomeFarmacia.getText().toString());
-                    mensagem.append("\n"+enderecoFarmacia.getText().toString());
+                StringBuilder mensagem = new StringBuilder();
+                mensagem.append("Deseja confirmar a sua compra em: ");
+                mensagem.append("\n" + nomeFarmacia.getText().toString());
+                mensagem.append("\n" + enderecoFarmacia.getText().toString());
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                            .setTitle("Confirme sua compra")
-                            .setMessage(mensagem)
-                            .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-//                                    //salvar requisicao
-                                    Intent intent = new Intent(DetalheActivity.this, ClienteNavigationDrawer.class);
-                                    intent.putExtra("nomeFarmacia", nomeFarmacia.getText().toString());
-                                    intent.putExtra("enderecoFarmacia", enderecoFarmacia.getText().toString()); // getText() SHOULD NOT be static!!!
-                                    startActivity(intent);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                        .setTitle("Confirme sua compra")
+                        .setMessage(mensagem)
+                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                //salvar nó pedido e histórico
+                                produtoSelecionado.pedidoRealizado();
+
+                                //salvar requisicao
+                                Intent intent = new Intent(DetalheActivity.this, ClienteNavigationDrawer.class);
+                                intent.putExtra("nomeFarmacia", nomeFarmacia.getText().toString());
+                                intent.putExtra("enderecoFarmacia", enderecoFarmacia.getText().toString()); // getText() SHOULD NOT be static!!!
+                                startActivity(intent);
 
 
-
-                                    //TODO: fragment / activity connection
+                                //TODO: fragment / activity connection
 //                                    FragmentManager fragmentManager = getSupportFragmentManager();
 //                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //                                    PedidosCliente pedidosCliente = new PedidosCliente();
@@ -155,28 +157,26 @@ public class DetalheActivity extends AppCompatActivity {
 //                                    fragmentTransaction.commit();
 
 
-
-
-                                }
-                            }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //cancelar requisicao
-                                }
-                            });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-
-            } else {
-                Toast.makeText(this,
-                        "Por algum motivo a farmacia não possui endereço!",
-                        Toast.LENGTH_SHORT).show();
+                            }
+                        }).setNegativeButton("cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //cancelar requisicao
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
-            //Fim
+
+        } else {
+            Toast.makeText(this,
+                    "Por algum motivo a farmacia não possui endereço!",
+                    Toast.LENGTH_SHORT).show();
+        }
+        //Fim
     }
 
-    private void recuperarLocalizacaoDaFarmacia(String id){
+    private void recuperarLocalizacaoDaFarmacia(String id) {
 
         //acessar endereco farmacia
         DatabaseReference usuariosRef = ConfigFirebase.getFirebaseDatabase()

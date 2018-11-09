@@ -14,18 +14,17 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circleCarrinhoProd"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:scaleType="centerInside"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             app:srcCompat="@drawable/padrao" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="2dp"
             android:orientation="vertical">
 
             <TextView
@@ -40,7 +39,7 @@
                 android:id="@+id/textValorCarrinho"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="2dp"
                 android:text="R$ 10.000"
                 android:textSize="18sp"
                 android:textStyle="bold" />
