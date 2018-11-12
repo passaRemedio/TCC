@@ -1,6 +1,7 @@
 package app.calcounterapplication.com.tcc.activity.farmacia;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,8 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,13 +26,13 @@ import java.util.List;
 import app.calcounterapplication.com.tcc.Adapter.AdapterProduto;
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
-import app.calcounterapplication.com.tcc.helper.RecyclerItemClickListener;
 import app.calcounterapplication.com.tcc.model.Produto;
 import dmax.dialog.SpotsDialog;
 
 public class MeusProdutosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerProdutos;
+    private Produto produtoSelecionado;
     private List<Produto> produtos = new ArrayList<>();
     private AdapterProduto adapterProduto;
     DatabaseReference produtoUsuarioRef;
@@ -46,6 +48,9 @@ public class MeusProdutosActivity extends AppCompatActivity {
                 .child(ConfigFirebase.getIdUsuario());
 
         inicializarComponentes();
+
+        //evento de clique -> deslize
+        swipe();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -69,34 +74,75 @@ public class MeusProdutosActivity extends AppCompatActivity {
         //recupera anuncio Produto
         recuperarProduto();
 
-        //evento de clique
-        recyclerProdutos.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, recyclerProdutos,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-
-                            }
-
-                            @Override
-                            public void onLongItemClick(View view, int position) {
-
-                                Produto produtoSelecionado = produtos.get(position);
-                                produtoSelecionado.remover();
-
-                                adapterProduto.notifyDataSetChanged();
-
-                            }
-
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                            }
-                        })
-        );
-
         getSupportActionBar().setTitle("Meus Produtos");
     }
+
+    public void swipe() {
+
+        ItemTouchHelper.Callback itemTouch = new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+
+                int dragFlags = ItemTouchHelper.ACTION_STATE_IDLE;
+                int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                excluirProdutoFarma(viewHolder);
+            }
+        };
+
+        new ItemTouchHelper(itemTouch).attachToRecyclerView(recyclerProdutos);
+
+    }
+
+    public void excluirProdutoFarma(final RecyclerView.ViewHolder viewHolder) {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+
+        //Configura AlertDialog
+        alertDialog.setTitle("Excluir Produto");
+        alertDialog.setMessage("Deseja excluir este produto?");
+        alertDialog.setCancelable(false);
+
+        alertDialog.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int position = viewHolder.getAdapterPosition();
+                produtoSelecionado = produtos.get(position);
+
+                produtoSelecionado.remover();
+                Toast.makeText(MeusProdutosActivity.this,
+                        "Produto Excluído",
+                        Toast.LENGTH_SHORT).show();
+                adapterProduto.notifyItemRemoved(position);
+
+            }
+        });
+
+        alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(MeusProdutosActivity.this,
+                        "Exclusão Cancelada",
+                        Toast.LENGTH_SHORT).show();
+                adapterProduto.notifyDataSetChanged();
+            }
+        });
+
+        AlertDialog alert = alertDialog.create();
+        alert.show();
+
+
+    }
+
 
     private void recuperarProduto() {
 
