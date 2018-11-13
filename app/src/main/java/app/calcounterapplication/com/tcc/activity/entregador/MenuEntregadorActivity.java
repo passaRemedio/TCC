@@ -1,17 +1,28 @@
 package app.calcounterapplication.com.tcc.activity.entregador;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.activity.CorridaActivity;
 import app.calcounterapplication.com.tcc.activity.MainActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
+import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
+import app.calcounterapplication.com.tcc.model.Usuario;
 
 public class MenuEntregadorActivity extends AppCompatActivity {
 
@@ -27,11 +38,13 @@ public class MenuEntregadorActivity extends AppCompatActivity {
 
         mAuth = ConfigFirebase.getFirebaseAuth();
 
-        logoutButton = findViewById(R.id.logoutFarmacia);
+//        recuperarLocalizacaoCliente();
+
+        logoutButton = findViewById(R.id.logoutEntregador);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                logoutFarmacia();
+                logoutEntregador();
             }
         });
 
@@ -46,14 +59,18 @@ public class MenuEntregadorActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Entregador");
     }
 
-    public void logoutFarmacia(){
+    public void logoutEntregador(){
         mAuth.signOut();
         startActivity(new Intent( this, MainActivity.class));
         finish();
     }
 
     public void abrirTelaRequisicoes() {
-
         startActivity(new Intent(this, RequisicoesEntregadorAcitivity.class));
     }
+
+    public void abrirMinhasEntregas(View view){
+        startActivity(new Intent(this, EntregasRealizadasActivity.class));
+    }
+
 }

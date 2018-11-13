@@ -274,7 +274,7 @@ public class PedidosCliente extends Fragment
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity())
                 .setTitle("Total da viagem")
-                .setMessage("Seu pedido ficou: R$ " + resultado)
+                .setMessage("Sua taxa de entrega ficou: R$ " + resultado)
                 .setCancelable(false)
                 .setNegativeButton("Confirmar Entrega", new DialogInterface.OnClickListener() {
                     @Override
@@ -282,7 +282,7 @@ public class PedidosCliente extends Fragment
 
                         requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
                         String idRequisicao = requisicao.getId();
-                        requisicao.historicoRequisicao();
+                        requisicao.historicoRequisicao(entregador.getId());
                         requisicao.remover(idRequisicao);
                         pedidoProduto.removerPedido();
 

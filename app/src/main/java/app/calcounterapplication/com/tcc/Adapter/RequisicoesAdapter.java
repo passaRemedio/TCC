@@ -22,6 +22,7 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
     private List<Requisicao> requisicoes;
     private Context context;
     private Usuario entregador;
+    private LatLng localEntregador;
 
     public RequisicoesAdapter(List<Requisicao> requisicoes, Context context, Usuario entregador) {
         this.requisicoes = requisicoes;
@@ -47,6 +48,7 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
         String longitudeFarmacia = requisicao.getDestino().getLongitude();
 
 
+
         myViewHolder.nome.setText(cliente.getNome());
 
         if(entregador != null) {
@@ -56,7 +58,9 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
                     Double.parseDouble(cliente.getLongitude())
             );
 
-            LatLng localEntregador = new LatLng(
+            System.out.println("olha " + entregador.getNome());
+            System.out.println("olha " + entregador.getLatitude());
+            localEntregador = new LatLng(
                     Double.parseDouble(entregador.getLatitude()),
                     Double.parseDouble(entregador.getLongitude())
             );

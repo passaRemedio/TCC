@@ -45,19 +45,6 @@ public class Requisicao {
         System.out.println("porque nao " + getId());
         System.out.println("porque sim " + idRequisicao);
 
-
-//        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
-//        DatabaseReference requisicao = requisicoes.child(getId());
-//        System.out.println("porque nao funcionou?");
-//        requisicao.removeValue();
-
-//        String idUsuario = ConfigFirebase.getIdUsuario();
-//        final DatabaseReference anuncioRef = ConfigFirebase.getFirebase()
-//                .child("pedido_cliente")
-//                .child(idUsuario);
-////                .child(getIdProduto());
-//
-//        anuncioRef.removeValue();
     }
 
     public void atualizar(){
@@ -102,9 +89,9 @@ public class Requisicao {
         requisicao.updateChildren(objeto);
     }
 
-    public void historicoRequisicao(){
+    public void historicoRequisicao(String idEntregador){
         DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
-        DatabaseReference requisicoes = firebaseRef.child("historico_requisicoes");
+        DatabaseReference requisicoes = firebaseRef.child("historico_requisicoes").child(idEntregador);
 
         String idRequisicao = requisicoes.push().getKey();
         setId(idRequisicao);

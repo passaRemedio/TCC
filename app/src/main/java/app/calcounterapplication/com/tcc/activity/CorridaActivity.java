@@ -213,6 +213,7 @@ public class CorridaActivity extends AppCompatActivity
                     requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
                     requisicao.atualizarStatus();
                     Intent intent = new Intent(CorridaActivity.this, MenuEntregadorActivity.class);
+                    finish();
                     startActivity(intent);
                 }
             }
