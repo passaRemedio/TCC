@@ -117,7 +117,7 @@ public class Produto implements Serializable {
         DatabaseReference produtoRef = ConfigFirebase.getFirebase()
                 .child("produtos").child(getIdProduto());
 //                .child(getRegiao())
-//                .child(getCategoria())
+//                .child(getCategoria());
 
 
         produtoRef.removeValue();

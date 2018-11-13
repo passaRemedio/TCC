@@ -174,6 +174,7 @@ public class PedidosCliente extends Fragment
 //                    pedidosFeitos.setVisibility(View.INVISIBLE);
 //
 //                }
+//            }
             }
 
             @Override
