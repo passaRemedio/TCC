@@ -274,17 +274,20 @@ public class PedidosCliente extends Fragment
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity())
                 .setTitle("Total da viagem")
-                .setMessage("Sua viagem ficou: R$ " + resultado)
+                .setMessage("Seu pedido ficou: R$ " + resultado)
                 .setCancelable(false)
                 .setNegativeButton("Confirmar Entrega", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                         requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
-                        requisicao.atualizarStatus();
+                        String idRequisicao = requisicao.getId();
+                        requisicao.historicoRequisicao();
+                        requisicao.remover(idRequisicao);
                         pedidoProduto.removerPedido();
 
                         Intent intent = new Intent(getActivity(), ClienteNavigationDrawer.class);
+                        getActivity().finish();
                         startActivity(intent);
 
                     }
@@ -448,7 +451,7 @@ public class PedidosCliente extends Fragment
 //        FragmentTransaction ftr = getFragmentManager().beginTransaction();
 //        ftr.detach(PedidosCliente.this).attach(PedidosCliente.this).commit();
 
-        Produto pedidoProduto = new Produto();
+        pedidoProduto = new Produto();
         Cliente id = new Cliente();
         produtoID = pedidoProduto.getIdProduto();
         farmaciaID = id.getIdCliente();
