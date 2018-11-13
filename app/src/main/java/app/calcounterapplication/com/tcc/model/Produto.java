@@ -117,7 +117,7 @@ public class Produto implements Serializable {
         DatabaseReference produtoRef = ConfigFirebase.getFirebase()
                 .child("produtos").child(getIdProduto());
 //                .child(getRegiao())
-//                .child(getCategoria());
+//                .child(getCategoria())
 
 
         produtoRef.removeValue();
@@ -128,8 +128,8 @@ public class Produto implements Serializable {
         String idUsuario = ConfigFirebase.getIdUsuario();
         final DatabaseReference anuncioRef = ConfigFirebase.getFirebase()
                 .child("pedido_cliente")
-                .child(idUsuario)
-                .child(getIdProduto());
+                .child(idUsuario);
+//                .child(getIdProduto());
 
         anuncioRef.removeValue();
 

@@ -95,6 +95,7 @@ public class PedidosCliente extends Fragment
     private Marker marcadorEntregador;
     private Marker marcadorCliente;
     private Marker marcadorFarmacia;
+    private Produto pedidoProduto;
 
     private View myView;
 
@@ -281,6 +282,7 @@ public class PedidosCliente extends Fragment
 
                         requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
                         requisicao.atualizarStatus();
+                        pedidoProduto.removerPedido();
 
                         Intent intent = new Intent(getActivity(), ClienteNavigationDrawer.class);
                         startActivity(intent);

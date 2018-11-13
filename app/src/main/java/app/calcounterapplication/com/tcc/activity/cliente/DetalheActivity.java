@@ -223,7 +223,7 @@ public class DetalheActivity extends AppCompatActivity {
 ////        buttonChamarUber.setText("Cancelar Uber");
 //        //esse codigo nao estava comentado!!!!
 //
-//    };
+//    }
 
     public static FirebaseUser getUsuarioAtual() {
         FirebaseAuth usuario = ConfigFirebase.getFirebaseAuth();
