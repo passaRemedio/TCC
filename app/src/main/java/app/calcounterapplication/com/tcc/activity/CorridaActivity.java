@@ -44,6 +44,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.DecimalFormat;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.activity.cliente.ClienteNavigationDrawer;
+import app.calcounterapplication.com.tcc.activity.entregador.MenuEntregadorActivity;
 import app.calcounterapplication.com.tcc.activity.entregador.RequisicoesEntregadorAcitivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.Local;
@@ -202,7 +204,19 @@ public class CorridaActivity extends AppCompatActivity
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         String resultado = decimalFormat.format(valor);
 
-        buttonAceitarCorrida.setText("Entrega finalizada - R$ " + resultado);
+        buttonAceitarCorrida.setText("Confirmar Entregar - R$ " + resultado);
+        buttonAceitarCorrida.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Verificar o status da requisicao para encerrar
+                if(statusRequisicao != null && !statusRequisicao.isEmpty()){
+                    requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
+                    requisicao.atualizarStatus();
+                    Intent intent = new Intent(CorridaActivity.this, MenuEntregadorActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
     }
 

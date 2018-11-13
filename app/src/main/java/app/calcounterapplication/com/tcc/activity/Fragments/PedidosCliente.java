@@ -142,29 +142,31 @@ public class PedidosCliente extends Fragment
                     Log.d("resultado", "onDataChange: " + requisicao.getId());
 
                     if (requisicao != null) {
-                        cliente = requisicao.getCliente();
-                        localCliente = new LatLng(
-                                Double.parseDouble(cliente.getLatitude()),
-                                Double.parseDouble(cliente.getLongitude())
-                        );
-
-                        Destino destino = requisicao.getDestino();
-                        localFarmacia = new LatLng(
-                                Double.parseDouble(destino.getLatitude()),
-                                Double.parseDouble(destino.getLongitude())
-                        );
-
-
-                        if (requisicao.getEntregador() != null) {
-                            entregador = requisicao.getEntregador();
-                            localEntregador = new LatLng(
-                                    Double.parseDouble(entregador.getLatitude()),
-                                    Double.parseDouble(entregador.getLongitude())
+                        if(!requisicao.getStatus().equals(Requisicao.STATUS_ENCERRADA)) {
+                            cliente = requisicao.getCliente();
+                            localCliente = new LatLng(
+                                    Double.parseDouble(cliente.getLatitude()),
+                                    Double.parseDouble(cliente.getLongitude())
                             );
-                        }
 
-                        statusRequisicao = requisicao.getStatus();
-                        alteraInterfaceStatusRequisicao(statusRequisicao);
+                            Destino destino = requisicao.getDestino();
+                            localFarmacia = new LatLng(
+                                    Double.parseDouble(destino.getLatitude()),
+                                    Double.parseDouble(destino.getLongitude())
+                            );
+
+
+                            if (requisicao.getEntregador() != null) {
+                                entregador = requisicao.getEntregador();
+                                localEntregador = new LatLng(
+                                        Double.parseDouble(entregador.getLatitude()),
+                                        Double.parseDouble(entregador.getLongitude())
+                                );
+                            }
+
+                            statusRequisicao = requisicao.getStatus();
+                            alteraInterfaceStatusRequisicao(statusRequisicao);
+                        }
                     }
                 }
 //                else {
@@ -174,7 +176,6 @@ public class PedidosCliente extends Fragment
 //                    pedidosFeitos.setVisibility(View.INVISIBLE);
 //
 //                }
-//            }
             }
 
             @Override
@@ -266,6 +267,31 @@ public class PedidosCliente extends Fragment
         String resultado = decimalFormat.format(valor);
 
         buttonCancelarEntrega.setText("Entrega finalizada - R$ " + resultado);
+
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity())
+                .setTitle("Total da viagem")
+                .setMessage("Sua viagem ficou: R$ " + resultado)
+                .setCancelable(false)
+                .setNegativeButton("Confirmar Entrega", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        requisicao.setStatus(Requisicao.STATUS_ENCERRADA);
+                        requisicao.atualizarStatus();
+
+                        Intent intent = new Intent(getActivity(), ClienteNavigationDrawer.class);
+                        startActivity(intent);
+
+                    }
+                }).setPositiveButton("Denunciar Erro", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.show();
 
     }
 
