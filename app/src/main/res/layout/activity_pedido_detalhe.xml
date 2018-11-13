@@ -33,11 +33,6 @@
             android:layout_height="94dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                app:srcCompat="@drawable/medicine" />
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerPedido"
                 android:layout_width="match_parent"

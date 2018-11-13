@@ -170,7 +170,7 @@ public class DetalheActivity extends AppCompatActivity {
 
         } else {
             Toast.makeText(this,
-                    "Por algum motivo a farmacia não possui endereço!",
+                    "Não foi possível localizar o endereço da farmácia!",
                     Toast.LENGTH_SHORT).show();
         }
         //Fim

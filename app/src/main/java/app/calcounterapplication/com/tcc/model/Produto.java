@@ -123,6 +123,18 @@ public class Produto implements Serializable {
         produtoRef.removeValue();
     }
 
+    public void removerPedido() {
+
+        String idUsuario = ConfigFirebase.getIdUsuario();
+        final DatabaseReference anuncioRef = ConfigFirebase.getFirebase()
+                .child("pedido_cliente")
+                .child(idUsuario)
+                .child(getIdProduto());
+
+        anuncioRef.removeValue();
+
+    }
+
 
     public String getIdProduto() {
         return idProduto;

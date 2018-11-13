@@ -4,6 +4,8 @@ package app.calcounterapplication.com.tcc.activity.Fragments;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -15,31 +17,23 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,7 +42,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,9 +49,9 @@ import java.util.List;
 import java.util.Locale;
 
 import app.calcounterapplication.com.tcc.Adapter.AdapterCarrinhoCompras;
-import app.calcounterapplication.com.tcc.Adapter.AdapterProdutoPublico;
 import app.calcounterapplication.com.tcc.R;
-import app.calcounterapplication.com.tcc.activity.CorridaActivity;
+import app.calcounterapplication.com.tcc.activity.cliente.ClienteNavigationDrawer;
+import app.calcounterapplication.com.tcc.activity.farmacia.MeusProdutosActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
 import app.calcounterapplication.com.tcc.helper.Local;
 import app.calcounterapplication.com.tcc.helper.Marcadores;
@@ -139,7 +132,7 @@ public class PedidosCliente extends Fragment
 
                 List<Requisicao> lista = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    lista.add( ds.getValue( Requisicao.class ) );
+                    lista.add(ds.getValue(Requisicao.class));
                 }
 
                 Collections.reverse(lista);
@@ -148,7 +141,7 @@ public class PedidosCliente extends Fragment
 
                     Log.d("resultado", "onDataChange: " + requisicao.getId());
 
-                    if(requisicao != null) {
+                    if (requisicao != null) {
                         cliente = requisicao.getCliente();
                         localCliente = new LatLng(
                                 Double.parseDouble(cliente.getLatitude()),
@@ -162,7 +155,7 @@ public class PedidosCliente extends Fragment
                         );
 
 
-                        if( requisicao.getEntregador() != null ){
+                        if (requisicao.getEntregador() != null) {
                             entregador = requisicao.getEntregador();
                             localEntregador = new LatLng(
                                     Double.parseDouble(entregador.getLatitude()),
@@ -173,13 +166,14 @@ public class PedidosCliente extends Fragment
                         statusRequisicao = requisicao.getStatus();
                         alteraInterfaceStatusRequisicao(statusRequisicao);
                     }
-                } else {
-
-                    acompanharPedido.setText("Não foi realizado nenhum pedido :(");
-                    acompanharEntregador.setVisibility(View.INVISIBLE);
-                    pedidosFeitos.setVisibility(View.INVISIBLE);
-
                 }
+//                else {
+//
+//                    acompanharPedido.setText("Não foi realizado nenhum pedido :(");
+//                    acompanharEntregador.setVisibility(View.INVISIBLE);
+//                    pedidosFeitos.setVisibility(View.INVISIBLE);
+//
+//                }
             }
 
             @Override
@@ -190,8 +184,8 @@ public class PedidosCliente extends Fragment
     }
 
 
-    private void alteraInterfaceStatusRequisicao(String status){
-        if(status != null && !status.isEmpty()) {
+    private void alteraInterfaceStatusRequisicao(String status) {
+        if (status != null && !status.isEmpty()) {
             switch (status) {
                 case Requisicao.STATUS_AGUARDANDO:
                     requisicaoAguardando();
@@ -216,7 +210,7 @@ public class PedidosCliente extends Fragment
         }
     }
 
-    private void requisicaoAguardando(){
+    private void requisicaoAguardando() {
         buttonCancelarEntrega.setVisibility(View.VISIBLE);
         entregadorChamado = true;
 
@@ -225,7 +219,7 @@ public class PedidosCliente extends Fragment
         marcadores.centralizarMarcador(localCliente);
     }
 
-    private void requisicaoAcaminho(){
+    private void requisicaoAcaminho() {
         buttonCancelarEntrega.setVisibility(View.VISIBLE);
         entregadorChamado = true;
 
@@ -242,7 +236,7 @@ public class PedidosCliente extends Fragment
         marcadores.centralizarTresMarcadores(marcadorEntregador, marcadorCliente, marcadorFarmacia);
     }
 
-    private void requisicaoViagem(){
+    private void requisicaoViagem() {
         buttonCancelarEntrega.setVisibility(View.VISIBLE);
         entregadorChamado = true;
 
@@ -256,7 +250,7 @@ public class PedidosCliente extends Fragment
         marcadores.centralizarDoisMarcadores(marcadorEntregador, marcadorCliente);
     }
 
-    private void requisicaoFinalizada(){
+    private void requisicaoFinalizada() {
 
         buttonCancelarEntrega.setVisibility(View.VISIBLE);
 
@@ -278,10 +272,11 @@ public class PedidosCliente extends Fragment
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        marcadores = new Marcadores(getActivity() , mMap);
+        marcadores = new Marcadores(getActivity(), mMap);
 
         //Recuperar localizacao do usuario
         recuperarLocalizacaoCliente();
+
     }
 
     private void salvarRequisicao(Destino destino) {
@@ -301,7 +296,6 @@ public class PedidosCliente extends Fragment
     }
 
     private void recuperaEnderecoFarmacia(String enderecoFarmacia) {
-
 
         if (enderecoFarmacia != null) {
             if (!enderecoFarmacia.equals("") || enderecoFarmacia != null) {
@@ -348,12 +342,12 @@ public class PedidosCliente extends Fragment
 
                 mMap.clear();
                 //Altera interface de acordo com o status
-                alteraInterfaceStatusRequisicao( statusRequisicao );
+                alteraInterfaceStatusRequisicao(statusRequisicao);
 
 
                 if (entregadorChamado != true) {
                     Bundle bundle = getArguments();
-                    if(bundle != null){
+                    if (bundle != null) {
                         nomeFarmacia = bundle.getString("nomeFarmacia");
                         enderecoFarmacia = bundle.getString("enderecoFarmacia");
                         recuperaEnderecoFarmacia(enderecoFarmacia);
@@ -466,6 +460,7 @@ public class PedidosCliente extends Fragment
         });
 
     }
+
 
     private void inicializarComponentes() {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
