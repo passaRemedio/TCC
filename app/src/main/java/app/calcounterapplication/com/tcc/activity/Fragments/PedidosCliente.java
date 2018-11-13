@@ -142,7 +142,7 @@ public class PedidosCliente extends Fragment
                     Log.d("resultado", "onDataChange: " + requisicao.getId());
 
                     if (requisicao != null) {
-                        if(!requisicao.getStatus().equals(Requisicao.STATUS_ENCERRADA)) {
+//                        if(!requisicao.getStatus().equals(Requisicao.STATUS_ENCERRADA)) {
                             cliente = requisicao.getCliente();
                             localCliente = new LatLng(
                                     Double.parseDouble(cliente.getLatitude()),
@@ -166,7 +166,7 @@ public class PedidosCliente extends Fragment
 
                             statusRequisicao = requisicao.getStatus();
                             alteraInterfaceStatusRequisicao(statusRequisicao);
-                        }
+//                        }
                     }
                 }
 //                else {
@@ -201,8 +201,8 @@ public class PedidosCliente extends Fragment
                 case Requisicao.STATUS_FINALIZADA:
                     requisicaoFinalizada();
                     break;
-                default:
-                    marcadores.adicionaMarcadorCliente(localCliente, cliente.getNome());
+                case Requisicao.STATUS_ENCERRADA:
+                    requisicaoEncerrada();
                     break;
             }
         } else {
@@ -260,13 +260,16 @@ public class PedidosCliente extends Fragment
         marcadores.adicionaMarcadorEntregaFinalizada(localCliente, "Local de Entrega");
         marcadores.centralizarMarcador(localCliente);
 
+
+    }
+
+    private void requisicaoEncerrada(){
         //Calcular a distancia
         float distancia = Local.calcularDistancia(localCliente, localFarmacia);
         float valor = distancia * 12;
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
         String resultado = decimalFormat.format(valor);
 
-        buttonCancelarEntrega.setText("Entrega finalizada - R$ " + resultado);
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getActivity())
                 .setTitle("Total da viagem")
@@ -292,7 +295,6 @@ public class PedidosCliente extends Fragment
 
         android.support.v7.app.AlertDialog dialog = builder.create();
         dialog.show();
-
     }
 
     @Override
