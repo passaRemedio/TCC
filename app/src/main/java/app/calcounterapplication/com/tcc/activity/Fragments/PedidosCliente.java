@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +37,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -46,6 +49,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.sql.SQLOutput;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -54,7 +58,10 @@ import java.util.Locale;
 import app.calcounterapplication.com.tcc.Adapter.AdapterCarrinhoCompras;
 import app.calcounterapplication.com.tcc.Adapter.AdapterProdutoPublico;
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.activity.CorridaActivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
+import app.calcounterapplication.com.tcc.helper.Local;
+import app.calcounterapplication.com.tcc.helper.Marcadores;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 import app.calcounterapplication.com.tcc.model.Cliente;
 import app.calcounterapplication.com.tcc.model.Destino;
@@ -74,6 +81,8 @@ public class PedidosCliente extends Fragment
     private LocationListener locationListener;
     private DatabaseReference firebaseRef;
     private LatLng localCliente;
+    private LatLng localFarmacia;
+    private LatLng localEntregador;
     private boolean entregadorChamado = false;
     private Requisicao requisicao;
     private String enderecoFarmacia, nomeFarmacia;
@@ -85,6 +94,14 @@ public class PedidosCliente extends Fragment
     private DatabaseReference pedidoRef;
     private RecyclerView recyclerPedido;
     private String produtoID, farmaciaID;
+    private Usuario cliente;
+    private Usuario farmacia;
+    private Usuario entregador;
+    private String statusRequisicao;
+    private Marcadores marcadores;
+    private Marker marcadorEntregador;
+    private Marker marcadorCliente;
+    private Marker marcadorFarmacia;
 
     private View myView;
 
@@ -93,18 +110,11 @@ public class PedidosCliente extends Fragment
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.pedidos_cliente, container, false);
 
-        Bundle bundle = getArguments();
-
         mAuth = ConfigFirebase.getFirebaseAuth();
         inicializarComponentes();
         recuperarPedido();
 
-        try {
-            nomeFarmacia = bundle.getString("nomeFarmacia");
-            enderecoFarmacia = bundle.getString("enderecoFarmacia");
-        } catch (Exception e) {
-            verificaStatusRequisicao();
-        }
+        verificaStatusRequisicao();
 
         //configurar recyclerView
         recyclerPedido.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -113,6 +123,7 @@ public class PedidosCliente extends Fragment
         recyclerPedido.setAdapter(adapterCarrinhoCompras);
 
         return myView;
+
     }
 
     private void verificaStatusRequisicao() {
@@ -128,8 +139,7 @@ public class PedidosCliente extends Fragment
 
                 List<Requisicao> lista = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    requisicao = ds.getValue(Requisicao.class);
-                    lista.add(requisicao);
+                    lista.add( ds.getValue( Requisicao.class ) );
                 }
 
                 Collections.reverse(lista);
@@ -138,11 +148,30 @@ public class PedidosCliente extends Fragment
 
                     Log.d("resultado", "onDataChange: " + requisicao.getId());
 
-                    switch (requisicao.getStatus()) {
-                        case Requisicao.STATUS_AGUARDANDO:
-                            buttonCancelarEntrega.setVisibility(View.VISIBLE);
-                            entregadorChamado = true;
-                            break;
+                    if(requisicao != null) {
+                        cliente = requisicao.getCliente();
+                        localCliente = new LatLng(
+                                Double.parseDouble(cliente.getLatitude()),
+                                Double.parseDouble(cliente.getLongitude())
+                        );
+
+                        Destino destino = requisicao.getDestino();
+                        localFarmacia = new LatLng(
+                                Double.parseDouble(destino.getLatitude()),
+                                Double.parseDouble(destino.getLongitude())
+                        );
+
+
+                        if( requisicao.getEntregador() != null ){
+                            entregador = requisicao.getEntregador();
+                            localEntregador = new LatLng(
+                                    Double.parseDouble(entregador.getLatitude()),
+                                    Double.parseDouble(entregador.getLongitude())
+                            );
+                        }
+
+                        statusRequisicao = requisicao.getStatus();
+                        alteraInterfaceStatusRequisicao(statusRequisicao);
                     }
                 } else {
 
@@ -160,19 +189,99 @@ public class PedidosCliente extends Fragment
         });
     }
 
+
+    private void alteraInterfaceStatusRequisicao(String status){
+        if(status != null && !status.isEmpty()) {
+            switch (status) {
+                case Requisicao.STATUS_AGUARDANDO:
+                    requisicaoAguardando();
+                    break;
+                case Requisicao.STATUS_A_CAMINHO:
+                    requisicaoAcaminho();
+                    break;
+                case Requisicao.STATUS_VIAGEM:
+                    requisicaoViagem();
+                    break;
+                case Requisicao.STATUS_FINALIZADA:
+                    requisicaoFinalizada();
+                    break;
+                default:
+                    marcadores.adicionaMarcadorCliente(localCliente, cliente.getNome());
+                    break;
+            }
+        } else {
+            //Adiciona marcador passageiro
+            marcadores.adicionaMarcadorCliente(localCliente, "Meu Local");
+            marcadores.centralizarMarcador(localCliente);
+        }
+    }
+
+    private void requisicaoAguardando(){
+        buttonCancelarEntrega.setVisibility(View.VISIBLE);
+        entregadorChamado = true;
+
+        //Adiciona marcador cliente
+        marcadores.adicionaMarcadorCliente(localCliente, cliente.getNome());
+        marcadores.centralizarMarcador(localCliente);
+    }
+
+    private void requisicaoAcaminho(){
+        buttonCancelarEntrega.setVisibility(View.VISIBLE);
+        entregadorChamado = true;
+
+        //Adicionar marcador cliente
+        marcadorCliente = marcadores.adicionaMarcadorCliente(localCliente, cliente.getNome());
+
+        //Adiciona marcador motorista
+        marcadorEntregador = marcadores.adicionaMarcadorEntregador(localEntregador, entregador.getNome());
+
+        //Adiciona marcador farmacia
+        marcadorFarmacia = marcadores.adicionaMarcadorFarmacia(localFarmacia, nomeFarmacia);
+
+        //Centralizar passageiro / motorista
+        marcadores.centralizarTresMarcadores(marcadorEntregador, marcadorCliente, marcadorFarmacia);
+    }
+
+    private void requisicaoViagem(){
+        buttonCancelarEntrega.setVisibility(View.VISIBLE);
+        entregadorChamado = true;
+
+        //Adiciona marcador motorista
+        marcadores.adicionaMarcadorEntregador(localEntregador, entregador.getNome());
+
+        //Adiciona marcador cliente
+        marcadores.adicionaMarcadorCliente(localCliente, cliente.getNome());
+
+        //Centralizar marcadores motorista / destino
+        marcadores.centralizarDoisMarcadores(marcadorEntregador, marcadorCliente);
+    }
+
+    private void requisicaoFinalizada(){
+
+        buttonCancelarEntrega.setVisibility(View.VISIBLE);
+
+        //Adiciona marcador de entrega finalizada
+        marcadores.adicionaMarcadorEntregaFinalizada(localCliente, "Local de Entrega");
+        marcadores.centralizarMarcador(localCliente);
+
+        //Calcular a distancia
+        float distancia = Local.calcularDistancia(localCliente, localFarmacia);
+        float valor = distancia * 12;
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        String resultado = decimalFormat.format(valor);
+
+        buttonCancelarEntrega.setText("Entrega finalizada - R$ " + resultado);
+
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        marcadores = new Marcadores(getActivity() , mMap);
+
         //Recuperar localizacao do usuario
         recuperarLocalizacaoCliente();
-        if (localCliente == null) {
-            Toast.makeText(getActivity(),
-                    "Aguarde um instante",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            recuperaEnderecoFarmacia(enderecoFarmacia);
-        }
     }
 
     private void salvarRequisicao(Destino destino) {
@@ -188,6 +297,7 @@ public class PedidosCliente extends Fragment
         requisicao.salvar();
 
         buttonCancelarEntrega.setVisibility(View.VISIBLE);
+//        recuperarPedido();
     }
 
     private void recuperaEnderecoFarmacia(String enderecoFarmacia) {
@@ -231,26 +341,23 @@ public class PedidosCliente extends Fragment
                 //recuperar latitude e longitude
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                System.out.println("Latitute: " + latitude);
-                System.out.println("Longitude: " + longitude);
                 localCliente = new LatLng(latitude, longitude);
 
                 //Atualizar Geofire
                 UsuarioFirebase.atualizarDadosLocalizacao(latitude, longitude);
 
                 mMap.clear();
-                mMap.addMarker(
-                        new MarkerOptions()
-                                .position(localCliente)
-                                .title("Meu Local")
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.usuario))
-                );
-                mMap.moveCamera(
-                        CameraUpdateFactory.newLatLngZoom(localCliente, 20)
-                );
+                //Altera interface de acordo com o status
+                alteraInterfaceStatusRequisicao( statusRequisicao );
+
 
                 if (entregadorChamado != true) {
-                    recuperaEnderecoFarmacia(enderecoFarmacia);
+                    Bundle bundle = getArguments();
+                    if(bundle != null){
+                        nomeFarmacia = bundle.getString("nomeFarmacia");
+                        enderecoFarmacia = bundle.getString("enderecoFarmacia");
+                        recuperaEnderecoFarmacia(enderecoFarmacia);
+                    }
                 }
             }
 
@@ -287,7 +394,7 @@ public class PedidosCliente extends Fragment
                     locationListener
             );
         } else {
-            System.out.println("VAI TOMAR NO CU");
+
         }
 
     }
@@ -312,7 +419,10 @@ public class PedidosCliente extends Fragment
     }
 
     private void recuperarPedido() {
-//
+
+//        FragmentTransaction ftr = getFragmentManager().beginTransaction();
+//        ftr.detach(PedidosCliente.this).attach(PedidosCliente.this).commit();
+
         Produto pedidoProduto = new Produto();
         Cliente id = new Cliente();
         produtoID = pedidoProduto.getIdProduto();

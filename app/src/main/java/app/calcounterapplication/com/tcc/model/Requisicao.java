@@ -62,6 +62,21 @@ public class Requisicao {
 
     }
 
+    public void atualizarLocalizacaoEntregador(){
+        DatabaseReference firebaseRef = ConfigFirebase.getFirebaseDatabase();
+        DatabaseReference requisicoes = firebaseRef.child("requisicoes");
+
+        DatabaseReference requisicao = requisicoes
+                .child(getId())
+                .child("entregador");
+
+        Map objeto = new HashMap();
+        objeto.put("latitude", getEntregador().getLatitude());
+        objeto.put("longitude", getEntregador().getLongitude());
+
+        requisicao.updateChildren(objeto);
+    }
+
     public String getId() {
         return id;
     }

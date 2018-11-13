@@ -8,9 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.List;
 
 import app.calcounterapplication.com.tcc.R;
+import app.calcounterapplication.com.tcc.helper.Local;
 import app.calcounterapplication.com.tcc.model.Requisicao;
 import app.calcounterapplication.com.tcc.model.Usuario;
 
@@ -20,10 +23,10 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
     private Context context;
     private Usuario entregador;
 
-    public RequisicoesAdapter(List<Requisicao> requisicoes, Context context, Usuario motorista) {
+    public RequisicoesAdapter(List<Requisicao> requisicoes, Context context, Usuario entregador) {
         this.requisicoes = requisicoes;
         this.context = context;
-        this.entregador = motorista;
+        this.entregador = entregador;
     }
 
     @NonNull
@@ -40,10 +43,36 @@ public class RequisicoesAdapter extends RecyclerView.Adapter<RequisicoesAdapter.
 
         Requisicao requisicao = requisicoes.get(i);
         Usuario cliente = requisicao.getCliente();
+        String latitudeFarmacia = requisicao.getDestino().getLatitude();
+        String longitudeFarmacia = requisicao.getDestino().getLongitude();
 
 
         myViewHolder.nome.setText(cliente.getNome());
-        myViewHolder.distancia.setText("1 km- aproximadamente");
+
+        if(entregador != null) {
+
+            LatLng localCliente = new LatLng(
+                    Double.parseDouble(cliente.getLatitude()),
+                    Double.parseDouble(cliente.getLongitude())
+            );
+
+            LatLng localEntregador = new LatLng(
+                    Double.parseDouble(entregador.getLatitude()),
+                    Double.parseDouble(entregador.getLongitude())
+            );
+
+            LatLng localFarmacia = new LatLng(
+                    Double.parseDouble(latitudeFarmacia),
+                    Double.parseDouble(longitudeFarmacia)
+            );
+
+            float distancia1 = Local.calcularDistancia(localEntregador, localFarmacia);
+            float distancia2 = Local.calcularDistancia(localCliente, localFarmacia);
+
+            String distanciaFormatada = Local.formatarDistancia(distancia1 + distancia2);
+            myViewHolder.distancia.setText(distanciaFormatada + " - aproximadamente");
+
+        }
 
     }
 

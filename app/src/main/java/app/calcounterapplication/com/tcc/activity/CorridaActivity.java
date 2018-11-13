@@ -1,6 +1,7 @@
 package app.calcounterapplication.com.tcc.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -40,9 +41,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DecimalFormat;
+
 import app.calcounterapplication.com.tcc.R;
 import app.calcounterapplication.com.tcc.activity.entregador.RequisicoesEntregadorAcitivity;
 import app.calcounterapplication.com.tcc.config.ConfigFirebase;
+import app.calcounterapplication.com.tcc.helper.Local;
+import app.calcounterapplication.com.tcc.helper.Marcadores;
 import app.calcounterapplication.com.tcc.helper.UsuarioFirebase;
 import app.calcounterapplication.com.tcc.model.Cliente;
 import app.calcounterapplication.com.tcc.model.Destino;
@@ -62,8 +67,8 @@ public class CorridaActivity extends AppCompatActivity
     //Componente
     private Button buttonAceitarCorrida;
     private FloatingActionButton fabRota;
-
     private GoogleMap mMap;
+    private GoogleMap mMapDois;
     private LocationManager locationManager;
     private LocationListener locationListener;
     private LatLng localEntregador;
@@ -79,10 +84,11 @@ public class CorridaActivity extends AppCompatActivity
     private Marker marcadorEntregador;
     private Marker marcadorCliente;
     private Marker marcadorFarmacia;
+    private Marker marcadorRealizada;
     private String nomeFarmacia;
     private String statusRequisicao;
     private Boolean requisicaoAtiva;
-
+    private Marcadores marcadores;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +104,7 @@ public class CorridaActivity extends AppCompatActivity
             entregador = (Usuario) extras.getSerializable("entregador");
             localEntregador = new LatLng(
                     Double.parseDouble(entregador.getLatitude()),
-                    Double.parseDouble(entregador.getLatitude())
+                    Double.parseDouble(entregador.getLongitude())
             );
             idRequisicao = extras.getString("idRequisicao");
             requisicaoAtiva = extras.getBoolean("requisicaoAtiva");
@@ -116,26 +122,27 @@ public class CorridaActivity extends AppCompatActivity
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //Recupera a requisicao
                 requisicao = dataSnapshot.getValue(Requisicao.class);
-                cliente = requisicao.getCliente();
-                localCliente = new LatLng(
-                        Double.parseDouble(cliente.getLatitude()),
-                        Double.parseDouble(cliente.getLongitude())
-                );
+                if(requisicao != null){
+                    cliente = requisicao.getCliente();
+                    localCliente = new LatLng(
+                            Double.parseDouble(cliente.getLatitude()),
+                            Double.parseDouble(cliente.getLongitude())
+                    );
 
-                Destino destino = requisicao.getDestino();
-                localFarmacia = new LatLng(
-                        Double.parseDouble(destino.getLatitude()),
-                        Double.parseDouble(destino.getLongitude())
-                );
+                    Destino destino = requisicao.getDestino();
+                    localFarmacia = new LatLng(
+                            Double.parseDouble(destino.getLatitude()),
+                            Double.parseDouble(destino.getLongitude())
+                    );
 
-                statusRequisicao = requisicao.getStatus();
-                alteraInterfaceStatusRequisicao(statusRequisicao);
+                    statusRequisicao = requisicao.getStatus();
+                    alteraInterfaceStatusRequisicao(statusRequisicao);
 
-                nomeCliente.setText("Cliente: " + requisicao.getCliente().getNome());
-
-                nomeFarmacia = requisicao.getDestino().getNomeDestino();
-                enderecoCliente.setText("Nome farmácia: " + nomeFarmacia);
-
+                    //dados dos campos de texto
+                    nomeCliente.setText("Cliente: " + requisicao.getCliente().getNome());
+                    nomeFarmacia = requisicao.getDestino().getNomeDestino();
+                    enderecoCliente.setText("Nome farmácia: " + nomeFarmacia);
+                }
             }
 
             @Override
@@ -158,58 +165,92 @@ public class CorridaActivity extends AppCompatActivity
             case Requisicao.STATUS_VIAGEM:
                 requisicaoViagem();
                 break;
+            case Requisicao.STATUS_FINALIZADA:
+                requisicaoFinalizada();
+                break;
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void requisicaoFinalizada(){
+
+        fabRota.setVisibility(View.GONE);
+        requisicaoAtiva = false;
+
+        if(marcadorEntregador != null){
+            marcadorEntregador.remove();
+        }
+
+        if(marcadorCliente != null){
+            marcadorCliente.remove();
+//            marcadorCliente = null;
+        }
+
+        //Exibe marcador de destino
+        LatLng localFinal = new LatLng(
+                localCliente.latitude,
+                localCliente.longitude
+        );
+
+        marcadores.adicionaMarcadorEntregaFinalizada(localFinal, "Entrega feita a(o): " + cliente.getNome());
+        marcadores.centralizarMarcador(localFinal);
+
+
+        //Calcular a distancia
+        float distancia = Local.calcularDistancia(localCliente, localFarmacia);
+        float valor = distancia * 12;
+        DecimalFormat decimalFormat = new DecimalFormat("0.00");
+        String resultado = decimalFormat.format(valor);
+
+        buttonAceitarCorrida.setText("Entrega finalizada - R$ " + resultado);
+
     }
 
     private void requisicaoAguardando(){
         buttonAceitarCorrida.setText("Realizar Entrega");
 
         //Exibe marcador do entregador
-        adicionaMarcadorEntregador(localEntregador, entregador.getNome() );
+        marcadorEntregador = marcadores.adicionaMarcadorEntregador(localEntregador, entregador.getNome() );
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(localEntregador, 20));
+        marcadores.centralizarMarcador(localEntregador);
     }
 
+    @SuppressLint("RestrictedApi")
     private void requisicaoAcaminho(){
         buttonAceitarCorrida.setText("A caminho da farmácia");
         fabRota.setVisibility(View.VISIBLE);
 
         //Exibe marcador do entregador
-        adicionaMarcadorEntregador(localEntregador, entregador.getNome() );
+        marcadorEntregador = marcadores.adicionaMarcadorEntregador(localEntregador, entregador.getNome() );
 
-        //Exibe marcador cliente
-        adicionaMarcadorCliente(localCliente, cliente.getNome());
-
-//        //Exibe marcador farmacia
-        adicionaMarcadorFarmacia(localFarmacia, nomeFarmacia);
+        //Exibe marcador farmacia
+        marcadorFarmacia = marcadores.adicionaMarcadorFarmacia(localFarmacia, nomeFarmacia);
 
         //Centralizar dois marcadores
-//        centralizarDoisMarcadores(marcadorEntregador, marcadorCliente);
-
-        //Centralizar Tres marcadores
-        centralizarTresMarcadores(marcadorEntregador, marcadorCliente, marcadorFarmacia);
+        marcadores.centralizarDoisMarcadores(marcadorEntregador, marcadorFarmacia);
 
         //Inicia monitoramento do entregador / farmácia
         iniciarMonitoramento(entregador, localFarmacia, Requisicao.STATUS_VIAGEM);
     }
 
+    @SuppressLint("RestrictedApi")
     private void requisicaoViagem(){
 
         //Alterar interface
         fabRota.setVisibility(View.VISIBLE);
-        buttonAceitarCorrida.setText("A caminho do destino");
+        buttonAceitarCorrida.setText("A caminho do cliente");
 
         //Exibe marcador do motorista
-        adicionaMarcadorEntregador(localEntregador, entregador.getNome());
+        marcadorEntregador = marcadores.adicionaMarcadorEntregador(localEntregador, entregador.getNome());
 
-        //Exibe marcador de cliente
         LatLng localCliente = new LatLng(
                 Double.parseDouble(cliente.getLatitude()),
                 Double.parseDouble(cliente.getLongitude())
         );
-        adicionaMarcadorClienteViagem(localCliente, "Cliente");
+        marcadorCliente = marcadores.adicionaMarcadorCliente(localCliente, "Cliente");
 
-        //Centraliza marcadores motorista / destino
+        //Centraliza marcadores motorista / cliente
+        marcadores.centralizarDoisMarcadores(marcadorEntregador, marcadorCliente);
         iniciarMonitoramento(entregador, localCliente, Requisicao.STATUS_FINALIZADA);
 
 
@@ -276,101 +317,13 @@ public class CorridaActivity extends AppCompatActivity
 
     }
 
-    private void centralizarTresMarcadores(Marker marcador1, Marker marcador2, Marker marcador3){
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
-        builder.include(marcador1.getPosition());
-        builder.include(marcador2.getPosition());
-        builder.include(marcador3.getPosition());
-
-        LatLngBounds bounds = builder.build();
-
-        int largura = getResources().getDisplayMetrics().widthPixels;
-        int altura = getResources().getDisplayMetrics().heightPixels;
-        int espacoInterno = (int) (largura * 0.20);
-
-        mMap.moveCamera(
-                CameraUpdateFactory.newLatLngBounds(bounds,largura,altura,espacoInterno)
-        );
-    }
-
-    private void centralizarDoisMarcadores(Marker marcador1, Marker marcador2){
-
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
-        builder.include( marcador1.getPosition() );
-        builder.include( marcador2.getPosition() );
-
-        LatLngBounds bounds = builder.build();
-
-        int largura = getResources().getDisplayMetrics().widthPixels;
-        int altura = getResources().getDisplayMetrics().heightPixels;
-        int espacoInterno = (int) (largura * 0.20);
-
-        mMap.moveCamera(
-                CameraUpdateFactory.newLatLngBounds(bounds,largura,altura,espacoInterno)
-        );
-
-    }
-
-    private void adicionaMarcadorFarmacia(LatLng localizacao, String titulo){
-        if( marcadorFarmacia != null )
-            marcadorFarmacia.remove();
-
-        marcadorFarmacia = mMap.addMarker(
-                new MarkerOptions()
-                        .position(localizacao)
-                        .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.pharmacy))
-        );
-    }
-
-    private void adicionaMarcadorEntregador(LatLng localizacao, String titulo){
-
-        if( marcadorEntregador != null )
-            marcadorEntregador.remove();
-
-        marcadorEntregador = mMap.addMarker(
-                new MarkerOptions()
-                        .position(localizacao)
-                        .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.scooter))
-        );
-
-    }
-
-    private void adicionaMarcadorCliente(LatLng localizacao, String titulo){
-
-        if( marcadorCliente != null )
-            marcadorCliente.remove();
-
-        marcadorCliente = mMap.addMarker(
-                new MarkerOptions()
-                        .position(localizacao)
-                        .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.usuario))
-        );
-
-    }
-
-    private void adicionaMarcadorClienteViagem(LatLng localizacao, String titulo){
-
-        if( marcadorCliente != null )
-            marcadorFarmacia.remove();
-
-        marcadorCliente = mMap.addMarker(
-                new MarkerOptions()
-                        .position(localizacao)
-                        .title(titulo)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.usuario))
-        );
-
-    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+//        mMapDois = mMap;
 
+        marcadores = new Marcadores(CorridaActivity.this, mMap);
         //Recuperar localizacao do usuario
         recuperarLocalizacaoUsuario();
     }
@@ -388,20 +341,14 @@ public class CorridaActivity extends AppCompatActivity
                 double longitude = location.getLongitude();
                 localEntregador = new LatLng(latitude, longitude);
 
-//                mMap.clear();
-//                mMap.addMarker(
-//                        new MarkerOptions()
-//                                .position(localEntregador)
-//                                .title("Meu Local")
-//                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.scooter))
-//                );
-//                mMap.moveCamera(
-//                        CameraUpdateFactory.newLatLngZoom(localEntregador, 20)
-//                );
-
                 //Atualizar Geofire
                 UsuarioFirebase.atualizarDadosLocalizacao(latitude, longitude);
 
+                //Atualizar localizacao entregador no Firebase
+                entregador.setLatitude(String.valueOf(latitude));
+                entregador.setLongitude(String.valueOf(longitude));
+                requisicao.setEntregador(entregador);
+                requisicao.atualizarLocalizacaoEntregador();
 
                 alteraInterfaceStatusRequisicao(statusRequisicao);
 
