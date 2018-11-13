@@ -155,7 +155,7 @@ public class DetalheActivity extends AppCompatActivity {
 //                                    bundle.putString("enderecoFarmacia", enderecoFarmacia.getText().toString());
 //                                    pedidosCliente.setArguments(bundle);
 //                                    fragmentTransaction.replace(R.id.frameID, pedidosCliente);
-//                                    fragmentTransaction.commit();
+//                                    fragmentTransaction.commit();;
 
 
                             }

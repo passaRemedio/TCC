@@ -115,7 +115,7 @@ public class relatorioFarmacia extends AppCompatActivity {
 //            public void onCancelled(@NonNull DatabaseError databaseError) {
 //
 //            }
-//        });
+//        })
 //    }
 
     private void recuperarHistorico() {
@@ -153,7 +153,7 @@ public class relatorioFarmacia extends AppCompatActivity {
 
     public void inicializarComponentes() {
         qtdItem = findViewById(R.id.qtdItem);
-        recyclerPedido = findViewById(R.id.recyclerHistorico);
+        recyclerPedido = findViewById(R.id.recyclerHistoric);
 
     }
 }

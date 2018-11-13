@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerHistorico"
+        android:id="@+id/recyclerHistoric"
         android:layout_width="368dp"
         android:layout_height="216dp"
         android:layout_marginStart="8dp"

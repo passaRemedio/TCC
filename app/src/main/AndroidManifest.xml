@@ -96,6 +96,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="app.calcounterapplication.com.tcc.activity.entregador.RequisicoesEntregadorAcitivity" />
         </activity>
+        <activity android:name=".activity.farmacia.relatorioFarmacia"
+            android:parentActivityName=".activity.farmacia.MenuFarmaciaActivity" />
     </application>
 
 </manifest>
