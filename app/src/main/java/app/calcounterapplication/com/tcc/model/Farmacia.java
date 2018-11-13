@@ -15,6 +15,7 @@ public class Farmacia extends Usuario implements Serializable {
     private String regiao;
     private String numero;
     private String cidade;
+    private String idFarma;
 
 
     public String getCnpj() {
@@ -71,6 +72,14 @@ public class Farmacia extends Usuario implements Serializable {
 
     public void setCidade(String cidade) {
         this.cidade = cidade;
+    }
+
+    public String getIdFarma() {
+        return idFarma;
+    }
+
+    public void setIdFarma(String idFarma) {
+        this.idFarma = idFarma;
     }
 
     //    public void salvar() {

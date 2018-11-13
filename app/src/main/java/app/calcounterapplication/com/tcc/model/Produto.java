@@ -84,16 +84,17 @@ public class Produto implements Serializable {
                 .child(getIdProduto())
                 .setValue(this);
 
-        historicoPedido();
+
+
     }
 
-    public void historicoPedido() {
+    public void historicoPedido(String idFarmacia) {
 
         String idUsuario = ConfigFirebase.getIdUsuario();
         DatabaseReference anuncioRef = ConfigFirebase.getFirebase()
                 .child("historic_pedido");
 
-        anuncioRef.child(idUsuario)
+        anuncioRef.child(idFarmacia)
                 .child(getIdProduto())
                 .setValue(this);
 

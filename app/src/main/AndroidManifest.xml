@@ -85,8 +85,7 @@
             android:parentActivityName=".activity.cliente.ClienteNavigationDrawer" />
         <activity android:name=".activity.cliente.PedidoDetalheActivity" />
         <activity android:name=".activity.farmacia.FarmaciaProdutoActivity" />
-        <activity
-            android:name=".activity.entregador.RequisicoesEntregadorAcitivity"
+        <activity android:name=".activity.entregador.RequisicoesEntregadorAcitivity"
             android:parentActivityName=".activity.entregador.MenuEntregadorActivity" />
         <activity
             android:name=".activity.CorridaActivity"
@@ -97,7 +96,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="app.calcounterapplication.com.tcc.activity.entregador.RequisicoesEntregadorAcitivity" />
         </activity>
-        <activity android:name=".activity.entregador.EntregasRealizadasActivity"></activity>
     </application>
 
 </manifest>

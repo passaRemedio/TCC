@@ -137,6 +137,7 @@ public class DetalheActivity extends AppCompatActivity {
 
                                 //salvar nó pedido e histórico
                                 produtoSelecionado.pedidoRealizado();
+                                produtoSelecionado.historicoPedido(farmaciaID);
 
                                 //salvar requisicao
                                 Intent intent = new Intent(DetalheActivity.this, ClienteNavigationDrawer.class);

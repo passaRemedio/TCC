@@ -27,6 +27,7 @@ public class MenuFarmaciaActivity extends AppCompatActivity {
     private ImageView logoutButton;
     private ImageView meusProdutos;
     private ImageView cadastrarProdutos;
+    private ImageView relatorio;
 
 
     @Override
@@ -56,6 +57,15 @@ public class MenuFarmaciaActivity extends AppCompatActivity {
             }
         });
 
+        //relatorios
+        relatorio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MenuFarmaciaActivity.this,
+                        relatorioFarmacia.class));
+            }
+        });
+
         //sair
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +90,7 @@ public class MenuFarmaciaActivity extends AppCompatActivity {
         logoutButton = findViewById(R.id.logoutFarmacia);
         meusProdutos = findViewById(R.id.meusProdutosFarmacia);
         cadastrarProdutos = findViewById(R.id.cadastrarProdutosFarmacia);
+        relatorio = findViewById(R.id.relatorioFarmacia);
     }
 
 }
